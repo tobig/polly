@@ -32,6 +32,9 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "llvm/Support/raw_ostream.h"
+
+#include "islpp/isl.h"
 #include "polly/DependenceInfo.h"
 #include "polly/LinkAllPasses.h"
 #include "polly/ScopInfo.h"
@@ -44,6 +47,7 @@
 
 using namespace llvm;
 using namespace polly;
+using namespace isl;
 
 namespace {
 
@@ -122,41 +126,36 @@ bool DeadCodeElim::eliminateDeadCode(Scop &S, int PreciseSteps) {
   if (!D.hasValidDependences())
     return false;
 
-  isl_union_set *Live = getLiveOut(S);
-  isl_union_map *Dep =
-      D.getDependences(Dependences::TYPE_RAW | Dependences::TYPE_RED);
-  Dep = isl_union_map_reverse(Dep);
+  UnionSet Live = manage(getLiveOut(S));
+  UnionMap Dep =
+      manage(D.getDependences(Dependences::TYPE_RAW | Dependences::TYPE_RED));
+  Dep = Dep.reverse();
 
   if (PreciseSteps == -1)
-    Live = isl_union_set_affine_hull(Live);
+    Live = Live.affineHull();
 
-  isl_union_set *OriginalDomain = S.getDomains();
+  UnionSet OriginalDomain = manage(S.getDomains());
   int Steps = 0;
   while (true) {
-    isl_union_set *Extra;
+    UnionSet Extra;
     Steps++;
 
-    Extra =
-        isl_union_set_apply(isl_union_set_copy(Live), isl_union_map_copy(Dep));
+    Extra = Live.apply(Dep);
 
-    if (isl_union_set_is_subset(Extra, Live)) {
-      isl_union_set_free(Extra);
+    if (Extra.isSubset(Live))
       break;
-    }
 
-    Live = isl_union_set_union(Live, Extra);
+    Live = manage(isl_union_set_union(Live.release(), Extra.copy()));
 
     if (Steps > PreciseSteps) {
       Steps = 0;
-      Live = isl_union_set_affine_hull(Live);
+      Live = Live.affineHull();
     }
 
-    Live = isl_union_set_intersect(Live, isl_union_set_copy(OriginalDomain));
+    Live = Live.intersect(OriginalDomain);
   }
-  isl_union_map_free(Dep);
-  isl_union_set_free(OriginalDomain);
 
-  bool Changed = S.restrictDomains(isl_union_set_coalesce(Live));
+  bool Changed = S.restrictDomains(Live.coalesce().release());
 
   // FIXME: We can probably avoid the recomputation of all dependences by
   // updating them explicitly.

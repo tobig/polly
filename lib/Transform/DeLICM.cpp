@@ -677,26 +677,6 @@ MemoryAccess *getInputAccessOf(Value *InputVal, ScopStmt *Stmt) {
   return nullptr;
 }
 
-/// Try to find a 'natural' extension of a mapped to elements outside its
-/// domain.
-///
-/// @param Relevant The map with mapping that may not be modified.
-/// @param Universe The domain to which @p Relevant needs to be extended.
-///
-/// @return A map with that associates the domain elements of @p Relevant to the
-///         same elements and in addition the elements of @p Universe to some
-///         undefined elements. The function prefers to return simple maps.
-IslPtr<isl_union_map> expandMapping(IslPtr<isl_union_map> Relevant,
-                                    IslPtr<isl_union_set> Universe) {
-  Relevant = give(isl_union_map_coalesce(Relevant.take()));
-  auto RelevantDomain = give(isl_union_map_domain(Relevant.copy()));
-  auto Simplified =
-      give(isl_union_map_gist_domain(Relevant.take(), RelevantDomain.take()));
-  Simplified = give(isl_union_map_coalesce(Simplified.take()));
-  return give(
-      isl_union_map_intersect_domain(Simplified.take(), Universe.take()));
-}
-
 /// Determine whether an access touches at most one element.
 ///
 /// The accessed element could be a scalar or accessing an array with constant
@@ -1938,111 +1918,6 @@ private:
     MappedValueScalars++;
     MapReports.emplace_back(SAI, WA, SecondaryAccs, DefTarget, Lifetime,
                             std::move(Proposed));
-  }
-
-  /// Get the all the statement instances of any statement for which there is at
-  /// least one instance in @p RelevantDomain.
-  IslPtr<isl_union_set>
-  wholeStmtDomain(NonowningIslPtr<isl_union_set> RelevantDomain) {
-    auto Universe = EmptyUnionSet;
-    foreachElt(RelevantDomain, [&Universe](IslPtr<isl_set> Dom) {
-      auto Space = give(isl_set_get_space(Dom.keep()));
-      auto DomUniv = give(isl_set_universe(Space.take()));
-      Universe = give(isl_union_set_add_set(Universe.take(), DomUniv.take()));
-    });
-    return give(isl_union_set_intersect(Universe.take(),
-                                        isl_union_map_domain(Schedule.copy())));
-  }
-
-  /// Try to find a 'natural' extension of a mapped to elements outside its
-  /// domain.
-  ///
-  /// @see ::expandMapping
-  IslPtr<isl_union_map> expandMapping(IslPtr<isl_union_map> Relevant) {
-    auto RelevantDomain = give(isl_union_map_domain(Relevant.copy()));
-    auto Universe = wholeStmtDomain(RelevantDomain);
-    return ::expandMapping(Relevant, Universe);
-  }
-
-  /// Express the incoming values of a PHI for each incoming statement in an
-  /// isl_union_map.
-  ///
-  /// @param SAI The PHI scalar represented by a ScopArrayInfo.
-  ///
-  /// @return { PHIWriteDomain[] -> ValInst[] }
-  IslPtr<isl_union_map> determinePHIWrittenValues(const ScopArrayInfo *SAI) {
-    auto Result = EmptyUnionMap;
-
-    // Collect the incoming values.
-    for (auto *MA : DefUse.getPHIIncomings(SAI)) {
-      // { DomainWrite[] -> ValInst[] }
-      IslPtr<isl_map> ValInst;
-      auto *WriteStmt = MA->getStatement();
-
-      auto Incoming = MA->getIncoming();
-      assert(!Incoming.empty());
-      if (Incoming.size() == 1) {
-        ValInst = makeValInst(Incoming[0].second, WriteStmt, true);
-      } else {
-        // If the PHI is in a subregion's exit node it can have multiple
-        // incoming values (+ maybe another incoming edge from an unrelated
-        // block). Since we cannot directly represent it as a single
-        // llvm::Value from multiple exiting block, it is represented using
-        // the PHI itself.
-        // We currently model it as unknown value, but modeling as the PHIInst
-        // itself could be OK, too.
-        ValInst = makeUnknownForDomain(WriteStmt);
-      }
-
-      Result = give(isl_union_map_add_map(Result.take(), ValInst.take()));
-    }
-
-    assert(isl_union_map_is_single_valued(Result.keep()) == isl_bool_true &&
-           "Cannot have multiple incoming values for same incoming statement");
-    return Result;
-  }
-
-  /// Map an MK_PHI scalar to an array element.
-  ///
-  /// Callers must have ensured that the mapping is valid and not conflicting
-  /// with the common knowledge.
-  ///
-  /// @param SAI         The ScopArrayInfo representing the scalar's memory to
-  ///                    map.
-  /// @param ReadTarget  { DomainRead[] -> Element[] }
-  ///                    The array element to map the scalar to.
-  /// @param WriteTarget { DomainWrite[] -> Element[] }
-  ///                    New access target for each PHI incoming write.
-  /// @param Lifetime    { DomainRead[] -> Zone[] }
-  ///                    The lifetime of each PHI for reporting.
-  /// @param Proposed    Mapping constraints for reporting.
-  void mapPHI(const ScopArrayInfo *SAI, IslPtr<isl_map> ReadTarget,
-              IslPtr<isl_union_map> WriteTarget, IslPtr<isl_map> Lifetime,
-              Knowledge Proposed) {
-    // Redirect the PHI incoming writes.
-    SmallVector<MemoryAccess *, 4> SecondaryAccs;
-    for (auto *MA : DefUse.getPHIIncomings(SAI)) {
-      // { DomainWrite[] }
-      auto Domain = getDomainFor(MA);
-
-      // { DomainWrite[] -> Element[] }
-      auto NewAccRel = give(isl_union_map_intersect_domain(
-          WriteTarget.copy(), isl_union_set_from_set(Domain.take())));
-      simplify(NewAccRel);
-
-      assert(isl_union_map_n_map(NewAccRel.keep()) == 1);
-      MA->setNewAccessRelation(isl_map_from_union_map(NewAccRel.take()));
-      SecondaryAccs.push_back(MA);
-    }
-
-    // Redirect the PHI read.
-    auto *PHIRead = DefUse.getPHIRead(SAI);
-    PHIRead->setNewAccessRelation(ReadTarget.copy());
-    applyLifetime(Proposed);
-
-    MappedPHIScalars++;
-    MapReports.emplace_back(SAI, PHIRead, SecondaryAccs, std::move(ReadTarget),
-                            std::move(Lifetime), std::move(Proposed));
   }
 
   /// Search and map scalars to memory overwritten by @p TargetStoreMA.

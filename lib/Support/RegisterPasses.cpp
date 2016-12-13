@@ -163,7 +163,7 @@ static cl::opt<bool>
 static cl::opt<bool>
     EnableDeLICM("polly-enable-delicm",
                  cl::desc("Eliminate scalar loop carried dependences"),
-                 cl::Hidden, cl::init(false), cl::cat(PollyCategory));
+                 cl::Hidden, cl::init(true), cl::cat(PollyCategory));
 
 namespace polly {
 void initializePollyPasses(PassRegistry &Registry) {

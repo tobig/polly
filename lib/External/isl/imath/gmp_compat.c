@@ -688,7 +688,7 @@ void* GMPZAPI(export)(void *rop, size_t *countp, int order, size_t size, int end
   int i, j;
   int num_used_bytes;
   size_t num_words, num_missing_bytes;
-  ssize_t word_offset;
+  ptrdiff_t word_offset;
   unsigned char* dst;
   mp_digit* src;
   int src_bits;
@@ -767,7 +767,7 @@ void GMPZAPI(import)(mp_int rop, size_t count, int order, size_t size, int endia
   mp_int tmp = &tmpz;
   size_t total_size;
   size_t num_digits;
-  ssize_t word_offset;
+  ptrdiff_t word_offset;
   const unsigned char *src;
   mp_digit *dst;
   int dst_bits;

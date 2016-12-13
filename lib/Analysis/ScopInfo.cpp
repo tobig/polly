@@ -120,7 +120,7 @@ static cl::opt<bool>
 static cl::opt<bool> UnprofitableScalarAccs(
     "polly-unprofitable-scalar-accs",
     cl::desc("Count statements with scalar accesses as not optimizable"),
-    cl::Hidden, cl::init(true), cl::cat(PollyCategory));
+    cl::Hidden, cl::init(false), cl::cat(PollyCategory));
 
 //===----------------------------------------------------------------------===//
 

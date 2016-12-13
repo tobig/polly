@@ -129,7 +129,6 @@ STATISTIC(DeLICMOutOfQuota,
           "Analyses aborted because max_operations was reached");
 STATISTIC(DeLICMIncompatible, "Number of SCoPs incompatible for analysis");
 STATISTIC(MappedValueScalars, "Number of mapped Value scalars");
-STATISTIC(MappedPHIScalars, "Number of mapped PHI scalars");
 STATISTIC(TargetsMapped, "Number of stores used for at least one mapping");
 STATISTIC(DeLICMScopsModified, "Number of SCoPs optimized");
 
@@ -677,21 +676,6 @@ MemoryAccess *getInputAccessOf(Value *InputVal, ScopStmt *Stmt) {
   return nullptr;
 }
 
-/// Determine whether an access touches at most one element.
-///
-/// The accessed element could be a scalar or accessing an array with constant
-/// subscript, st. all instances access only that element.
-///
-/// @param Map { Domain[] -> Element[] }
-///            The access's access relation.
-///
-/// @return True, if zero or one elements are accessed; False if at least two
-///         different elements are accessed.
-bool isScalarAccess(IslPtr<isl_map> Map) {
-  auto Set = give(isl_map_range(Map.take()));
-  return isl_set_is_singleton(Set.keep());
-}
-
 /// Return whether @p Map maps to llvm::Undef.
 ///
 /// @param Map { [] -> ValInst[] }
@@ -963,6 +947,8 @@ public:
                             unsigned Indent = 0) {
     assert(Existing.isImplicitLifetimeUnknown());
     assert(Proposed.isImplicitLifetimeUndef());
+    Existing.dump();
+    Proposed.dump();
 
     // The following domain intersections conflict:
     // 1) Unknown vs Unknown
@@ -2177,7 +2163,7 @@ public:
           continue;
         }
 
-        if (isScalarAccess(getAccessRelationFor(MA))) {
+        if (MA->getNumSubscripts() == 0) {
           DEBUG(dbgs() << "Access " << MA
                        << " pruned because it writes only a single element\n");
           continue;

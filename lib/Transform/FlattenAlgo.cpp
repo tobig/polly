@@ -233,8 +233,9 @@ UnionMap scheduleProjectOut(const UnionMap &UMap, unsigned first, unsigned n) {
 /// number of dimensions is not supported by the other code in this file.
 size_t scheduleScatterDims(const UnionMap &Schedule) {
   unsigned Dims = 0;
-  foreachElt(Schedule,
-             [&Dims](Map Map) { Dims = std::max(Dims, Map.dim(DimType::Out)); });
+  foreachElt(Schedule, [&Dims](Map Map) {
+    Dims = std::max(Dims, Map.dim(DimType::Out));
+  });
   return Dims;
 }
 

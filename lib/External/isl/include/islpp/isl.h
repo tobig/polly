@@ -1,3 +1,19 @@
+/// These are automatically generated C++ bindings for isl.
+///
+///
+/// isl is a library for computing with integer sets and maps described by
+/// Presburger formula. On top of this, isl provides various tools for
+/// Polyhedral compilation ranging from dependence analysis over scheduling
+/// to AST generation.
+///
+///
+/// WARNING: Even though these bindings have been throughly tested and the
+///          design has been reviewed by various members of the isl community,
+///          we do not yet provide any stability guarantees for this interface.
+///          We do not expect any larger changes to the interface, but want to
+///          reserve the freedom to improve the bindings based on insights that
+///          only become visible after shipping these bindings with isl itself.
+
 #include <isl/val.h>
 #include <isl/aff.h>
 #include <isl/set.h>
@@ -127,6 +143,7 @@ class Aff {
 public:
   inline Aff();
   inline Aff(const Aff &obj);
+  static inline Aff readFromStr(Ctx ctx, std::string str);
   inline Aff& operator=(Aff obj);
   inline ~Aff();
   inline __isl_give isl_aff *copy() const &;
@@ -138,6 +155,7 @@ public:
   inline Aff add(Aff aff2) const;
   inline Val getConstantVal() const;
   inline Bool isCst() const;
+  inline Aff pullback(MultiAff ma) const;
 };
 
 // declarations for isl::AstBuild
@@ -153,6 +171,7 @@ class AstBuild {
 public:
   inline AstBuild();
   inline AstBuild(const AstBuild &obj);
+  static inline AstBuild alloc(Ctx ctx);
   inline AstBuild& operator=(AstBuild obj);
   inline ~AstBuild();
   inline __isl_give isl_ast_build *copy() const &;
@@ -231,6 +250,7 @@ class BasicMap {
 public:
   inline BasicMap();
   inline BasicMap(const BasicMap &obj);
+  static inline BasicMap readFromStr(Ctx ctx, std::string str);
   inline BasicMap& operator=(BasicMap obj);
   inline ~BasicMap();
   inline __isl_give isl_basic_map *copy() const &;
@@ -260,7 +280,7 @@ public:
   inline BasicMap projectOut(enum DimType type, unsigned int first, unsigned int n) const;
   inline BasicMap reverse() const;
   inline BasicMap sample() const;
-  inline Map union_(BasicMap bmap2) const;
+  inline Map unite(BasicMap bmap2) const;
 };
 
 // declarations for isl::BasicSet
@@ -276,6 +296,7 @@ class BasicSet {
 public:
   inline BasicSet();
   inline BasicSet(const BasicSet &obj);
+  static inline BasicSet readFromStr(Ctx ctx, std::string str);
   inline /* implicit */ BasicSet(Point obj);
   inline BasicSet& operator=(BasicSet obj);
   inline ~BasicSet();
@@ -302,7 +323,7 @@ public:
   inline BasicSet projectOut(enum DimType type, unsigned int first, unsigned int n) const;
   inline BasicSet sample() const;
   inline Point samplePoint() const;
-  inline Set union_(BasicSet bset2) const;
+  inline Set unite(BasicSet bset2) const;
 };
 
 // declarations for isl::Map
@@ -318,6 +339,7 @@ class Map {
 public:
   inline Map();
   inline Map(const Map &obj);
+  static inline Map readFromStr(Ctx ctx, std::string str);
   inline /* implicit */ Map(BasicMap obj);
   inline Map& operator=(Map obj);
   inline ~Map();
@@ -361,7 +383,7 @@ public:
   inline Map reverse() const;
   inline BasicMap sample() const;
   inline Map subtract(Map map2) const;
-  inline Map union_(Map map2) const;
+  inline Map unite(Map map2) const;
   inline BasicMap unshiftedSimpleHull() const;
 };
 
@@ -379,6 +401,7 @@ public:
   inline MultiAff();
   inline MultiAff(const MultiAff &obj);
   inline /* implicit */ MultiAff(Aff obj);
+  static inline MultiAff readFromStr(Ctx ctx, std::string str);
   inline MultiAff& operator=(MultiAff obj);
   inline ~MultiAff();
   inline __isl_give isl_multi_aff *copy() const &;
@@ -390,6 +413,7 @@ public:
   inline MultiAff add(MultiAff multi2) const;
   inline MultiAff flatRangeProduct(MultiAff multi2) const;
   inline MultiAff product(MultiAff multi2) const;
+  inline MultiAff pullback(MultiAff ma2) const;
   inline MultiAff rangeProduct(MultiAff multi2) const;
 };
 
@@ -409,6 +433,7 @@ public:
   inline /* implicit */ MultiPwAff(MultiAff obj);
   inline /* implicit */ MultiPwAff(PwAff obj);
   inline /* implicit */ MultiPwAff(PwMultiAff obj);
+  static inline MultiPwAff readFromStr(Ctx ctx, std::string str);
   inline MultiPwAff& operator=(MultiPwAff obj);
   inline ~MultiPwAff();
   inline __isl_give isl_multi_pw_aff *copy() const &;
@@ -420,6 +445,9 @@ public:
   inline MultiPwAff add(MultiPwAff multi2) const;
   inline MultiPwAff flatRangeProduct(MultiPwAff multi2) const;
   inline MultiPwAff product(MultiPwAff multi2) const;
+  inline MultiPwAff pullback(MultiAff ma) const;
+  inline MultiPwAff pullback(PwMultiAff pma) const;
+  inline MultiPwAff pullback(MultiPwAff mpa2) const;
   inline MultiPwAff rangeProduct(MultiPwAff multi2) const;
 };
 
@@ -439,6 +467,7 @@ public:
   inline /* implicit */ MultiUnionPwAff(UnionPwAff obj);
   inline /* implicit */ MultiUnionPwAff(MultiPwAff obj);
   inline explicit MultiUnionPwAff(UnionPwMultiAff obj);
+  static inline MultiUnionPwAff readFromStr(Ctx ctx, std::string str);
   inline MultiUnionPwAff& operator=(MultiUnionPwAff obj);
   inline ~MultiUnionPwAff();
   inline __isl_give isl_multi_union_pw_aff *copy() const &;
@@ -449,6 +478,7 @@ public:
   inline std::string getStr() const;
   inline MultiUnionPwAff add(MultiUnionPwAff multi2) const;
   inline MultiUnionPwAff flatRangeProduct(MultiUnionPwAff multi2) const;
+  inline MultiUnionPwAff pullback(UnionPwMultiAff upma) const;
   inline MultiUnionPwAff rangeProduct(MultiUnionPwAff multi2) const;
   inline MultiUnionPwAff unionAdd(MultiUnionPwAff mupa2) const;
 };
@@ -517,6 +547,7 @@ public:
   inline PwAff();
   inline PwAff(const PwAff &obj);
   inline /* implicit */ PwAff(Aff obj);
+  static inline PwAff readFromStr(Ctx ctx, std::string str);
   inline PwAff& operator=(PwAff obj);
   inline ~PwAff();
   inline __isl_give isl_pw_aff *copy() const &;
@@ -528,6 +559,9 @@ public:
   inline PwAff add(PwAff pwaff2) const;
   inline PwAff mul(PwAff pwaff2) const;
   inline PwAff neg() const;
+  inline PwAff pullback(MultiAff ma) const;
+  inline PwAff pullback(PwMultiAff pma) const;
+  inline PwAff pullback(MultiPwAff mpa) const;
   inline PwAff sub(PwAff pwaff2) const;
   inline PwAff unionAdd(PwAff pwaff2) const;
 };
@@ -547,6 +581,7 @@ public:
   inline PwMultiAff(const PwMultiAff &obj);
   inline /* implicit */ PwMultiAff(MultiAff obj);
   inline /* implicit */ PwMultiAff(PwAff obj);
+  static inline PwMultiAff readFromStr(Ctx ctx, std::string str);
   inline PwMultiAff& operator=(PwMultiAff obj);
   inline ~PwMultiAff();
   inline __isl_give isl_pw_multi_aff *copy() const &;
@@ -558,6 +593,8 @@ public:
   inline PwMultiAff add(PwMultiAff pma2) const;
   inline PwMultiAff flatRangeProduct(PwMultiAff pma2) const;
   inline PwMultiAff product(PwMultiAff pma2) const;
+  inline PwMultiAff pullback(MultiAff ma) const;
+  inline PwMultiAff pullback(PwMultiAff pma2) const;
   inline PwMultiAff rangeProduct(PwMultiAff pma2) const;
   inline PwMultiAff unionAdd(PwMultiAff pma2) const;
 };
@@ -575,6 +612,7 @@ class Schedule {
 public:
   inline Schedule();
   inline Schedule(const Schedule &obj);
+  static inline Schedule readFromStr(Ctx ctx, std::string str);
   inline Schedule& operator=(Schedule obj);
   inline ~Schedule();
   inline __isl_give isl_schedule *copy() const &;
@@ -585,6 +623,7 @@ public:
   inline std::string getStr() const;
   inline UnionMap getMap() const;
   inline ScheduleNode getRoot() const;
+  inline Schedule pullback(UnionPwMultiAff upma) const;
 };
 
 // declarations for isl::ScheduleConstraints
@@ -600,6 +639,7 @@ class ScheduleConstraints {
 public:
   inline ScheduleConstraints();
   inline ScheduleConstraints(const ScheduleConstraints &obj);
+  static inline ScheduleConstraints readFromStr(Ctx ctx, std::string str);
   inline ScheduleConstraints& operator=(ScheduleConstraints obj);
   inline ~ScheduleConstraints();
   inline __isl_give isl_schedule_constraints *copy() const &;
@@ -662,6 +702,7 @@ public:
   inline Set();
   inline Set(const Set &obj);
   inline explicit Set(UnionSet obj);
+  static inline Set readFromStr(Ctx ctx, std::string str);
   inline /* implicit */ Set(BasicSet obj);
   inline /* implicit */ Set(Point obj);
   inline Set& operator=(Set obj);
@@ -702,7 +743,7 @@ public:
   inline BasicSet sample() const;
   inline Point samplePoint() const;
   inline Set subtract(Set set2) const;
-  inline Set union_(Set set2) const;
+  inline Set unite(Set set2) const;
   inline BasicSet unshiftedSimpleHull() const;
 };
 
@@ -803,6 +844,7 @@ public:
   inline explicit UnionMap(UnionPwAff obj);
   inline /* implicit */ UnionMap(BasicMap obj);
   inline /* implicit */ UnionMap(Map obj);
+  static inline UnionMap readFromStr(Ctx ctx, std::string str);
   inline UnionMap& operator=(UnionMap obj);
   inline ~UnionMap();
   inline __isl_give isl_union_map *copy() const &;
@@ -827,7 +869,10 @@ public:
   inline UnionMap domainProduct(UnionMap umap2) const;
   inline UnionMap factorDomain() const;
   inline UnionMap factorRange() const;
+  inline UnionMap fixedPower(Val exp) const;
   inline UnionMap flatRangeProduct(UnionMap umap2) const;
+  static inline UnionMap from(UnionPwMultiAff upma);
+  static inline UnionMap from(MultiUnionPwAff mupa);
   static inline UnionMap fromDomainAndRange(UnionSet domain, UnionSet range);
   inline UnionMap gist(UnionMap context) const;
   inline UnionMap gistDomain(UnionSet uset) const;
@@ -857,7 +902,7 @@ public:
   inline UnionMap subtract(UnionMap umap2) const;
   inline UnionMap subtractDomain(UnionSet dom) const;
   inline UnionMap subtractRange(UnionSet dom) const;
-  inline UnionMap union_(UnionMap umap2) const;
+  inline UnionMap unite(UnionMap umap2) const;
   inline UnionSet wrap() const;
   inline UnionMap zip() const;
 };
@@ -876,6 +921,7 @@ public:
   inline UnionPwAff();
   inline UnionPwAff(const UnionPwAff &obj);
   inline /* implicit */ UnionPwAff(PwAff obj);
+  static inline UnionPwAff readFromStr(Ctx ctx, std::string str);
   inline UnionPwAff& operator=(UnionPwAff obj);
   inline ~UnionPwAff();
   inline __isl_give isl_union_pw_aff *copy() const &;
@@ -885,6 +931,7 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline UnionPwAff add(UnionPwAff upa2) const;
+  inline UnionPwAff pullback(UnionPwMultiAff upma) const;
   inline UnionPwAff sub(UnionPwAff upa2) const;
   inline UnionPwAff unionAdd(UnionPwAff upa2) const;
 };
@@ -903,6 +950,7 @@ public:
   inline UnionPwMultiAff();
   inline UnionPwMultiAff(const UnionPwMultiAff &obj);
   inline explicit UnionPwMultiAff(UnionMap obj);
+  static inline UnionPwMultiAff readFromStr(Ctx ctx, std::string str);
   inline /* implicit */ UnionPwMultiAff(UnionPwAff obj);
   inline /* implicit */ UnionPwMultiAff(PwMultiAff obj);
   inline UnionPwMultiAff& operator=(UnionPwMultiAff obj);
@@ -915,6 +963,7 @@ public:
   inline std::string getStr() const;
   inline UnionPwMultiAff add(UnionPwMultiAff upma2) const;
   inline UnionPwMultiAff flatRangeProduct(UnionPwMultiAff upma2) const;
+  inline UnionPwMultiAff pullback(UnionPwMultiAff upma2) const;
   inline UnionPwMultiAff unionAdd(UnionPwMultiAff upma2) const;
 };
 
@@ -934,6 +983,7 @@ public:
   inline /* implicit */ UnionSet(BasicSet obj);
   inline /* implicit */ UnionSet(Set obj);
   inline /* implicit */ UnionSet(Point obj);
+  static inline UnionSet readFromStr(Ctx ctx, std::string str);
   inline UnionSet& operator=(UnionSet obj);
   inline ~UnionSet();
   inline __isl_give isl_union_set *copy() const &;
@@ -961,7 +1011,7 @@ public:
   inline UnionSet polyhedralHull() const;
   inline Point samplePoint() const;
   inline UnionSet subtract(UnionSet uset2) const;
-  inline UnionSet union_(UnionSet uset2) const;
+  inline UnionSet unite(UnionSet uset2) const;
   inline UnionMap unwrap() const;
 };
 
@@ -978,6 +1028,8 @@ class Val {
 public:
   inline Val();
   inline Val(const Val &obj);
+  static inline Val intFromSi(Ctx ctx, long i);
+  static inline Val readFromStr(Ctx ctx, std::string str);
   inline Val& operator=(Val obj);
   inline ~Val();
   inline __isl_give isl_val *copy() const &;
@@ -1042,6 +1094,11 @@ Aff::Aff(const Aff &obj) : ptr(obj.copy()) {}
 
 Aff::Aff(__isl_take isl_aff *ptr) : ptr(ptr) {}
 
+Aff Aff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
+
 Aff& Aff::operator=(Aff obj) {
   std::swap(this->ptr, obj.ptr);
   return *this;
@@ -1102,6 +1159,11 @@ Bool Aff::isCst() const {
    return res;
 }
 
+Aff Aff::pullback(MultiAff ma) const {
+   auto res = isl_aff_pullback_multi_aff(copy(), ma.release());
+   return manage(res);
+}
+
 // implementations for isl::AstBuild
 AstBuild manage(__isl_take isl_ast_build *ptr) {
   return AstBuild(ptr);
@@ -1112,6 +1174,11 @@ AstBuild::AstBuild() : ptr(nullptr) {}
 AstBuild::AstBuild(const AstBuild &obj) : ptr(obj.copy()) {}
 
 AstBuild::AstBuild(__isl_take isl_ast_build *ptr) : ptr(ptr) {}
+
+AstBuild AstBuild::alloc(Ctx ctx) {
+   auto res = isl_ast_build_alloc(ctx.release());
+   return manage(res);
+}
 
 AstBuild& AstBuild::operator=(AstBuild obj) {
   std::swap(this->ptr, obj.ptr);
@@ -1314,6 +1381,11 @@ BasicMap::BasicMap(const BasicMap &obj) : ptr(obj.copy()) {}
 
 BasicMap::BasicMap(__isl_take isl_basic_map *ptr) : ptr(ptr) {}
 
+BasicMap BasicMap::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_basic_map_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
+
 BasicMap& BasicMap::operator=(BasicMap obj) {
   std::swap(this->ptr, obj.ptr);
   return *this;
@@ -1464,7 +1536,7 @@ BasicMap BasicMap::sample() const {
    return manage(res);
 }
 
-Map BasicMap::union_(BasicMap bmap2) const {
+Map BasicMap::unite(BasicMap bmap2) const {
    auto res = isl_basic_map_union(copy(), bmap2.release());
    return manage(res);
 }
@@ -1479,6 +1551,11 @@ BasicSet::BasicSet() : ptr(nullptr) {}
 BasicSet::BasicSet(const BasicSet &obj) : ptr(obj.copy()) {}
 
 BasicSet::BasicSet(__isl_take isl_basic_set *ptr) : ptr(ptr) {}
+
+BasicSet BasicSet::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_basic_set_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
 
 BasicSet::BasicSet(Point obj) {
   ptr = isl_basic_set_from_point(obj.release());
@@ -1614,7 +1691,7 @@ Point BasicSet::samplePoint() const {
    return manage(res);
 }
 
-Set BasicSet::union_(BasicSet bset2) const {
+Set BasicSet::unite(BasicSet bset2) const {
    auto res = isl_basic_set_union(copy(), bset2.release());
    return manage(res);
 }
@@ -1629,6 +1706,11 @@ Map::Map() : ptr(nullptr) {}
 Map::Map(const Map &obj) : ptr(obj.copy()) {}
 
 Map::Map(__isl_take isl_map *ptr) : ptr(ptr) {}
+
+Map Map::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_map_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
 
 Map::Map(BasicMap obj) {
   ptr = isl_map_from_basic_map(obj.release());
@@ -1849,7 +1931,7 @@ Map Map::subtract(Map map2) const {
    return manage(res);
 }
 
-Map Map::union_(Map map2) const {
+Map Map::unite(Map map2) const {
    auto res = isl_map_union(copy(), map2.release());
    return manage(res);
 }
@@ -1872,6 +1954,11 @@ MultiAff::MultiAff(__isl_take isl_multi_aff *ptr) : ptr(ptr) {}
 
 MultiAff::MultiAff(Aff obj) {
   ptr = isl_multi_aff_from_aff(obj.release());
+}
+
+MultiAff MultiAff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_multi_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 MultiAff& MultiAff::operator=(MultiAff obj) {
@@ -1934,6 +2021,11 @@ MultiAff MultiAff::product(MultiAff multi2) const {
    return manage(res);
 }
 
+MultiAff MultiAff::pullback(MultiAff ma2) const {
+   auto res = isl_multi_aff_pullback_multi_aff(copy(), ma2.release());
+   return manage(res);
+}
+
 MultiAff MultiAff::rangeProduct(MultiAff multi2) const {
    auto res = isl_multi_aff_range_product(copy(), multi2.release());
    return manage(res);
@@ -1960,6 +2052,11 @@ MultiPwAff::MultiPwAff(PwAff obj) {
 
 MultiPwAff::MultiPwAff(PwMultiAff obj) {
   ptr = isl_multi_pw_aff_from_pw_multi_aff(obj.release());
+}
+
+MultiPwAff MultiPwAff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_multi_pw_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 MultiPwAff& MultiPwAff::operator=(MultiPwAff obj) {
@@ -2022,6 +2119,21 @@ MultiPwAff MultiPwAff::product(MultiPwAff multi2) const {
    return manage(res);
 }
 
+MultiPwAff MultiPwAff::pullback(MultiAff ma) const {
+   auto res = isl_multi_pw_aff_pullback_multi_aff(copy(), ma.release());
+   return manage(res);
+}
+
+MultiPwAff MultiPwAff::pullback(PwMultiAff pma) const {
+   auto res = isl_multi_pw_aff_pullback_pw_multi_aff(copy(), pma.release());
+   return manage(res);
+}
+
+MultiPwAff MultiPwAff::pullback(MultiPwAff mpa2) const {
+   auto res = isl_multi_pw_aff_pullback_multi_pw_aff(copy(), mpa2.release());
+   return manage(res);
+}
+
 MultiPwAff MultiPwAff::rangeProduct(MultiPwAff multi2) const {
    auto res = isl_multi_pw_aff_range_product(copy(), multi2.release());
    return manage(res);
@@ -2048,6 +2160,11 @@ MultiUnionPwAff::MultiUnionPwAff(MultiPwAff obj) {
 
 MultiUnionPwAff::MultiUnionPwAff(UnionPwMultiAff obj) {
   ptr = isl_multi_union_pw_aff_from_union_pw_multi_aff(obj.release());
+}
+
+MultiUnionPwAff MultiUnionPwAff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_multi_union_pw_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 MultiUnionPwAff& MultiUnionPwAff::operator=(MultiUnionPwAff obj) {
@@ -2102,6 +2219,11 @@ MultiUnionPwAff MultiUnionPwAff::add(MultiUnionPwAff multi2) const {
 
 MultiUnionPwAff MultiUnionPwAff::flatRangeProduct(MultiUnionPwAff multi2) const {
    auto res = isl_multi_union_pw_aff_flat_range_product(copy(), multi2.release());
+   return manage(res);
+}
+
+MultiUnionPwAff MultiUnionPwAff::pullback(UnionPwMultiAff upma) const {
+   auto res = isl_multi_union_pw_aff_pullback_union_pw_multi_aff(copy(), upma.release());
    return manage(res);
 }
 
@@ -2262,6 +2384,11 @@ PwAff::PwAff(Aff obj) {
   ptr = isl_pw_aff_from_aff(obj.release());
 }
 
+PwAff PwAff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_pw_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
+
 PwAff& PwAff::operator=(PwAff obj) {
   std::swap(this->ptr, obj.ptr);
   return *this;
@@ -2322,6 +2449,21 @@ PwAff PwAff::neg() const {
    return manage(res);
 }
 
+PwAff PwAff::pullback(MultiAff ma) const {
+   auto res = isl_pw_aff_pullback_multi_aff(copy(), ma.release());
+   return manage(res);
+}
+
+PwAff PwAff::pullback(PwMultiAff pma) const {
+   auto res = isl_pw_aff_pullback_pw_multi_aff(copy(), pma.release());
+   return manage(res);
+}
+
+PwAff PwAff::pullback(MultiPwAff mpa) const {
+   auto res = isl_pw_aff_pullback_multi_pw_aff(copy(), mpa.release());
+   return manage(res);
+}
+
 PwAff PwAff::sub(PwAff pwaff2) const {
    auto res = isl_pw_aff_sub(copy(), pwaff2.release());
    return manage(res);
@@ -2349,6 +2491,11 @@ PwMultiAff::PwMultiAff(MultiAff obj) {
 
 PwMultiAff::PwMultiAff(PwAff obj) {
   ptr = isl_pw_multi_aff_from_pw_aff(obj.release());
+}
+
+PwMultiAff PwMultiAff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_pw_multi_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 PwMultiAff& PwMultiAff::operator=(PwMultiAff obj) {
@@ -2411,6 +2558,16 @@ PwMultiAff PwMultiAff::product(PwMultiAff pma2) const {
    return manage(res);
 }
 
+PwMultiAff PwMultiAff::pullback(MultiAff ma) const {
+   auto res = isl_pw_multi_aff_pullback_multi_aff(copy(), ma.release());
+   return manage(res);
+}
+
+PwMultiAff PwMultiAff::pullback(PwMultiAff pma2) const {
+   auto res = isl_pw_multi_aff_pullback_pw_multi_aff(copy(), pma2.release());
+   return manage(res);
+}
+
 PwMultiAff PwMultiAff::rangeProduct(PwMultiAff pma2) const {
    auto res = isl_pw_multi_aff_range_product(copy(), pma2.release());
    return manage(res);
@@ -2431,6 +2588,11 @@ Schedule::Schedule() : ptr(nullptr) {}
 Schedule::Schedule(const Schedule &obj) : ptr(obj.copy()) {}
 
 Schedule::Schedule(__isl_take isl_schedule *ptr) : ptr(ptr) {}
+
+Schedule Schedule::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_schedule_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
 
 Schedule& Schedule::operator=(Schedule obj) {
   std::swap(this->ptr, obj.ptr);
@@ -2487,6 +2649,11 @@ ScheduleNode Schedule::getRoot() const {
    return manage(res);
 }
 
+Schedule Schedule::pullback(UnionPwMultiAff upma) const {
+   auto res = isl_schedule_pullback_union_pw_multi_aff(copy(), upma.release());
+   return manage(res);
+}
+
 // implementations for isl::ScheduleConstraints
 ScheduleConstraints manage(__isl_take isl_schedule_constraints *ptr) {
   return ScheduleConstraints(ptr);
@@ -2497,6 +2664,11 @@ ScheduleConstraints::ScheduleConstraints() : ptr(nullptr) {}
 ScheduleConstraints::ScheduleConstraints(const ScheduleConstraints &obj) : ptr(obj.copy()) {}
 
 ScheduleConstraints::ScheduleConstraints(__isl_take isl_schedule_constraints *ptr) : ptr(ptr) {}
+
+ScheduleConstraints ScheduleConstraints::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_schedule_constraints_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
 
 ScheduleConstraints& ScheduleConstraints::operator=(ScheduleConstraints obj) {
   std::swap(this->ptr, obj.ptr);
@@ -2687,6 +2859,11 @@ Set::Set(__isl_take isl_set *ptr) : ptr(ptr) {}
 
 Set::Set(UnionSet obj) {
   ptr = isl_set_from_union_set(obj.release());
+}
+
+Set Set::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_set_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 Set::Set(BasicSet obj) {
@@ -2892,7 +3069,7 @@ Set Set::subtract(Set set2) const {
    return manage(res);
 }
 
-Set Set::union_(Set set2) const {
+Set Set::unite(Set set2) const {
    auto res = isl_set_union(copy(), set2.release());
    return manage(res);
 }
@@ -3152,6 +3329,11 @@ UnionMap::UnionMap(Map obj) {
   ptr = isl_union_map_from_map(obj.release());
 }
 
+UnionMap UnionMap::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_union_map_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
+
 UnionMap& UnionMap::operator=(UnionMap obj) {
   std::swap(this->ptr, obj.ptr);
   return *this;
@@ -3277,8 +3459,23 @@ UnionMap UnionMap::factorRange() const {
    return manage(res);
 }
 
+UnionMap UnionMap::fixedPower(Val exp) const {
+   auto res = isl_union_map_fixed_power_val(copy(), exp.release());
+   return manage(res);
+}
+
 UnionMap UnionMap::flatRangeProduct(UnionMap umap2) const {
    auto res = isl_union_map_flat_range_product(copy(), umap2.release());
+   return manage(res);
+}
+
+UnionMap UnionMap::from(UnionPwMultiAff upma) {
+   auto res = isl_union_map_from_union_pw_multi_aff(upma.release());
+   return manage(res);
+}
+
+UnionMap UnionMap::from(MultiUnionPwAff mupa) {
+   auto res = isl_union_map_from_multi_union_pw_aff(mupa.release());
    return manage(res);
 }
 
@@ -3427,7 +3624,7 @@ UnionMap UnionMap::subtractRange(UnionSet dom) const {
    return manage(res);
 }
 
-UnionMap UnionMap::union_(UnionMap umap2) const {
+UnionMap UnionMap::unite(UnionMap umap2) const {
    auto res = isl_union_map_union(copy(), umap2.release());
    return manage(res);
 }
@@ -3455,6 +3652,11 @@ UnionPwAff::UnionPwAff(__isl_take isl_union_pw_aff *ptr) : ptr(ptr) {}
 
 UnionPwAff::UnionPwAff(PwAff obj) {
   ptr = isl_union_pw_aff_from_pw_aff(obj.release());
+}
+
+UnionPwAff UnionPwAff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_union_pw_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 UnionPwAff& UnionPwAff::operator=(UnionPwAff obj) {
@@ -3507,6 +3709,11 @@ UnionPwAff UnionPwAff::add(UnionPwAff upa2) const {
    return manage(res);
 }
 
+UnionPwAff UnionPwAff::pullback(UnionPwMultiAff upma) const {
+   auto res = isl_union_pw_aff_pullback_union_pw_multi_aff(copy(), upma.release());
+   return manage(res);
+}
+
 UnionPwAff UnionPwAff::sub(UnionPwAff upa2) const {
    auto res = isl_union_pw_aff_sub(copy(), upa2.release());
    return manage(res);
@@ -3530,6 +3737,11 @@ UnionPwMultiAff::UnionPwMultiAff(__isl_take isl_union_pw_multi_aff *ptr) : ptr(p
 
 UnionPwMultiAff::UnionPwMultiAff(UnionMap obj) {
   ptr = isl_union_pw_multi_aff_from_union_map(obj.release());
+}
+
+UnionPwMultiAff UnionPwMultiAff::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_union_pw_multi_aff_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 UnionPwMultiAff::UnionPwMultiAff(UnionPwAff obj) {
@@ -3595,6 +3807,11 @@ UnionPwMultiAff UnionPwMultiAff::flatRangeProduct(UnionPwMultiAff upma2) const {
    return manage(res);
 }
 
+UnionPwMultiAff UnionPwMultiAff::pullback(UnionPwMultiAff upma2) const {
+   auto res = isl_union_pw_multi_aff_pullback_union_pw_multi_aff(copy(), upma2.release());
+   return manage(res);
+}
+
 UnionPwMultiAff UnionPwMultiAff::unionAdd(UnionPwMultiAff upma2) const {
    auto res = isl_union_pw_multi_aff_union_add(copy(), upma2.release());
    return manage(res);
@@ -3621,6 +3838,11 @@ UnionSet::UnionSet(Set obj) {
 
 UnionSet::UnionSet(Point obj) {
   ptr = isl_union_set_from_point(obj.release());
+}
+
+UnionSet UnionSet::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_union_set_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
 }
 
 UnionSet& UnionSet::operator=(UnionSet obj) {
@@ -3763,7 +3985,7 @@ UnionSet UnionSet::subtract(UnionSet uset2) const {
    return manage(res);
 }
 
-UnionSet UnionSet::union_(UnionSet uset2) const {
+UnionSet UnionSet::unite(UnionSet uset2) const {
    auto res = isl_union_set_union(copy(), uset2.release());
    return manage(res);
 }
@@ -3783,6 +4005,16 @@ Val::Val() : ptr(nullptr) {}
 Val::Val(const Val &obj) : ptr(obj.copy()) {}
 
 Val::Val(__isl_take isl_val *ptr) : ptr(ptr) {}
+
+Val Val::intFromSi(Ctx ctx, long i) {
+   auto res = isl_val_int_from_si(ctx.release(), i);
+   return manage(res);
+}
+
+Val Val::readFromStr(Ctx ctx, std::string str) {
+   auto res = isl_val_read_from_str(ctx.release(), str.c_str());
+   return manage(res);
+}
 
 Val& Val::operator=(Val obj) {
   std::swap(this->ptr, obj.ptr);

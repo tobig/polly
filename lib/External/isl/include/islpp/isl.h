@@ -152,10 +152,10 @@ public:
   inline __isl_give isl_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline Aff add(Aff aff2) const;
+  inline Aff& add(Aff aff2);
   inline Val getConstantVal() const;
   inline Bool isCst() const;
-  inline Aff pullback(MultiAff ma) const;
+  inline Aff& pullback(MultiAff ma);
 };
 
 // declarations for isl::AstBuild
@@ -179,12 +179,12 @@ public:
   inline __isl_keep isl_ast_build *get() const;
   inline __isl_give isl_ast_build *release();
   inline bool isNull() const;
-  inline AstExpr accessFromMultiPwAff(MultiPwAff mpa) const;
-  inline AstExpr accessFromPwMultiAff(PwMultiAff pma) const;
-  inline AstExpr callFromMultiPwAff(MultiPwAff mpa) const;
-  inline AstExpr callFromPwMultiAff(PwMultiAff pma) const;
-  inline AstExpr exprFromPwAff(PwAff pa) const;
-  inline AstExpr exprFromSet(Set set) const;
+  inline AstExpr accessFrom(PwMultiAff pma) const;
+  inline AstExpr accessFrom(MultiPwAff mpa) const;
+  inline AstExpr callFrom(PwMultiAff pma) const;
+  inline AstExpr callFrom(MultiPwAff mpa) const;
+  inline AstExpr exprFrom(Set set) const;
+  inline AstExpr exprFrom(PwAff pa) const;
   static inline AstBuild fromContext(Set set);
   inline AstNode nodeFromScheduleMap(UnionMap schedule) const;
 };
@@ -259,27 +259,27 @@ public:
   inline __isl_give isl_basic_map *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline BasicMap affineHull() const;
-  inline BasicMap applyDomain(BasicMap bmap2) const;
-  inline BasicMap applyRange(BasicMap bmap2) const;
+  inline BasicMap& affineHull();
+  inline BasicMap& applyDomain(BasicMap bmap2);
+  inline BasicMap& applyRange(BasicMap bmap2);
   inline BasicSet deltas() const;
-  inline BasicMap detectEqualities() const;
-  inline BasicMap flatten() const;
-  inline BasicMap flattenDomain() const;
-  inline BasicMap flattenRange() const;
-  inline BasicMap gist(BasicMap context) const;
-  inline BasicMap intersect(BasicMap bmap2) const;
-  inline BasicMap intersectDomain(BasicSet bset) const;
-  inline BasicMap intersectRange(BasicSet bset) const;
+  inline BasicMap& detectEqualities();
+  inline BasicMap& flatten();
+  inline BasicMap& flattenDomain();
+  inline BasicMap& flattenRange();
+  inline BasicMap& gist(BasicMap context);
+  inline BasicMap& intersect(BasicMap bmap2);
+  inline BasicMap& intersectDomain(BasicSet bset);
+  inline BasicMap& intersectRange(BasicSet bset);
   inline Bool isEmpty() const;
   inline Bool isEqual(const BasicMap &bmap2) const;
   inline Bool isSubset(const BasicMap &bmap2) const;
   inline Map lexmax() const;
   inline Map lexmin() const;
   inline Val plainGetValIfFixed(enum DimType type, unsigned int pos) const;
-  inline BasicMap projectOut(enum DimType type, unsigned int first, unsigned int n) const;
-  inline BasicMap reverse() const;
-  inline BasicMap sample() const;
+  inline BasicMap& projectOut(enum DimType type, unsigned int first, unsigned int n);
+  inline BasicMap& reverse();
+  inline BasicMap& sample();
   inline Map unite(BasicMap bmap2) const;
 };
 
@@ -306,13 +306,13 @@ public:
   inline __isl_give isl_basic_set *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline BasicSet affineHull() const;
-  inline BasicSet apply(BasicMap bmap) const;
-  inline BasicSet detectEqualities() const;
-  inline BasicSet flatten() const;
-  inline BasicSet gist(BasicSet context) const;
-  inline BasicSet intersect(BasicSet bset2) const;
-  inline BasicSet intersectParams(BasicSet bset2) const;
+  inline BasicSet& affineHull();
+  inline BasicSet& apply(BasicMap bmap);
+  inline BasicSet& detectEqualities();
+  inline BasicSet& flatten();
+  inline BasicSet& gist(BasicSet context);
+  inline BasicSet& intersect(BasicSet bset2);
+  inline BasicSet& intersectParams(BasicSet bset2);
   inline int isBounded() const;
   inline Bool isEmpty() const;
   inline Bool isEqual(const BasicSet &bset2) const;
@@ -320,8 +320,8 @@ public:
   inline Bool isWrapping() const;
   inline Set lexmax() const;
   inline Set lexmin() const;
-  inline BasicSet projectOut(enum DimType type, unsigned int first, unsigned int n) const;
-  inline BasicSet sample() const;
+  inline BasicSet& projectOut(enum DimType type, unsigned int first, unsigned int n);
+  inline BasicSet& sample();
   inline Point samplePoint() const;
   inline Set unite(BasicSet bset2) const;
 };
@@ -350,24 +350,24 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline BasicMap affineHull() const;
-  inline Map applyDomain(Map map2) const;
-  inline Map applyRange(Map map2) const;
-  inline Map coalesce() const;
-  inline Map complement() const;
+  inline Map& applyDomain(Map map2);
+  inline Map& applyRange(Map map2);
+  inline Map& coalesce();
+  inline Map& complement();
   inline Set deltas() const;
-  inline Map detectEqualities() const;
+  inline Map& detectEqualities();
   inline unsigned int dim(enum DimType type) const;
   inline PwAff dimMax(int pos) const;
   inline PwAff dimMin(int pos) const;
-  inline Map flatten() const;
-  inline Map flattenDomain() const;
-  inline Map flattenRange() const;
-  inline Map gist(Map context) const;
-  inline Map gistDomain(Set context) const;
-  inline Map intersect(Map map2) const;
-  inline Map intersectDomain(Set set) const;
-  inline Map intersectParams(Set params) const;
-  inline Map intersectRange(Set set) const;
+  inline Map& flatten();
+  inline Map& flattenDomain();
+  inline Map& flattenRange();
+  inline Map& gist(Map context);
+  inline Map& gistDomain(Set context);
+  inline Map& intersect(Map map2);
+  inline Map& intersectDomain(Set set);
+  inline Map& intersectParams(Set params);
+  inline Map& intersectRange(Set set);
   inline Bool isBijective() const;
   inline Bool isDisjoint(const Map &map2) const;
   inline Bool isEmpty() const;
@@ -376,14 +376,14 @@ public:
   inline Bool isSingleValued() const;
   inline Bool isStrictSubset(const Map &map2) const;
   inline Bool isSubset(const Map &map2) const;
-  inline Map lexmax() const;
-  inline Map lexmin() const;
+  inline Map& lexmax();
+  inline Map& lexmin();
   inline BasicMap polyhedralHull() const;
-  inline Map projectOut(enum DimType type, unsigned int first, unsigned int n) const;
-  inline Map reverse() const;
+  inline Map& projectOut(enum DimType type, unsigned int first, unsigned int n);
+  inline Map& reverse();
   inline BasicMap sample() const;
-  inline Map subtract(Map map2) const;
-  inline Map unite(Map map2) const;
+  inline Map& subtract(Map map2);
+  inline Map& unite(Map map2);
   inline BasicMap unshiftedSimpleHull() const;
 };
 
@@ -410,11 +410,11 @@ public:
   inline __isl_give isl_multi_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiAff add(MultiAff multi2) const;
-  inline MultiAff flatRangeProduct(MultiAff multi2) const;
-  inline MultiAff product(MultiAff multi2) const;
-  inline MultiAff pullback(MultiAff ma2) const;
-  inline MultiAff rangeProduct(MultiAff multi2) const;
+  inline MultiAff& add(MultiAff multi2);
+  inline MultiAff& flatRangeProduct(MultiAff multi2);
+  inline MultiAff& product(MultiAff multi2);
+  inline MultiAff& pullback(MultiAff ma2);
+  inline MultiAff& rangeProduct(MultiAff multi2);
 };
 
 // declarations for isl::MultiPwAff
@@ -442,13 +442,13 @@ public:
   inline __isl_give isl_multi_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiPwAff add(MultiPwAff multi2) const;
-  inline MultiPwAff flatRangeProduct(MultiPwAff multi2) const;
-  inline MultiPwAff product(MultiPwAff multi2) const;
-  inline MultiPwAff pullback(MultiAff ma) const;
-  inline MultiPwAff pullback(PwMultiAff pma) const;
-  inline MultiPwAff pullback(MultiPwAff mpa2) const;
-  inline MultiPwAff rangeProduct(MultiPwAff multi2) const;
+  inline MultiPwAff& add(MultiPwAff multi2);
+  inline MultiPwAff& flatRangeProduct(MultiPwAff multi2);
+  inline MultiPwAff& product(MultiPwAff multi2);
+  inline MultiPwAff& pullback(MultiAff ma);
+  inline MultiPwAff& pullback(PwMultiAff pma);
+  inline MultiPwAff& pullback(MultiPwAff mpa2);
+  inline MultiPwAff& rangeProduct(MultiPwAff multi2);
 };
 
 // declarations for isl::MultiUnionPwAff
@@ -476,11 +476,11 @@ public:
   inline __isl_give isl_multi_union_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiUnionPwAff add(MultiUnionPwAff multi2) const;
-  inline MultiUnionPwAff flatRangeProduct(MultiUnionPwAff multi2) const;
-  inline MultiUnionPwAff pullback(UnionPwMultiAff upma) const;
-  inline MultiUnionPwAff rangeProduct(MultiUnionPwAff multi2) const;
-  inline MultiUnionPwAff unionAdd(MultiUnionPwAff mupa2) const;
+  inline MultiUnionPwAff& add(MultiUnionPwAff multi2);
+  inline MultiUnionPwAff& flatRangeProduct(MultiUnionPwAff multi2);
+  inline MultiUnionPwAff& pullback(UnionPwMultiAff upma);
+  inline MultiUnionPwAff& rangeProduct(MultiUnionPwAff multi2);
+  inline MultiUnionPwAff& unionAdd(MultiUnionPwAff mupa2);
 };
 
 // declarations for isl::MultiVal
@@ -504,10 +504,10 @@ public:
   inline __isl_give isl_multi_val *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiVal add(MultiVal multi2) const;
-  inline MultiVal flatRangeProduct(MultiVal multi2) const;
-  inline MultiVal product(MultiVal multi2) const;
-  inline MultiVal rangeProduct(MultiVal multi2) const;
+  inline MultiVal& add(MultiVal multi2);
+  inline MultiVal& flatRangeProduct(MultiVal multi2);
+  inline MultiVal& product(MultiVal multi2);
+  inline MultiVal& rangeProduct(MultiVal multi2);
 };
 
 // declarations for isl::Point
@@ -556,14 +556,14 @@ public:
   inline __isl_give isl_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline PwAff add(PwAff pwaff2) const;
-  inline PwAff mul(PwAff pwaff2) const;
-  inline PwAff neg() const;
-  inline PwAff pullback(MultiAff ma) const;
-  inline PwAff pullback(PwMultiAff pma) const;
-  inline PwAff pullback(MultiPwAff mpa) const;
-  inline PwAff sub(PwAff pwaff2) const;
-  inline PwAff unionAdd(PwAff pwaff2) const;
+  inline PwAff& add(PwAff pwaff2);
+  inline PwAff& mul(PwAff pwaff2);
+  inline PwAff& neg();
+  inline PwAff& pullback(MultiAff ma);
+  inline PwAff& pullback(PwMultiAff pma);
+  inline PwAff& pullback(MultiPwAff mpa);
+  inline PwAff& sub(PwAff pwaff2);
+  inline PwAff& unionAdd(PwAff pwaff2);
 };
 
 // declarations for isl::PwMultiAff
@@ -590,13 +590,13 @@ public:
   inline __isl_give isl_pw_multi_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline PwMultiAff add(PwMultiAff pma2) const;
-  inline PwMultiAff flatRangeProduct(PwMultiAff pma2) const;
-  inline PwMultiAff product(PwMultiAff pma2) const;
-  inline PwMultiAff pullback(MultiAff ma) const;
-  inline PwMultiAff pullback(PwMultiAff pma2) const;
-  inline PwMultiAff rangeProduct(PwMultiAff pma2) const;
-  inline PwMultiAff unionAdd(PwMultiAff pma2) const;
+  inline PwMultiAff& add(PwMultiAff pma2);
+  inline PwMultiAff& flatRangeProduct(PwMultiAff pma2);
+  inline PwMultiAff& product(PwMultiAff pma2);
+  inline PwMultiAff& pullback(MultiAff ma);
+  inline PwMultiAff& pullback(PwMultiAff pma2);
+  inline PwMultiAff& rangeProduct(PwMultiAff pma2);
+  inline PwMultiAff& unionAdd(PwMultiAff pma2);
 };
 
 // declarations for isl::Schedule
@@ -623,7 +623,7 @@ public:
   inline std::string getStr() const;
   inline UnionMap getMap() const;
   inline ScheduleNode getRoot() const;
-  inline Schedule pullback(UnionPwMultiAff upma) const;
+  inline Schedule& pullback(UnionPwMultiAff upma);
 };
 
 // declarations for isl::ScheduleConstraints
@@ -679,13 +679,13 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline Bool bandMemberGetCoincident(int pos) const;
-  inline ScheduleNode bandMemberSetCoincident(int pos, int coincident) const;
-  inline ScheduleNode child(int pos) const;
+  inline ScheduleNode& bandMemberSetCoincident(int pos, int coincident);
+  inline ScheduleNode& child(int pos);
   inline MultiUnionPwAff getPrefixScheduleMultiUnionPwAff() const;
   inline UnionMap getPrefixScheduleUnionMap() const;
   inline UnionPwMultiAff getPrefixScheduleUnionPwMultiAff() const;
   inline Schedule getSchedule() const;
-  inline ScheduleNode parent() const;
+  inline ScheduleNode& parent();
 };
 
 // declarations for isl::Set
@@ -713,20 +713,20 @@ public:
   inline __isl_give isl_set *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline Set addDims(enum DimType type, unsigned int n) const;
+  inline Set& addDims(enum DimType type, unsigned int n);
   inline BasicSet affineHull() const;
-  inline Set apply(Map map) const;
-  inline Set coalesce() const;
-  inline Set complement() const;
-  inline Set detectEqualities() const;
+  inline Set& apply(Map map);
+  inline Set& coalesce();
+  inline Set& complement();
+  inline Set& detectEqualities();
   inline unsigned int dim(enum DimType type) const;
   inline PwAff dimMax(int pos) const;
   inline PwAff dimMin(int pos) const;
-  inline Set flatten() const;
-  inline Set gist(Set context) const;
+  inline Set& flatten();
+  inline Set& gist(Set context);
   inline Map identity() const;
-  inline Set intersect(Set set2) const;
-  inline Set intersectParams(Set params) const;
+  inline Set& intersect(Set set2);
+  inline Set& intersectParams(Set params);
   inline int isBounded() const;
   inline Bool isDisjoint(const Set &set2) const;
   inline Bool isEmpty() const;
@@ -734,16 +734,16 @@ public:
   inline Bool isStrictSubset(const Set &set2) const;
   inline Bool isSubset(const Set &set2) const;
   inline Bool isWrapping() const;
-  inline Set lexmax() const;
-  inline Set lexmin() const;
+  inline Set& lexmax();
+  inline Set& lexmin();
   inline Val maxVal(const Aff &obj) const;
   inline Val minVal(const Aff &obj) const;
   inline BasicSet polyhedralHull() const;
-  inline Set projectOut(enum DimType type, unsigned int first, unsigned int n) const;
+  inline Set& projectOut(enum DimType type, unsigned int first, unsigned int n);
   inline BasicSet sample() const;
   inline Point samplePoint() const;
-  inline Set subtract(Set set2) const;
-  inline Set unite(Set set2) const;
+  inline Set& subtract(Set set2);
+  inline Set& unite(Set set2);
   inline BasicSet unshiftedSimpleHull() const;
 };
 
@@ -793,10 +793,10 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline UnionFlow computeFlow() const;
-  inline UnionAccessInfo setMaySource(UnionMap may_source) const;
-  inline UnionAccessInfo setMustSource(UnionMap must_source) const;
-  inline UnionAccessInfo setSchedule(Schedule schedule) const;
-  inline UnionAccessInfo setScheduleMap(UnionMap schedule_map) const;
+  inline UnionAccessInfo& setMaySource(UnionMap may_source);
+  inline UnionAccessInfo& setMustSource(UnionMap must_source);
+  inline UnionAccessInfo& setSchedule(Schedule schedule);
+  inline UnionAccessInfo& setScheduleMap(UnionMap schedule_map);
 };
 
 // declarations for isl::UnionFlow
@@ -853,35 +853,35 @@ public:
   inline __isl_give isl_union_map *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionMap addMap(Map map) const;
-  inline UnionMap affineHull() const;
-  inline UnionMap applyDomain(UnionMap umap2) const;
-  inline UnionMap applyRange(UnionMap umap2) const;
-  inline UnionMap coalesce() const;
-  inline UnionMap computeDivs() const;
+  inline UnionMap& addMap(Map map);
+  inline UnionMap& affineHull();
+  inline UnionMap& applyDomain(UnionMap umap2);
+  inline UnionMap& applyRange(UnionMap umap2);
+  inline UnionMap& coalesce();
+  inline UnionMap& computeDivs();
   inline UnionSet deltas() const;
-  inline UnionMap detectEqualities() const;
+  inline UnionMap& detectEqualities();
   inline UnionSet domain() const;
-  inline UnionMap domainFactorDomain() const;
-  inline UnionMap domainFactorRange() const;
-  inline UnionMap domainMap() const;
+  inline UnionMap& domainFactorDomain();
+  inline UnionMap& domainFactorRange();
+  inline UnionMap& domainMap();
   inline UnionPwMultiAff domainMapUnionPwMultiAff() const;
-  inline UnionMap domainProduct(UnionMap umap2) const;
-  inline UnionMap factorDomain() const;
-  inline UnionMap factorRange() const;
-  inline UnionMap fixedPower(Val exp) const;
-  inline UnionMap flatRangeProduct(UnionMap umap2) const;
+  inline UnionMap& domainProduct(UnionMap umap2);
+  inline UnionMap& factorDomain();
+  inline UnionMap& factorRange();
+  inline UnionMap& fixedPower(Val exp);
+  inline UnionMap& flatRangeProduct(UnionMap umap2);
   static inline UnionMap from(UnionPwMultiAff upma);
   static inline UnionMap from(MultiUnionPwAff mupa);
   static inline UnionMap fromDomainAndRange(UnionSet domain, UnionSet range);
-  inline UnionMap gist(UnionMap context) const;
-  inline UnionMap gistDomain(UnionSet uset) const;
-  inline UnionMap gistParams(Set set) const;
-  inline UnionMap gistRange(UnionSet uset) const;
-  inline UnionMap intersect(UnionMap umap2) const;
-  inline UnionMap intersectDomain(UnionSet uset) const;
-  inline UnionMap intersectParams(Set set) const;
-  inline UnionMap intersectRange(UnionSet uset) const;
+  inline UnionMap& gist(UnionMap context);
+  inline UnionMap& gistDomain(UnionSet uset);
+  inline UnionMap& gistParams(Set set);
+  inline UnionMap& gistRange(UnionSet uset);
+  inline UnionMap& intersect(UnionMap umap2);
+  inline UnionMap& intersectDomain(UnionSet uset);
+  inline UnionMap& intersectParams(Set set);
+  inline UnionMap& intersectRange(UnionSet uset);
   inline Bool isBijective() const;
   inline Bool isEmpty() const;
   inline Bool isEqual(const UnionMap &umap2) const;
@@ -889,22 +889,22 @@ public:
   inline Bool isSingleValued() const;
   inline Bool isStrictSubset(const UnionMap &umap2) const;
   inline Bool isSubset(const UnionMap &umap2) const;
-  inline UnionMap lexmax() const;
-  inline UnionMap lexmin() const;
-  inline UnionMap polyhedralHull() const;
-  inline UnionMap product(UnionMap umap2) const;
+  inline UnionMap& lexmax();
+  inline UnionMap& lexmin();
+  inline UnionMap& polyhedralHull();
+  inline UnionMap& product(UnionMap umap2);
   inline UnionSet range() const;
-  inline UnionMap rangeFactorDomain() const;
-  inline UnionMap rangeFactorRange() const;
-  inline UnionMap rangeMap() const;
-  inline UnionMap rangeProduct(UnionMap umap2) const;
-  inline UnionMap reverse() const;
-  inline UnionMap subtract(UnionMap umap2) const;
-  inline UnionMap subtractDomain(UnionSet dom) const;
-  inline UnionMap subtractRange(UnionSet dom) const;
-  inline UnionMap unite(UnionMap umap2) const;
+  inline UnionMap& rangeFactorDomain();
+  inline UnionMap& rangeFactorRange();
+  inline UnionMap& rangeMap();
+  inline UnionMap& rangeProduct(UnionMap umap2);
+  inline UnionMap& reverse();
+  inline UnionMap& subtract(UnionMap umap2);
+  inline UnionMap& subtractDomain(UnionSet dom);
+  inline UnionMap& subtractRange(UnionSet dom);
+  inline UnionMap& unite(UnionMap umap2);
   inline UnionSet wrap() const;
-  inline UnionMap zip() const;
+  inline UnionMap& zip();
 };
 
 // declarations for isl::UnionPwAff
@@ -930,10 +930,10 @@ public:
   inline __isl_give isl_union_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionPwAff add(UnionPwAff upa2) const;
-  inline UnionPwAff pullback(UnionPwMultiAff upma) const;
-  inline UnionPwAff sub(UnionPwAff upa2) const;
-  inline UnionPwAff unionAdd(UnionPwAff upa2) const;
+  inline UnionPwAff& add(UnionPwAff upa2);
+  inline UnionPwAff& pullback(UnionPwMultiAff upma);
+  inline UnionPwAff& sub(UnionPwAff upa2);
+  inline UnionPwAff& unionAdd(UnionPwAff upa2);
 };
 
 // declarations for isl::UnionPwMultiAff
@@ -961,10 +961,10 @@ public:
   inline __isl_give isl_union_pw_multi_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionPwMultiAff add(UnionPwMultiAff upma2) const;
-  inline UnionPwMultiAff flatRangeProduct(UnionPwMultiAff upma2) const;
-  inline UnionPwMultiAff pullback(UnionPwMultiAff upma2) const;
-  inline UnionPwMultiAff unionAdd(UnionPwMultiAff upma2) const;
+  inline UnionPwMultiAff& add(UnionPwMultiAff upma2);
+  inline UnionPwMultiAff& flatRangeProduct(UnionPwMultiAff upma2);
+  inline UnionPwMultiAff& pullback(UnionPwMultiAff upma2);
+  inline UnionPwMultiAff& unionAdd(UnionPwMultiAff upma2);
 };
 
 // declarations for isl::UnionSet
@@ -992,26 +992,26 @@ public:
   inline __isl_give isl_union_set *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionSet affineHull() const;
-  inline UnionSet apply(UnionMap umap) const;
-  inline UnionSet coalesce() const;
-  inline UnionSet computeDivs() const;
-  inline UnionSet detectEqualities() const;
-  inline UnionSet gist(UnionSet context) const;
-  inline UnionSet gistParams(Set set) const;
+  inline UnionSet& affineHull();
+  inline UnionSet& apply(UnionMap umap);
+  inline UnionSet& coalesce();
+  inline UnionSet& computeDivs();
+  inline UnionSet& detectEqualities();
+  inline UnionSet& gist(UnionSet context);
+  inline UnionSet& gistParams(Set set);
   inline UnionMap identity() const;
-  inline UnionSet intersect(UnionSet uset2) const;
-  inline UnionSet intersectParams(Set set) const;
+  inline UnionSet& intersect(UnionSet uset2);
+  inline UnionSet& intersectParams(Set set);
   inline Bool isEmpty() const;
   inline Bool isEqual(const UnionSet &uset2) const;
   inline Bool isStrictSubset(const UnionSet &uset2) const;
   inline Bool isSubset(const UnionSet &uset2) const;
-  inline UnionSet lexmax() const;
-  inline UnionSet lexmin() const;
-  inline UnionSet polyhedralHull() const;
+  inline UnionSet& lexmax();
+  inline UnionSet& lexmin();
+  inline UnionSet& polyhedralHull();
   inline Point samplePoint() const;
-  inline UnionSet subtract(UnionSet uset2) const;
-  inline UnionSet unite(UnionSet uset2) const;
+  inline UnionSet& subtract(UnionSet uset2);
+  inline UnionSet& unite(UnionSet uset2);
   inline UnionMap unwrap() const;
 };
 
@@ -1038,20 +1038,20 @@ public:
   inline __isl_give isl_val *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline Val abs() const;
+  inline Val& abs();
   inline Bool absEq(const Val &v2) const;
-  inline Val add(Val v2) const;
-  inline Val addUi(unsigned long v2) const;
-  inline Val ceil() const;
+  inline Val& add(Val v2);
+  inline Val& addUi(unsigned long v2);
+  inline Val& ceil();
   inline int cmpSi(long i) const;
-  inline Val div(Val v2) const;
+  inline Val& div(Val v2);
   inline Bool eq(const Val &v2) const;
-  inline Val floor() const;
-  inline Val gcd(Val v2) const;
+  inline Val& floor();
+  inline Val& gcd(Val v2);
   inline Bool ge(const Val &v2) const;
   inline Bool gt(const Val &v2) const;
   static inline Val infty(Ctx ctx);
-  inline Val inv() const;
+  inline Val& inv();
   inline Bool isDivisibleBy(const Val &v2) const;
   inline Bool isInfty() const;
   inline Bool isInt() const;
@@ -1067,19 +1067,19 @@ public:
   inline Bool isZero() const;
   inline Bool le(const Val &v2) const;
   inline Bool lt(const Val &v2) const;
-  inline Val max(Val v2) const;
-  inline Val min(Val v2) const;
-  inline Val mod(Val v2) const;
-  inline Val mul(Val v2) const;
+  inline Val& max(Val v2);
+  inline Val& min(Val v2);
+  inline Val& mod(Val v2);
+  inline Val& mul(Val v2);
   static inline Val nan(Ctx ctx);
   inline Bool ne(const Val &v2) const;
-  inline Val neg() const;
+  inline Val& neg();
   static inline Val neginfty(Ctx ctx);
   static inline Val negone(Ctx ctx);
   static inline Val one(Ctx ctx);
   inline int sgn() const;
-  inline Val sub(Val v2) const;
-  inline Val trunc() const;
+  inline Val& sub(Val v2);
+  inline Val& trunc();
   static inline Val zero(Ctx ctx);
 };
 
@@ -1144,9 +1144,11 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-Aff Aff::add(Aff aff2) const {
+Aff& Aff::add(Aff aff2) {
    auto res = isl_aff_add(copy(), aff2.release());
-   return manage(res);
+   isl_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Val Aff::getConstantVal() const {
@@ -1159,9 +1161,11 @@ Bool Aff::isCst() const {
    return res;
 }
 
-Aff Aff::pullback(MultiAff ma) const {
+Aff& Aff::pullback(MultiAff ma) {
    auto res = isl_aff_pullback_multi_aff(copy(), ma.release());
-   return manage(res);
+   isl_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::AstBuild
@@ -1208,33 +1212,33 @@ bool AstBuild::isNull() const {
   return ptr == nullptr;
 }
 
-AstExpr AstBuild::accessFromMultiPwAff(MultiPwAff mpa) const {
-   auto res = isl_ast_build_access_from_multi_pw_aff(get(), mpa.release());
-   return manage(res);
-}
-
-AstExpr AstBuild::accessFromPwMultiAff(PwMultiAff pma) const {
+AstExpr AstBuild::accessFrom(PwMultiAff pma) const {
    auto res = isl_ast_build_access_from_pw_multi_aff(get(), pma.release());
    return manage(res);
 }
 
-AstExpr AstBuild::callFromMultiPwAff(MultiPwAff mpa) const {
-   auto res = isl_ast_build_call_from_multi_pw_aff(get(), mpa.release());
+AstExpr AstBuild::accessFrom(MultiPwAff mpa) const {
+   auto res = isl_ast_build_access_from_multi_pw_aff(get(), mpa.release());
    return manage(res);
 }
 
-AstExpr AstBuild::callFromPwMultiAff(PwMultiAff pma) const {
+AstExpr AstBuild::callFrom(PwMultiAff pma) const {
    auto res = isl_ast_build_call_from_pw_multi_aff(get(), pma.release());
    return manage(res);
 }
 
-AstExpr AstBuild::exprFromPwAff(PwAff pa) const {
-   auto res = isl_ast_build_expr_from_pw_aff(get(), pa.release());
+AstExpr AstBuild::callFrom(MultiPwAff mpa) const {
+   auto res = isl_ast_build_call_from_multi_pw_aff(get(), mpa.release());
    return manage(res);
 }
 
-AstExpr AstBuild::exprFromSet(Set set) const {
+AstExpr AstBuild::exprFrom(Set set) const {
    auto res = isl_ast_build_expr_from_set(get(), set.release());
+   return manage(res);
+}
+
+AstExpr AstBuild::exprFrom(PwAff pa) const {
+   auto res = isl_ast_build_expr_from_pw_aff(get(), pa.release());
    return manage(res);
 }
 
@@ -1431,19 +1435,25 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-BasicMap BasicMap::affineHull() const {
+BasicMap& BasicMap::affineHull() {
    auto res = isl_basic_map_affine_hull(copy());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::applyDomain(BasicMap bmap2) const {
+BasicMap& BasicMap::applyDomain(BasicMap bmap2) {
    auto res = isl_basic_map_apply_domain(copy(), bmap2.release());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::applyRange(BasicMap bmap2) const {
+BasicMap& BasicMap::applyRange(BasicMap bmap2) {
    auto res = isl_basic_map_apply_range(copy(), bmap2.release());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 BasicSet BasicMap::deltas() const {
@@ -1451,44 +1461,60 @@ BasicSet BasicMap::deltas() const {
    return manage(res);
 }
 
-BasicMap BasicMap::detectEqualities() const {
+BasicMap& BasicMap::detectEqualities() {
    auto res = isl_basic_map_detect_equalities(copy());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::flatten() const {
+BasicMap& BasicMap::flatten() {
    auto res = isl_basic_map_flatten(copy());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::flattenDomain() const {
+BasicMap& BasicMap::flattenDomain() {
    auto res = isl_basic_map_flatten_domain(copy());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::flattenRange() const {
+BasicMap& BasicMap::flattenRange() {
    auto res = isl_basic_map_flatten_range(copy());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::gist(BasicMap context) const {
+BasicMap& BasicMap::gist(BasicMap context) {
    auto res = isl_basic_map_gist(copy(), context.release());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::intersect(BasicMap bmap2) const {
+BasicMap& BasicMap::intersect(BasicMap bmap2) {
    auto res = isl_basic_map_intersect(copy(), bmap2.release());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::intersectDomain(BasicSet bset) const {
+BasicMap& BasicMap::intersectDomain(BasicSet bset) {
    auto res = isl_basic_map_intersect_domain(copy(), bset.release());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::intersectRange(BasicSet bset) const {
+BasicMap& BasicMap::intersectRange(BasicSet bset) {
    auto res = isl_basic_map_intersect_range(copy(), bset.release());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool BasicMap::isEmpty() const {
@@ -1521,19 +1547,25 @@ Val BasicMap::plainGetValIfFixed(enum DimType type, unsigned int pos) const {
    return manage(res);
 }
 
-BasicMap BasicMap::projectOut(enum DimType type, unsigned int first, unsigned int n) const {
+BasicMap& BasicMap::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_basic_map_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::reverse() const {
+BasicMap& BasicMap::reverse() {
    auto res = isl_basic_map_reverse(copy());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicMap BasicMap::sample() const {
+BasicMap& BasicMap::sample() {
    auto res = isl_basic_map_sample(copy());
-   return manage(res);
+   isl_basic_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Map BasicMap::unite(BasicMap bmap2) const {
@@ -1606,39 +1638,53 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-BasicSet BasicSet::affineHull() const {
+BasicSet& BasicSet::affineHull() {
    auto res = isl_basic_set_affine_hull(copy());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicSet BasicSet::apply(BasicMap bmap) const {
+BasicSet& BasicSet::apply(BasicMap bmap) {
    auto res = isl_basic_set_apply(copy(), bmap.release());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicSet BasicSet::detectEqualities() const {
+BasicSet& BasicSet::detectEqualities() {
    auto res = isl_basic_set_detect_equalities(copy());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicSet BasicSet::flatten() const {
+BasicSet& BasicSet::flatten() {
    auto res = isl_basic_set_flatten(copy());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicSet BasicSet::gist(BasicSet context) const {
+BasicSet& BasicSet::gist(BasicSet context) {
    auto res = isl_basic_set_gist(copy(), context.release());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicSet BasicSet::intersect(BasicSet bset2) const {
+BasicSet& BasicSet::intersect(BasicSet bset2) {
    auto res = isl_basic_set_intersect(copy(), bset2.release());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicSet BasicSet::intersectParams(BasicSet bset2) const {
+BasicSet& BasicSet::intersectParams(BasicSet bset2) {
    auto res = isl_basic_set_intersect_params(copy(), bset2.release());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 int BasicSet::isBounded() const {
@@ -1676,14 +1722,18 @@ Set BasicSet::lexmin() const {
    return manage(res);
 }
 
-BasicSet BasicSet::projectOut(enum DimType type, unsigned int first, unsigned int n) const {
+BasicSet& BasicSet::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_basic_set_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-BasicSet BasicSet::sample() const {
+BasicSet& BasicSet::sample() {
    auto res = isl_basic_set_sample(copy());
-   return manage(res);
+   isl_basic_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Point BasicSet::samplePoint() const {
@@ -1766,24 +1816,32 @@ BasicMap Map::affineHull() const {
    return manage(res);
 }
 
-Map Map::applyDomain(Map map2) const {
+Map& Map::applyDomain(Map map2) {
    auto res = isl_map_apply_domain(copy(), map2.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::applyRange(Map map2) const {
+Map& Map::applyRange(Map map2) {
    auto res = isl_map_apply_range(copy(), map2.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::coalesce() const {
+Map& Map::coalesce() {
    auto res = isl_map_coalesce(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::complement() const {
+Map& Map::complement() {
    auto res = isl_map_complement(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Set Map::deltas() const {
@@ -1791,9 +1849,11 @@ Set Map::deltas() const {
    return manage(res);
 }
 
-Map Map::detectEqualities() const {
+Map& Map::detectEqualities() {
    auto res = isl_map_detect_equalities(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 unsigned int Map::dim(enum DimType type) const {
@@ -1811,49 +1871,67 @@ PwAff Map::dimMin(int pos) const {
    return manage(res);
 }
 
-Map Map::flatten() const {
+Map& Map::flatten() {
    auto res = isl_map_flatten(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::flattenDomain() const {
+Map& Map::flattenDomain() {
    auto res = isl_map_flatten_domain(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::flattenRange() const {
+Map& Map::flattenRange() {
    auto res = isl_map_flatten_range(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::gist(Map context) const {
+Map& Map::gist(Map context) {
    auto res = isl_map_gist(copy(), context.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::gistDomain(Set context) const {
+Map& Map::gistDomain(Set context) {
    auto res = isl_map_gist_domain(copy(), context.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::intersect(Map map2) const {
+Map& Map::intersect(Map map2) {
    auto res = isl_map_intersect(copy(), map2.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::intersectDomain(Set set) const {
+Map& Map::intersectDomain(Set set) {
    auto res = isl_map_intersect_domain(copy(), set.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::intersectParams(Set params) const {
+Map& Map::intersectParams(Set params) {
    auto res = isl_map_intersect_params(copy(), params.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::intersectRange(Set set) const {
+Map& Map::intersectRange(Set set) {
    auto res = isl_map_intersect_range(copy(), set.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool Map::isBijective() const {
@@ -1896,14 +1974,18 @@ Bool Map::isSubset(const Map &map2) const {
    return res;
 }
 
-Map Map::lexmax() const {
+Map& Map::lexmax() {
    auto res = isl_map_lexmax(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::lexmin() const {
+Map& Map::lexmin() {
    auto res = isl_map_lexmin(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 BasicMap Map::polyhedralHull() const {
@@ -1911,14 +1993,18 @@ BasicMap Map::polyhedralHull() const {
    return manage(res);
 }
 
-Map Map::projectOut(enum DimType type, unsigned int first, unsigned int n) const {
+Map& Map::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_map_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::reverse() const {
+Map& Map::reverse() {
    auto res = isl_map_reverse(copy());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 BasicMap Map::sample() const {
@@ -1926,14 +2012,18 @@ BasicMap Map::sample() const {
    return manage(res);
 }
 
-Map Map::subtract(Map map2) const {
+Map& Map::subtract(Map map2) {
    auto res = isl_map_subtract(copy(), map2.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Map Map::unite(Map map2) const {
+Map& Map::unite(Map map2) {
    auto res = isl_map_union(copy(), map2.release());
-   return manage(res);
+   isl_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 BasicMap Map::unshiftedSimpleHull() const {
@@ -2006,29 +2096,39 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiAff MultiAff::add(MultiAff multi2) const {
+MultiAff& MultiAff::add(MultiAff multi2) {
    auto res = isl_multi_aff_add(copy(), multi2.release());
-   return manage(res);
+   isl_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiAff MultiAff::flatRangeProduct(MultiAff multi2) const {
+MultiAff& MultiAff::flatRangeProduct(MultiAff multi2) {
    auto res = isl_multi_aff_flat_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiAff MultiAff::product(MultiAff multi2) const {
+MultiAff& MultiAff::product(MultiAff multi2) {
    auto res = isl_multi_aff_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiAff MultiAff::pullback(MultiAff ma2) const {
+MultiAff& MultiAff::pullback(MultiAff ma2) {
    auto res = isl_multi_aff_pullback_multi_aff(copy(), ma2.release());
-   return manage(res);
+   isl_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiAff MultiAff::rangeProduct(MultiAff multi2) const {
+MultiAff& MultiAff::rangeProduct(MultiAff multi2) {
    auto res = isl_multi_aff_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::MultiPwAff
@@ -2104,39 +2204,53 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiPwAff MultiPwAff::add(MultiPwAff multi2) const {
+MultiPwAff& MultiPwAff::add(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_add(copy(), multi2.release());
-   return manage(res);
+   isl_multi_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiPwAff MultiPwAff::flatRangeProduct(MultiPwAff multi2) const {
+MultiPwAff& MultiPwAff::flatRangeProduct(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_flat_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiPwAff MultiPwAff::product(MultiPwAff multi2) const {
+MultiPwAff& MultiPwAff::product(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiPwAff MultiPwAff::pullback(MultiAff ma) const {
+MultiPwAff& MultiPwAff::pullback(MultiAff ma) {
    auto res = isl_multi_pw_aff_pullback_multi_aff(copy(), ma.release());
-   return manage(res);
+   isl_multi_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiPwAff MultiPwAff::pullback(PwMultiAff pma) const {
+MultiPwAff& MultiPwAff::pullback(PwMultiAff pma) {
    auto res = isl_multi_pw_aff_pullback_pw_multi_aff(copy(), pma.release());
-   return manage(res);
+   isl_multi_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiPwAff MultiPwAff::pullback(MultiPwAff mpa2) const {
+MultiPwAff& MultiPwAff::pullback(MultiPwAff mpa2) {
    auto res = isl_multi_pw_aff_pullback_multi_pw_aff(copy(), mpa2.release());
-   return manage(res);
+   isl_multi_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiPwAff MultiPwAff::rangeProduct(MultiPwAff multi2) const {
+MultiPwAff& MultiPwAff::rangeProduct(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::MultiUnionPwAff
@@ -2212,29 +2326,39 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiUnionPwAff MultiUnionPwAff::add(MultiUnionPwAff multi2) const {
+MultiUnionPwAff& MultiUnionPwAff::add(MultiUnionPwAff multi2) {
    auto res = isl_multi_union_pw_aff_add(copy(), multi2.release());
-   return manage(res);
+   isl_multi_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiUnionPwAff MultiUnionPwAff::flatRangeProduct(MultiUnionPwAff multi2) const {
+MultiUnionPwAff& MultiUnionPwAff::flatRangeProduct(MultiUnionPwAff multi2) {
    auto res = isl_multi_union_pw_aff_flat_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiUnionPwAff MultiUnionPwAff::pullback(UnionPwMultiAff upma) const {
+MultiUnionPwAff& MultiUnionPwAff::pullback(UnionPwMultiAff upma) {
    auto res = isl_multi_union_pw_aff_pullback_union_pw_multi_aff(copy(), upma.release());
-   return manage(res);
+   isl_multi_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiUnionPwAff MultiUnionPwAff::rangeProduct(MultiUnionPwAff multi2) const {
+MultiUnionPwAff& MultiUnionPwAff::rangeProduct(MultiUnionPwAff multi2) {
    auto res = isl_multi_union_pw_aff_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiUnionPwAff MultiUnionPwAff::unionAdd(MultiUnionPwAff mupa2) const {
+MultiUnionPwAff& MultiUnionPwAff::unionAdd(MultiUnionPwAff mupa2) {
    auto res = isl_multi_union_pw_aff_union_add(copy(), mupa2.release());
-   return manage(res);
+   isl_multi_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::MultiVal
@@ -2293,24 +2417,32 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiVal MultiVal::add(MultiVal multi2) const {
+MultiVal& MultiVal::add(MultiVal multi2) {
    auto res = isl_multi_val_add(copy(), multi2.release());
-   return manage(res);
+   isl_multi_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiVal MultiVal::flatRangeProduct(MultiVal multi2) const {
+MultiVal& MultiVal::flatRangeProduct(MultiVal multi2) {
    auto res = isl_multi_val_flat_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiVal MultiVal::product(MultiVal multi2) const {
+MultiVal& MultiVal::product(MultiVal multi2) {
    auto res = isl_multi_val_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-MultiVal MultiVal::rangeProduct(MultiVal multi2) const {
+MultiVal& MultiVal::rangeProduct(MultiVal multi2) {
    auto res = isl_multi_val_range_product(copy(), multi2.release());
-   return manage(res);
+   isl_multi_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::Point
@@ -2434,44 +2566,60 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-PwAff PwAff::add(PwAff pwaff2) const {
+PwAff& PwAff::add(PwAff pwaff2) {
    auto res = isl_pw_aff_add(copy(), pwaff2.release());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwAff PwAff::mul(PwAff pwaff2) const {
+PwAff& PwAff::mul(PwAff pwaff2) {
    auto res = isl_pw_aff_mul(copy(), pwaff2.release());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwAff PwAff::neg() const {
+PwAff& PwAff::neg() {
    auto res = isl_pw_aff_neg(copy());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwAff PwAff::pullback(MultiAff ma) const {
+PwAff& PwAff::pullback(MultiAff ma) {
    auto res = isl_pw_aff_pullback_multi_aff(copy(), ma.release());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwAff PwAff::pullback(PwMultiAff pma) const {
+PwAff& PwAff::pullback(PwMultiAff pma) {
    auto res = isl_pw_aff_pullback_pw_multi_aff(copy(), pma.release());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwAff PwAff::pullback(MultiPwAff mpa) const {
+PwAff& PwAff::pullback(MultiPwAff mpa) {
    auto res = isl_pw_aff_pullback_multi_pw_aff(copy(), mpa.release());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwAff PwAff::sub(PwAff pwaff2) const {
+PwAff& PwAff::sub(PwAff pwaff2) {
    auto res = isl_pw_aff_sub(copy(), pwaff2.release());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwAff PwAff::unionAdd(PwAff pwaff2) const {
+PwAff& PwAff::unionAdd(PwAff pwaff2) {
    auto res = isl_pw_aff_union_add(copy(), pwaff2.release());
-   return manage(res);
+   isl_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::PwMultiAff
@@ -2543,39 +2691,53 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-PwMultiAff PwMultiAff::add(PwMultiAff pma2) const {
+PwMultiAff& PwMultiAff::add(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_add(copy(), pma2.release());
-   return manage(res);
+   isl_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwMultiAff PwMultiAff::flatRangeProduct(PwMultiAff pma2) const {
+PwMultiAff& PwMultiAff::flatRangeProduct(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_flat_range_product(copy(), pma2.release());
-   return manage(res);
+   isl_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwMultiAff PwMultiAff::product(PwMultiAff pma2) const {
+PwMultiAff& PwMultiAff::product(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_product(copy(), pma2.release());
-   return manage(res);
+   isl_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwMultiAff PwMultiAff::pullback(MultiAff ma) const {
+PwMultiAff& PwMultiAff::pullback(MultiAff ma) {
    auto res = isl_pw_multi_aff_pullback_multi_aff(copy(), ma.release());
-   return manage(res);
+   isl_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwMultiAff PwMultiAff::pullback(PwMultiAff pma2) const {
+PwMultiAff& PwMultiAff::pullback(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_pullback_pw_multi_aff(copy(), pma2.release());
-   return manage(res);
+   isl_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwMultiAff PwMultiAff::rangeProduct(PwMultiAff pma2) const {
+PwMultiAff& PwMultiAff::rangeProduct(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_range_product(copy(), pma2.release());
-   return manage(res);
+   isl_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-PwMultiAff PwMultiAff::unionAdd(PwMultiAff pma2) const {
+PwMultiAff& PwMultiAff::unionAdd(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_union_add(copy(), pma2.release());
-   return manage(res);
+   isl_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::Schedule
@@ -2649,9 +2811,11 @@ ScheduleNode Schedule::getRoot() const {
    return manage(res);
 }
 
-Schedule Schedule::pullback(UnionPwMultiAff upma) const {
+Schedule& Schedule::pullback(UnionPwMultiAff upma) {
    auto res = isl_schedule_pullback_union_pw_multi_aff(copy(), upma.release());
-   return manage(res);
+   isl_schedule_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::ScheduleConstraints
@@ -2811,14 +2975,18 @@ Bool ScheduleNode::bandMemberGetCoincident(int pos) const {
    return res;
 }
 
-ScheduleNode ScheduleNode::bandMemberSetCoincident(int pos, int coincident) const {
+ScheduleNode& ScheduleNode::bandMemberSetCoincident(int pos, int coincident) {
    auto res = isl_schedule_node_band_member_set_coincident(copy(), pos, coincident);
-   return manage(res);
+   isl_schedule_node_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-ScheduleNode ScheduleNode::child(int pos) const {
+ScheduleNode& ScheduleNode::child(int pos) {
    auto res = isl_schedule_node_child(copy(), pos);
-   return manage(res);
+   isl_schedule_node_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 MultiUnionPwAff ScheduleNode::getPrefixScheduleMultiUnionPwAff() const {
@@ -2841,9 +3009,11 @@ Schedule ScheduleNode::getSchedule() const {
    return manage(res);
 }
 
-ScheduleNode ScheduleNode::parent() const {
+ScheduleNode& ScheduleNode::parent() {
    auto res = isl_schedule_node_parent(copy());
-   return manage(res);
+   isl_schedule_node_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::Set
@@ -2919,9 +3089,11 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-Set Set::addDims(enum DimType type, unsigned int n) const {
+Set& Set::addDims(enum DimType type, unsigned int n) {
    auto res = isl_set_add_dims(copy(), static_cast<enum isl_dim_type>(type), n);
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 BasicSet Set::affineHull() const {
@@ -2929,24 +3101,32 @@ BasicSet Set::affineHull() const {
    return manage(res);
 }
 
-Set Set::apply(Map map) const {
+Set& Set::apply(Map map) {
    auto res = isl_set_apply(copy(), map.release());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Set Set::coalesce() const {
+Set& Set::coalesce() {
    auto res = isl_set_coalesce(copy());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Set Set::complement() const {
+Set& Set::complement() {
    auto res = isl_set_complement(copy());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Set Set::detectEqualities() const {
+Set& Set::detectEqualities() {
    auto res = isl_set_detect_equalities(copy());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 unsigned int Set::dim(enum DimType type) const {
@@ -2964,14 +3144,18 @@ PwAff Set::dimMin(int pos) const {
    return manage(res);
 }
 
-Set Set::flatten() const {
+Set& Set::flatten() {
    auto res = isl_set_flatten(copy());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Set Set::gist(Set context) const {
+Set& Set::gist(Set context) {
    auto res = isl_set_gist(copy(), context.release());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Map Set::identity() const {
@@ -2979,14 +3163,18 @@ Map Set::identity() const {
    return manage(res);
 }
 
-Set Set::intersect(Set set2) const {
+Set& Set::intersect(Set set2) {
    auto res = isl_set_intersect(copy(), set2.release());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Set Set::intersectParams(Set params) const {
+Set& Set::intersectParams(Set params) {
    auto res = isl_set_intersect_params(copy(), params.release());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 int Set::isBounded() const {
@@ -3024,14 +3212,18 @@ Bool Set::isWrapping() const {
    return res;
 }
 
-Set Set::lexmax() const {
+Set& Set::lexmax() {
    auto res = isl_set_lexmax(copy());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Set Set::lexmin() const {
+Set& Set::lexmin() {
    auto res = isl_set_lexmin(copy());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Val Set::maxVal(const Aff &obj) const {
@@ -3049,9 +3241,11 @@ BasicSet Set::polyhedralHull() const {
    return manage(res);
 }
 
-Set Set::projectOut(enum DimType type, unsigned int first, unsigned int n) const {
+Set& Set::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_set_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 BasicSet Set::sample() const {
@@ -3064,14 +3258,18 @@ Point Set::samplePoint() const {
    return manage(res);
 }
 
-Set Set::subtract(Set set2) const {
+Set& Set::subtract(Set set2) {
    auto res = isl_set_subtract(copy(), set2.release());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Set Set::unite(Set set2) const {
+Set& Set::unite(Set set2) {
    auto res = isl_set_union(copy(), set2.release());
-   return manage(res);
+   isl_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 BasicSet Set::unshiftedSimpleHull() const {
@@ -3200,24 +3398,32 @@ UnionFlow UnionAccessInfo::computeFlow() const {
    return manage(res);
 }
 
-UnionAccessInfo UnionAccessInfo::setMaySource(UnionMap may_source) const {
+UnionAccessInfo& UnionAccessInfo::setMaySource(UnionMap may_source) {
    auto res = isl_union_access_info_set_may_source(copy(), may_source.release());
-   return manage(res);
+   isl_union_access_info_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionAccessInfo UnionAccessInfo::setMustSource(UnionMap must_source) const {
+UnionAccessInfo& UnionAccessInfo::setMustSource(UnionMap must_source) {
    auto res = isl_union_access_info_set_must_source(copy(), must_source.release());
-   return manage(res);
+   isl_union_access_info_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionAccessInfo UnionAccessInfo::setSchedule(Schedule schedule) const {
+UnionAccessInfo& UnionAccessInfo::setSchedule(Schedule schedule) {
    auto res = isl_union_access_info_set_schedule(copy(), schedule.release());
-   return manage(res);
+   isl_union_access_info_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionAccessInfo UnionAccessInfo::setScheduleMap(UnionMap schedule_map) const {
+UnionAccessInfo& UnionAccessInfo::setScheduleMap(UnionMap schedule_map) {
    auto res = isl_union_access_info_set_schedule_map(copy(), schedule_map.release());
-   return manage(res);
+   isl_union_access_info_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::UnionFlow
@@ -3379,34 +3585,46 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionMap UnionMap::addMap(Map map) const {
+UnionMap& UnionMap::addMap(Map map) {
    auto res = isl_union_map_add_map(copy(), map.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::affineHull() const {
+UnionMap& UnionMap::affineHull() {
    auto res = isl_union_map_affine_hull(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::applyDomain(UnionMap umap2) const {
+UnionMap& UnionMap::applyDomain(UnionMap umap2) {
    auto res = isl_union_map_apply_domain(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::applyRange(UnionMap umap2) const {
+UnionMap& UnionMap::applyRange(UnionMap umap2) {
    auto res = isl_union_map_apply_range(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::coalesce() const {
+UnionMap& UnionMap::coalesce() {
    auto res = isl_union_map_coalesce(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::computeDivs() const {
+UnionMap& UnionMap::computeDivs() {
    auto res = isl_union_map_compute_divs(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionSet UnionMap::deltas() const {
@@ -3414,9 +3632,11 @@ UnionSet UnionMap::deltas() const {
    return manage(res);
 }
 
-UnionMap UnionMap::detectEqualities() const {
+UnionMap& UnionMap::detectEqualities() {
    auto res = isl_union_map_detect_equalities(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionSet UnionMap::domain() const {
@@ -3424,19 +3644,25 @@ UnionSet UnionMap::domain() const {
    return manage(res);
 }
 
-UnionMap UnionMap::domainFactorDomain() const {
+UnionMap& UnionMap::domainFactorDomain() {
    auto res = isl_union_map_domain_factor_domain(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::domainFactorRange() const {
+UnionMap& UnionMap::domainFactorRange() {
    auto res = isl_union_map_domain_factor_range(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::domainMap() const {
+UnionMap& UnionMap::domainMap() {
    auto res = isl_union_map_domain_map(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionPwMultiAff UnionMap::domainMapUnionPwMultiAff() const {
@@ -3444,29 +3670,39 @@ UnionPwMultiAff UnionMap::domainMapUnionPwMultiAff() const {
    return manage(res);
 }
 
-UnionMap UnionMap::domainProduct(UnionMap umap2) const {
+UnionMap& UnionMap::domainProduct(UnionMap umap2) {
    auto res = isl_union_map_domain_product(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::factorDomain() const {
+UnionMap& UnionMap::factorDomain() {
    auto res = isl_union_map_factor_domain(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::factorRange() const {
+UnionMap& UnionMap::factorRange() {
    auto res = isl_union_map_factor_range(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::fixedPower(Val exp) const {
+UnionMap& UnionMap::fixedPower(Val exp) {
    auto res = isl_union_map_fixed_power_val(copy(), exp.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::flatRangeProduct(UnionMap umap2) const {
+UnionMap& UnionMap::flatRangeProduct(UnionMap umap2) {
    auto res = isl_union_map_flat_range_product(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionMap UnionMap::from(UnionPwMultiAff upma) {
@@ -3484,44 +3720,60 @@ UnionMap UnionMap::fromDomainAndRange(UnionSet domain, UnionSet range) {
    return manage(res);
 }
 
-UnionMap UnionMap::gist(UnionMap context) const {
+UnionMap& UnionMap::gist(UnionMap context) {
    auto res = isl_union_map_gist(copy(), context.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::gistDomain(UnionSet uset) const {
+UnionMap& UnionMap::gistDomain(UnionSet uset) {
    auto res = isl_union_map_gist_domain(copy(), uset.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::gistParams(Set set) const {
+UnionMap& UnionMap::gistParams(Set set) {
    auto res = isl_union_map_gist_params(copy(), set.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::gistRange(UnionSet uset) const {
+UnionMap& UnionMap::gistRange(UnionSet uset) {
    auto res = isl_union_map_gist_range(copy(), uset.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::intersect(UnionMap umap2) const {
+UnionMap& UnionMap::intersect(UnionMap umap2) {
    auto res = isl_union_map_intersect(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::intersectDomain(UnionSet uset) const {
+UnionMap& UnionMap::intersectDomain(UnionSet uset) {
    auto res = isl_union_map_intersect_domain(copy(), uset.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::intersectParams(Set set) const {
+UnionMap& UnionMap::intersectParams(Set set) {
    auto res = isl_union_map_intersect_params(copy(), set.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::intersectRange(UnionSet uset) const {
+UnionMap& UnionMap::intersectRange(UnionSet uset) {
    auto res = isl_union_map_intersect_range(copy(), uset.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool UnionMap::isBijective() const {
@@ -3559,24 +3811,32 @@ Bool UnionMap::isSubset(const UnionMap &umap2) const {
    return res;
 }
 
-UnionMap UnionMap::lexmax() const {
+UnionMap& UnionMap::lexmax() {
    auto res = isl_union_map_lexmax(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::lexmin() const {
+UnionMap& UnionMap::lexmin() {
    auto res = isl_union_map_lexmin(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::polyhedralHull() const {
+UnionMap& UnionMap::polyhedralHull() {
    auto res = isl_union_map_polyhedral_hull(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::product(UnionMap umap2) const {
+UnionMap& UnionMap::product(UnionMap umap2) {
    auto res = isl_union_map_product(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionSet UnionMap::range() const {
@@ -3584,49 +3844,67 @@ UnionSet UnionMap::range() const {
    return manage(res);
 }
 
-UnionMap UnionMap::rangeFactorDomain() const {
+UnionMap& UnionMap::rangeFactorDomain() {
    auto res = isl_union_map_range_factor_domain(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::rangeFactorRange() const {
+UnionMap& UnionMap::rangeFactorRange() {
    auto res = isl_union_map_range_factor_range(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::rangeMap() const {
+UnionMap& UnionMap::rangeMap() {
    auto res = isl_union_map_range_map(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::rangeProduct(UnionMap umap2) const {
+UnionMap& UnionMap::rangeProduct(UnionMap umap2) {
    auto res = isl_union_map_range_product(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::reverse() const {
+UnionMap& UnionMap::reverse() {
    auto res = isl_union_map_reverse(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::subtract(UnionMap umap2) const {
+UnionMap& UnionMap::subtract(UnionMap umap2) {
    auto res = isl_union_map_subtract(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::subtractDomain(UnionSet dom) const {
+UnionMap& UnionMap::subtractDomain(UnionSet dom) {
    auto res = isl_union_map_subtract_domain(copy(), dom.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::subtractRange(UnionSet dom) const {
+UnionMap& UnionMap::subtractRange(UnionSet dom) {
    auto res = isl_union_map_subtract_range(copy(), dom.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionMap UnionMap::unite(UnionMap umap2) const {
+UnionMap& UnionMap::unite(UnionMap umap2) {
    auto res = isl_union_map_union(copy(), umap2.release());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionSet UnionMap::wrap() const {
@@ -3634,9 +3912,11 @@ UnionSet UnionMap::wrap() const {
    return manage(res);
 }
 
-UnionMap UnionMap::zip() const {
+UnionMap& UnionMap::zip() {
    auto res = isl_union_map_zip(copy());
-   return manage(res);
+   isl_union_map_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::UnionPwAff
@@ -3704,24 +3984,32 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionPwAff UnionPwAff::add(UnionPwAff upa2) const {
+UnionPwAff& UnionPwAff::add(UnionPwAff upa2) {
    auto res = isl_union_pw_aff_add(copy(), upa2.release());
-   return manage(res);
+   isl_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionPwAff UnionPwAff::pullback(UnionPwMultiAff upma) const {
+UnionPwAff& UnionPwAff::pullback(UnionPwMultiAff upma) {
    auto res = isl_union_pw_aff_pullback_union_pw_multi_aff(copy(), upma.release());
-   return manage(res);
+   isl_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionPwAff UnionPwAff::sub(UnionPwAff upa2) const {
+UnionPwAff& UnionPwAff::sub(UnionPwAff upa2) {
    auto res = isl_union_pw_aff_sub(copy(), upa2.release());
-   return manage(res);
+   isl_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionPwAff UnionPwAff::unionAdd(UnionPwAff upa2) const {
+UnionPwAff& UnionPwAff::unionAdd(UnionPwAff upa2) {
    auto res = isl_union_pw_aff_union_add(copy(), upa2.release());
-   return manage(res);
+   isl_union_pw_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::UnionPwMultiAff
@@ -3797,24 +4085,32 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionPwMultiAff UnionPwMultiAff::add(UnionPwMultiAff upma2) const {
+UnionPwMultiAff& UnionPwMultiAff::add(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_add(copy(), upma2.release());
-   return manage(res);
+   isl_union_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionPwMultiAff UnionPwMultiAff::flatRangeProduct(UnionPwMultiAff upma2) const {
+UnionPwMultiAff& UnionPwMultiAff::flatRangeProduct(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_flat_range_product(copy(), upma2.release());
-   return manage(res);
+   isl_union_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionPwMultiAff UnionPwMultiAff::pullback(UnionPwMultiAff upma2) const {
+UnionPwMultiAff& UnionPwMultiAff::pullback(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_pullback_union_pw_multi_aff(copy(), upma2.release());
-   return manage(res);
+   isl_union_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionPwMultiAff UnionPwMultiAff::unionAdd(UnionPwMultiAff upma2) const {
+UnionPwMultiAff& UnionPwMultiAff::unionAdd(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_union_add(copy(), upma2.release());
-   return manage(res);
+   isl_union_pw_multi_aff_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 // implementations for isl::UnionSet
@@ -3890,39 +4186,53 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionSet UnionSet::affineHull() const {
+UnionSet& UnionSet::affineHull() {
    auto res = isl_union_set_affine_hull(copy());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::apply(UnionMap umap) const {
+UnionSet& UnionSet::apply(UnionMap umap) {
    auto res = isl_union_set_apply(copy(), umap.release());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::coalesce() const {
+UnionSet& UnionSet::coalesce() {
    auto res = isl_union_set_coalesce(copy());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::computeDivs() const {
+UnionSet& UnionSet::computeDivs() {
    auto res = isl_union_set_compute_divs(copy());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::detectEqualities() const {
+UnionSet& UnionSet::detectEqualities() {
    auto res = isl_union_set_detect_equalities(copy());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::gist(UnionSet context) const {
+UnionSet& UnionSet::gist(UnionSet context) {
    auto res = isl_union_set_gist(copy(), context.release());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::gistParams(Set set) const {
+UnionSet& UnionSet::gistParams(Set set) {
    auto res = isl_union_set_gist_params(copy(), set.release());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionMap UnionSet::identity() const {
@@ -3930,14 +4240,18 @@ UnionMap UnionSet::identity() const {
    return manage(res);
 }
 
-UnionSet UnionSet::intersect(UnionSet uset2) const {
+UnionSet& UnionSet::intersect(UnionSet uset2) {
    auto res = isl_union_set_intersect(copy(), uset2.release());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::intersectParams(Set set) const {
+UnionSet& UnionSet::intersectParams(Set set) {
    auto res = isl_union_set_intersect_params(copy(), set.release());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool UnionSet::isEmpty() const {
@@ -3960,19 +4274,25 @@ Bool UnionSet::isSubset(const UnionSet &uset2) const {
    return res;
 }
 
-UnionSet UnionSet::lexmax() const {
+UnionSet& UnionSet::lexmax() {
    auto res = isl_union_set_lexmax(copy());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::lexmin() const {
+UnionSet& UnionSet::lexmin() {
    auto res = isl_union_set_lexmin(copy());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::polyhedralHull() const {
+UnionSet& UnionSet::polyhedralHull() {
    auto res = isl_union_set_polyhedral_hull(copy());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Point UnionSet::samplePoint() const {
@@ -3980,14 +4300,18 @@ Point UnionSet::samplePoint() const {
    return manage(res);
 }
 
-UnionSet UnionSet::subtract(UnionSet uset2) const {
+UnionSet& UnionSet::subtract(UnionSet uset2) {
    auto res = isl_union_set_subtract(copy(), uset2.release());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-UnionSet UnionSet::unite(UnionSet uset2) const {
+UnionSet& UnionSet::unite(UnionSet uset2) {
    auto res = isl_union_set_union(copy(), uset2.release());
-   return manage(res);
+   isl_union_set_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 UnionMap UnionSet::unwrap() const {
@@ -4061,9 +4385,11 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-Val Val::abs() const {
+Val& Val::abs() {
    auto res = isl_val_abs(copy());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool Val::absEq(const Val &v2) const {
@@ -4071,19 +4397,25 @@ Bool Val::absEq(const Val &v2) const {
    return res;
 }
 
-Val Val::add(Val v2) const {
+Val& Val::add(Val v2) {
    auto res = isl_val_add(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Val Val::addUi(unsigned long v2) const {
+Val& Val::addUi(unsigned long v2) {
    auto res = isl_val_add_ui(copy(), v2);
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Val Val::ceil() const {
+Val& Val::ceil() {
    auto res = isl_val_ceil(copy());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 int Val::cmpSi(long i) const {
@@ -4091,9 +4423,11 @@ int Val::cmpSi(long i) const {
    return res;
 }
 
-Val Val::div(Val v2) const {
+Val& Val::div(Val v2) {
    auto res = isl_val_div(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool Val::eq(const Val &v2) const {
@@ -4101,14 +4435,18 @@ Bool Val::eq(const Val &v2) const {
    return res;
 }
 
-Val Val::floor() const {
+Val& Val::floor() {
    auto res = isl_val_floor(copy());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Val Val::gcd(Val v2) const {
+Val& Val::gcd(Val v2) {
    auto res = isl_val_gcd(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool Val::ge(const Val &v2) const {
@@ -4126,9 +4464,11 @@ Val Val::infty(Ctx ctx) {
    return manage(res);
 }
 
-Val Val::inv() const {
+Val& Val::inv() {
    auto res = isl_val_inv(copy());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Bool Val::isDivisibleBy(const Val &v2) const {
@@ -4206,24 +4546,32 @@ Bool Val::lt(const Val &v2) const {
    return res;
 }
 
-Val Val::max(Val v2) const {
+Val& Val::max(Val v2) {
    auto res = isl_val_max(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Val Val::min(Val v2) const {
+Val& Val::min(Val v2) {
    auto res = isl_val_min(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Val Val::mod(Val v2) const {
+Val& Val::mod(Val v2) {
    auto res = isl_val_mod(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Val Val::mul(Val v2) const {
+Val& Val::mul(Val v2) {
    auto res = isl_val_mul(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Val Val::nan(Ctx ctx) {
@@ -4236,9 +4584,11 @@ Bool Val::ne(const Val &v2) const {
    return res;
 }
 
-Val Val::neg() const {
+Val& Val::neg() {
    auto res = isl_val_neg(copy());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Val Val::neginfty(Ctx ctx) {
@@ -4261,14 +4611,18 @@ int Val::sgn() const {
    return res;
 }
 
-Val Val::sub(Val v2) const {
+Val& Val::sub(Val v2) {
    auto res = isl_val_sub(copy(), v2.release());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
-Val Val::trunc() const {
+Val& Val::trunc() {
    auto res = isl_val_trunc(copy());
-   return manage(res);
+   isl_val_free(ptr);
+   ptr = res;
+   return *this;
 }
 
 Val Val::zero(Ctx ctx) {

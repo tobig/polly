@@ -152,10 +152,10 @@ public:
   inline __isl_give isl_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline Aff& add(Aff aff2);
+  inline void add(Aff aff2);
   inline Val getConstantVal() const;
   inline Bool isCst() const;
-  inline Aff& pullback(MultiAff ma);
+  inline void pullback(MultiAff ma);
 };
 
 // declarations for isl::AstBuild
@@ -259,27 +259,27 @@ public:
   inline __isl_give isl_basic_map *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline BasicMap& affineHull();
-  inline BasicMap& applyDomain(BasicMap bmap2);
-  inline BasicMap& applyRange(BasicMap bmap2);
+  inline void affineHull();
+  inline void applyDomain(BasicMap bmap2);
+  inline void applyRange(BasicMap bmap2);
   inline BasicSet deltas() const;
-  inline BasicMap& detectEqualities();
-  inline BasicMap& flatten();
-  inline BasicMap& flattenDomain();
-  inline BasicMap& flattenRange();
-  inline BasicMap& gist(BasicMap context);
-  inline BasicMap& intersect(BasicMap bmap2);
-  inline BasicMap& intersectDomain(BasicSet bset);
-  inline BasicMap& intersectRange(BasicSet bset);
+  inline void detectEqualities();
+  inline void flatten();
+  inline void flattenDomain();
+  inline void flattenRange();
+  inline void gist(BasicMap context);
+  inline void intersect(BasicMap bmap2);
+  inline void intersectDomain(BasicSet bset);
+  inline void intersectRange(BasicSet bset);
   inline Bool isEmpty() const;
   inline Bool isEqual(const BasicMap &bmap2) const;
   inline Bool isSubset(const BasicMap &bmap2) const;
   inline Map lexmax() const;
   inline Map lexmin() const;
   inline Val plainGetValIfFixed(enum DimType type, unsigned int pos) const;
-  inline BasicMap& projectOut(enum DimType type, unsigned int first, unsigned int n);
-  inline BasicMap& reverse();
-  inline BasicMap& sample();
+  inline void projectOut(enum DimType type, unsigned int first, unsigned int n);
+  inline void reverse();
+  inline void sample();
   inline Map unite(BasicMap bmap2) const;
 };
 
@@ -306,13 +306,13 @@ public:
   inline __isl_give isl_basic_set *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline BasicSet& affineHull();
-  inline BasicSet& apply(BasicMap bmap);
-  inline BasicSet& detectEqualities();
-  inline BasicSet& flatten();
-  inline BasicSet& gist(BasicSet context);
-  inline BasicSet& intersect(BasicSet bset2);
-  inline BasicSet& intersectParams(BasicSet bset2);
+  inline void affineHull();
+  inline void apply(BasicMap bmap);
+  inline void detectEqualities();
+  inline void flatten();
+  inline void gist(BasicSet context);
+  inline void intersect(BasicSet bset2);
+  inline void intersectParams(BasicSet bset2);
   inline int isBounded() const;
   inline Bool isEmpty() const;
   inline Bool isEqual(const BasicSet &bset2) const;
@@ -320,8 +320,8 @@ public:
   inline Bool isWrapping() const;
   inline Set lexmax() const;
   inline Set lexmin() const;
-  inline BasicSet& projectOut(enum DimType type, unsigned int first, unsigned int n);
-  inline BasicSet& sample();
+  inline void projectOut(enum DimType type, unsigned int first, unsigned int n);
+  inline void sample();
   inline Point samplePoint() const;
   inline Set unite(BasicSet bset2) const;
 };
@@ -350,24 +350,24 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline BasicMap affineHull() const;
-  inline Map& applyDomain(Map map2);
-  inline Map& applyRange(Map map2);
-  inline Map& coalesce();
-  inline Map& complement();
+  inline void applyDomain(Map map2);
+  inline void applyRange(Map map2);
+  inline void coalesce();
+  inline void complement();
   inline Set deltas() const;
-  inline Map& detectEqualities();
+  inline void detectEqualities();
   inline unsigned int dim(enum DimType type) const;
   inline PwAff dimMax(int pos) const;
   inline PwAff dimMin(int pos) const;
-  inline Map& flatten();
-  inline Map& flattenDomain();
-  inline Map& flattenRange();
-  inline Map& gist(Map context);
-  inline Map& gistDomain(Set context);
-  inline Map& intersect(Map map2);
-  inline Map& intersectDomain(Set set);
-  inline Map& intersectParams(Set params);
-  inline Map& intersectRange(Set set);
+  inline void flatten();
+  inline void flattenDomain();
+  inline void flattenRange();
+  inline void gist(Map context);
+  inline void gistDomain(Set context);
+  inline void intersect(Map map2);
+  inline void intersectDomain(Set set);
+  inline void intersectParams(Set params);
+  inline void intersectRange(Set set);
   inline Bool isBijective() const;
   inline Bool isDisjoint(const Map &map2) const;
   inline Bool isEmpty() const;
@@ -376,14 +376,14 @@ public:
   inline Bool isSingleValued() const;
   inline Bool isStrictSubset(const Map &map2) const;
   inline Bool isSubset(const Map &map2) const;
-  inline Map& lexmax();
-  inline Map& lexmin();
+  inline void lexmax();
+  inline void lexmin();
   inline BasicMap polyhedralHull() const;
-  inline Map& projectOut(enum DimType type, unsigned int first, unsigned int n);
-  inline Map& reverse();
+  inline void projectOut(enum DimType type, unsigned int first, unsigned int n);
+  inline void reverse();
   inline BasicMap sample() const;
-  inline Map& subtract(Map map2);
-  inline Map& unite(Map map2);
+  inline void subtract(Map map2);
+  inline void unite(Map map2);
   inline BasicMap unshiftedSimpleHull() const;
 };
 
@@ -410,11 +410,11 @@ public:
   inline __isl_give isl_multi_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiAff& add(MultiAff multi2);
-  inline MultiAff& flatRangeProduct(MultiAff multi2);
-  inline MultiAff& product(MultiAff multi2);
-  inline MultiAff& pullback(MultiAff ma2);
-  inline MultiAff& rangeProduct(MultiAff multi2);
+  inline void add(MultiAff multi2);
+  inline void flatRangeProduct(MultiAff multi2);
+  inline void product(MultiAff multi2);
+  inline void pullback(MultiAff ma2);
+  inline void rangeProduct(MultiAff multi2);
 };
 
 // declarations for isl::MultiPwAff
@@ -442,13 +442,13 @@ public:
   inline __isl_give isl_multi_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiPwAff& add(MultiPwAff multi2);
-  inline MultiPwAff& flatRangeProduct(MultiPwAff multi2);
-  inline MultiPwAff& product(MultiPwAff multi2);
-  inline MultiPwAff& pullback(MultiAff ma);
-  inline MultiPwAff& pullback(PwMultiAff pma);
-  inline MultiPwAff& pullback(MultiPwAff mpa2);
-  inline MultiPwAff& rangeProduct(MultiPwAff multi2);
+  inline void add(MultiPwAff multi2);
+  inline void flatRangeProduct(MultiPwAff multi2);
+  inline void product(MultiPwAff multi2);
+  inline void pullback(MultiAff ma);
+  inline void pullback(PwMultiAff pma);
+  inline void pullback(MultiPwAff mpa2);
+  inline void rangeProduct(MultiPwAff multi2);
 };
 
 // declarations for isl::MultiUnionPwAff
@@ -476,11 +476,11 @@ public:
   inline __isl_give isl_multi_union_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiUnionPwAff& add(MultiUnionPwAff multi2);
-  inline MultiUnionPwAff& flatRangeProduct(MultiUnionPwAff multi2);
-  inline MultiUnionPwAff& pullback(UnionPwMultiAff upma);
-  inline MultiUnionPwAff& rangeProduct(MultiUnionPwAff multi2);
-  inline MultiUnionPwAff& unionAdd(MultiUnionPwAff mupa2);
+  inline void add(MultiUnionPwAff multi2);
+  inline void flatRangeProduct(MultiUnionPwAff multi2);
+  inline void pullback(UnionPwMultiAff upma);
+  inline void rangeProduct(MultiUnionPwAff multi2);
+  inline void unionAdd(MultiUnionPwAff mupa2);
 };
 
 // declarations for isl::MultiVal
@@ -504,10 +504,10 @@ public:
   inline __isl_give isl_multi_val *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline MultiVal& add(MultiVal multi2);
-  inline MultiVal& flatRangeProduct(MultiVal multi2);
-  inline MultiVal& product(MultiVal multi2);
-  inline MultiVal& rangeProduct(MultiVal multi2);
+  inline void add(MultiVal multi2);
+  inline void flatRangeProduct(MultiVal multi2);
+  inline void product(MultiVal multi2);
+  inline void rangeProduct(MultiVal multi2);
 };
 
 // declarations for isl::Point
@@ -556,14 +556,14 @@ public:
   inline __isl_give isl_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline PwAff& add(PwAff pwaff2);
-  inline PwAff& mul(PwAff pwaff2);
-  inline PwAff& neg();
-  inline PwAff& pullback(MultiAff ma);
-  inline PwAff& pullback(PwMultiAff pma);
-  inline PwAff& pullback(MultiPwAff mpa);
-  inline PwAff& sub(PwAff pwaff2);
-  inline PwAff& unionAdd(PwAff pwaff2);
+  inline void add(PwAff pwaff2);
+  inline void mul(PwAff pwaff2);
+  inline void neg();
+  inline void pullback(MultiAff ma);
+  inline void pullback(PwMultiAff pma);
+  inline void pullback(MultiPwAff mpa);
+  inline void sub(PwAff pwaff2);
+  inline void unionAdd(PwAff pwaff2);
 };
 
 // declarations for isl::PwMultiAff
@@ -590,13 +590,13 @@ public:
   inline __isl_give isl_pw_multi_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline PwMultiAff& add(PwMultiAff pma2);
-  inline PwMultiAff& flatRangeProduct(PwMultiAff pma2);
-  inline PwMultiAff& product(PwMultiAff pma2);
-  inline PwMultiAff& pullback(MultiAff ma);
-  inline PwMultiAff& pullback(PwMultiAff pma2);
-  inline PwMultiAff& rangeProduct(PwMultiAff pma2);
-  inline PwMultiAff& unionAdd(PwMultiAff pma2);
+  inline void add(PwMultiAff pma2);
+  inline void flatRangeProduct(PwMultiAff pma2);
+  inline void product(PwMultiAff pma2);
+  inline void pullback(MultiAff ma);
+  inline void pullback(PwMultiAff pma2);
+  inline void rangeProduct(PwMultiAff pma2);
+  inline void unionAdd(PwMultiAff pma2);
 };
 
 // declarations for isl::Schedule
@@ -623,7 +623,7 @@ public:
   inline std::string getStr() const;
   inline UnionMap getMap() const;
   inline ScheduleNode getRoot() const;
-  inline Schedule& pullback(UnionPwMultiAff upma);
+  inline void pullback(UnionPwMultiAff upma);
 };
 
 // declarations for isl::ScheduleConstraints
@@ -679,13 +679,13 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline Bool bandMemberGetCoincident(int pos) const;
-  inline ScheduleNode& bandMemberSetCoincident(int pos, int coincident);
-  inline ScheduleNode& child(int pos);
+  inline void bandMemberSetCoincident(int pos, int coincident);
+  inline void child(int pos);
   inline MultiUnionPwAff getPrefixScheduleMultiUnionPwAff() const;
   inline UnionMap getPrefixScheduleUnionMap() const;
   inline UnionPwMultiAff getPrefixScheduleUnionPwMultiAff() const;
   inline Schedule getSchedule() const;
-  inline ScheduleNode& parent();
+  inline void parent();
 };
 
 // declarations for isl::Set
@@ -713,20 +713,20 @@ public:
   inline __isl_give isl_set *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline Set& addDims(enum DimType type, unsigned int n);
+  inline void addDims(enum DimType type, unsigned int n);
   inline BasicSet affineHull() const;
-  inline Set& apply(Map map);
-  inline Set& coalesce();
-  inline Set& complement();
-  inline Set& detectEqualities();
+  inline void apply(Map map);
+  inline void coalesce();
+  inline void complement();
+  inline void detectEqualities();
   inline unsigned int dim(enum DimType type) const;
   inline PwAff dimMax(int pos) const;
   inline PwAff dimMin(int pos) const;
-  inline Set& flatten();
-  inline Set& gist(Set context);
+  inline void flatten();
+  inline void gist(Set context);
   inline Map identity() const;
-  inline Set& intersect(Set set2);
-  inline Set& intersectParams(Set params);
+  inline void intersect(Set set2);
+  inline void intersectParams(Set params);
   inline int isBounded() const;
   inline Bool isDisjoint(const Set &set2) const;
   inline Bool isEmpty() const;
@@ -734,16 +734,16 @@ public:
   inline Bool isStrictSubset(const Set &set2) const;
   inline Bool isSubset(const Set &set2) const;
   inline Bool isWrapping() const;
-  inline Set& lexmax();
-  inline Set& lexmin();
+  inline void lexmax();
+  inline void lexmin();
   inline Val maxVal(const Aff &obj) const;
   inline Val minVal(const Aff &obj) const;
   inline BasicSet polyhedralHull() const;
-  inline Set& projectOut(enum DimType type, unsigned int first, unsigned int n);
+  inline void projectOut(enum DimType type, unsigned int first, unsigned int n);
   inline BasicSet sample() const;
   inline Point samplePoint() const;
-  inline Set& subtract(Set set2);
-  inline Set& unite(Set set2);
+  inline void subtract(Set set2);
+  inline void unite(Set set2);
   inline BasicSet unshiftedSimpleHull() const;
 };
 
@@ -793,10 +793,10 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline UnionFlow computeFlow() const;
-  inline UnionAccessInfo& setMaySource(UnionMap may_source);
-  inline UnionAccessInfo& setMustSource(UnionMap must_source);
-  inline UnionAccessInfo& setSchedule(Schedule schedule);
-  inline UnionAccessInfo& setScheduleMap(UnionMap schedule_map);
+  inline void setMaySource(UnionMap may_source);
+  inline void setMustSource(UnionMap must_source);
+  inline void setSchedule(Schedule schedule);
+  inline void setScheduleMap(UnionMap schedule_map);
 };
 
 // declarations for isl::UnionFlow
@@ -853,35 +853,35 @@ public:
   inline __isl_give isl_union_map *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionMap& addMap(Map map);
-  inline UnionMap& affineHull();
-  inline UnionMap& applyDomain(UnionMap umap2);
-  inline UnionMap& applyRange(UnionMap umap2);
-  inline UnionMap& coalesce();
-  inline UnionMap& computeDivs();
+  inline void addMap(Map map);
+  inline void affineHull();
+  inline void applyDomain(UnionMap umap2);
+  inline void applyRange(UnionMap umap2);
+  inline void coalesce();
+  inline void computeDivs();
   inline UnionSet deltas() const;
-  inline UnionMap& detectEqualities();
+  inline void detectEqualities();
   inline UnionSet domain() const;
-  inline UnionMap& domainFactorDomain();
-  inline UnionMap& domainFactorRange();
-  inline UnionMap& domainMap();
+  inline void domainFactorDomain();
+  inline void domainFactorRange();
+  inline void domainMap();
   inline UnionPwMultiAff domainMapUnionPwMultiAff() const;
-  inline UnionMap& domainProduct(UnionMap umap2);
-  inline UnionMap& factorDomain();
-  inline UnionMap& factorRange();
-  inline UnionMap& fixedPower(Val exp);
-  inline UnionMap& flatRangeProduct(UnionMap umap2);
+  inline void domainProduct(UnionMap umap2);
+  inline void factorDomain();
+  inline void factorRange();
+  inline void fixedPower(Val exp);
+  inline void flatRangeProduct(UnionMap umap2);
   static inline UnionMap from(UnionPwMultiAff upma);
   static inline UnionMap from(MultiUnionPwAff mupa);
   static inline UnionMap fromDomainAndRange(UnionSet domain, UnionSet range);
-  inline UnionMap& gist(UnionMap context);
-  inline UnionMap& gistDomain(UnionSet uset);
-  inline UnionMap& gistParams(Set set);
-  inline UnionMap& gistRange(UnionSet uset);
-  inline UnionMap& intersect(UnionMap umap2);
-  inline UnionMap& intersectDomain(UnionSet uset);
-  inline UnionMap& intersectParams(Set set);
-  inline UnionMap& intersectRange(UnionSet uset);
+  inline void gist(UnionMap context);
+  inline void gistDomain(UnionSet uset);
+  inline void gistParams(Set set);
+  inline void gistRange(UnionSet uset);
+  inline void intersect(UnionMap umap2);
+  inline void intersectDomain(UnionSet uset);
+  inline void intersectParams(Set set);
+  inline void intersectRange(UnionSet uset);
   inline Bool isBijective() const;
   inline Bool isEmpty() const;
   inline Bool isEqual(const UnionMap &umap2) const;
@@ -889,22 +889,22 @@ public:
   inline Bool isSingleValued() const;
   inline Bool isStrictSubset(const UnionMap &umap2) const;
   inline Bool isSubset(const UnionMap &umap2) const;
-  inline UnionMap& lexmax();
-  inline UnionMap& lexmin();
-  inline UnionMap& polyhedralHull();
-  inline UnionMap& product(UnionMap umap2);
+  inline void lexmax();
+  inline void lexmin();
+  inline void polyhedralHull();
+  inline void product(UnionMap umap2);
   inline UnionSet range() const;
-  inline UnionMap& rangeFactorDomain();
-  inline UnionMap& rangeFactorRange();
-  inline UnionMap& rangeMap();
-  inline UnionMap& rangeProduct(UnionMap umap2);
-  inline UnionMap& reverse();
-  inline UnionMap& subtract(UnionMap umap2);
-  inline UnionMap& subtractDomain(UnionSet dom);
-  inline UnionMap& subtractRange(UnionSet dom);
-  inline UnionMap& unite(UnionMap umap2);
+  inline void rangeFactorDomain();
+  inline void rangeFactorRange();
+  inline void rangeMap();
+  inline void rangeProduct(UnionMap umap2);
+  inline void reverse();
+  inline void subtract(UnionMap umap2);
+  inline void subtractDomain(UnionSet dom);
+  inline void subtractRange(UnionSet dom);
+  inline void unite(UnionMap umap2);
   inline UnionSet wrap() const;
-  inline UnionMap& zip();
+  inline void zip();
 };
 
 // declarations for isl::UnionPwAff
@@ -930,10 +930,10 @@ public:
   inline __isl_give isl_union_pw_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionPwAff& add(UnionPwAff upa2);
-  inline UnionPwAff& pullback(UnionPwMultiAff upma);
-  inline UnionPwAff& sub(UnionPwAff upa2);
-  inline UnionPwAff& unionAdd(UnionPwAff upa2);
+  inline void add(UnionPwAff upa2);
+  inline void pullback(UnionPwMultiAff upma);
+  inline void sub(UnionPwAff upa2);
+  inline void unionAdd(UnionPwAff upa2);
 };
 
 // declarations for isl::UnionPwMultiAff
@@ -961,10 +961,10 @@ public:
   inline __isl_give isl_union_pw_multi_aff *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionPwMultiAff& add(UnionPwMultiAff upma2);
-  inline UnionPwMultiAff& flatRangeProduct(UnionPwMultiAff upma2);
-  inline UnionPwMultiAff& pullback(UnionPwMultiAff upma2);
-  inline UnionPwMultiAff& unionAdd(UnionPwMultiAff upma2);
+  inline void add(UnionPwMultiAff upma2);
+  inline void flatRangeProduct(UnionPwMultiAff upma2);
+  inline void pullback(UnionPwMultiAff upma2);
+  inline void unionAdd(UnionPwMultiAff upma2);
 };
 
 // declarations for isl::UnionSet
@@ -992,26 +992,26 @@ public:
   inline __isl_give isl_union_set *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline UnionSet& affineHull();
-  inline UnionSet& apply(UnionMap umap);
-  inline UnionSet& coalesce();
-  inline UnionSet& computeDivs();
-  inline UnionSet& detectEqualities();
-  inline UnionSet& gist(UnionSet context);
-  inline UnionSet& gistParams(Set set);
+  inline void affineHull();
+  inline void apply(UnionMap umap);
+  inline void coalesce();
+  inline void computeDivs();
+  inline void detectEqualities();
+  inline void gist(UnionSet context);
+  inline void gistParams(Set set);
   inline UnionMap identity() const;
-  inline UnionSet& intersect(UnionSet uset2);
-  inline UnionSet& intersectParams(Set set);
+  inline void intersect(UnionSet uset2);
+  inline void intersectParams(Set set);
   inline Bool isEmpty() const;
   inline Bool isEqual(const UnionSet &uset2) const;
   inline Bool isStrictSubset(const UnionSet &uset2) const;
   inline Bool isSubset(const UnionSet &uset2) const;
-  inline UnionSet& lexmax();
-  inline UnionSet& lexmin();
-  inline UnionSet& polyhedralHull();
+  inline void lexmax();
+  inline void lexmin();
+  inline void polyhedralHull();
   inline Point samplePoint() const;
-  inline UnionSet& subtract(UnionSet uset2);
-  inline UnionSet& unite(UnionSet uset2);
+  inline void subtract(UnionSet uset2);
+  inline void unite(UnionSet uset2);
   inline UnionMap unwrap() const;
 };
 
@@ -1038,20 +1038,20 @@ public:
   inline __isl_give isl_val *release();
   inline bool isNull() const;
   inline std::string getStr() const;
-  inline Val& abs();
+  inline void abs();
   inline Bool absEq(const Val &v2) const;
-  inline Val& add(Val v2);
-  inline Val& addUi(unsigned long v2);
-  inline Val& ceil();
+  inline void add(Val v2);
+  inline void addUi(unsigned long v2);
+  inline void ceil();
   inline int cmpSi(long i) const;
-  inline Val& div(Val v2);
+  inline void div(Val v2);
   inline Bool eq(const Val &v2) const;
-  inline Val& floor();
-  inline Val& gcd(Val v2);
+  inline void floor();
+  inline void gcd(Val v2);
   inline Bool ge(const Val &v2) const;
   inline Bool gt(const Val &v2) const;
   static inline Val infty(Ctx ctx);
-  inline Val& inv();
+  inline void inv();
   inline Bool isDivisibleBy(const Val &v2) const;
   inline Bool isInfty() const;
   inline Bool isInt() const;
@@ -1067,19 +1067,19 @@ public:
   inline Bool isZero() const;
   inline Bool le(const Val &v2) const;
   inline Bool lt(const Val &v2) const;
-  inline Val& max(Val v2);
-  inline Val& min(Val v2);
-  inline Val& mod(Val v2);
-  inline Val& mul(Val v2);
+  inline void max(Val v2);
+  inline void min(Val v2);
+  inline void mod(Val v2);
+  inline void mul(Val v2);
   static inline Val nan(Ctx ctx);
   inline Bool ne(const Val &v2) const;
-  inline Val& neg();
+  inline void neg();
   static inline Val neginfty(Ctx ctx);
   static inline Val negone(Ctx ctx);
   static inline Val one(Ctx ctx);
   inline int sgn() const;
-  inline Val& sub(Val v2);
-  inline Val& trunc();
+  inline void sub(Val v2);
+  inline void trunc();
   static inline Val zero(Ctx ctx);
 };
 
@@ -1144,15 +1144,24 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-Aff& Aff::add(Aff aff2) {
+void Aff::add(Aff aff2) {
    auto res = isl_aff_add(copy(), aff2.release());
    isl_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Aff add(Aff aff1, Aff aff2) {
+   auto res = isl_aff_add(aff1.release(), aff2.release());
+   return manage(res);
 }
 
 Val Aff::getConstantVal() const {
    auto res = isl_aff_get_constant_val(get());
+   return manage(res);
+}
+
+inline Val getConstantVal(const Aff &aff) {
+   auto res = isl_aff_get_constant_val(aff.get());
    return manage(res);
 }
 
@@ -1161,11 +1170,20 @@ Bool Aff::isCst() const {
    return res;
 }
 
-Aff& Aff::pullback(MultiAff ma) {
+inline Bool isCst(const Aff &aff) {
+   auto res = isl_aff_is_cst(aff.get());
+   return res;
+}
+
+void Aff::pullback(MultiAff ma) {
    auto res = isl_aff_pullback_multi_aff(copy(), ma.release());
    isl_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Aff pullback(Aff aff, MultiAff ma) {
+   auto res = isl_aff_pullback_multi_aff(aff.release(), ma.release());
+   return manage(res);
 }
 
 // implementations for isl::AstBuild
@@ -1217,8 +1235,18 @@ AstExpr AstBuild::accessFrom(PwMultiAff pma) const {
    return manage(res);
 }
 
+inline AstExpr accessFrom(const AstBuild &build, PwMultiAff pma) {
+   auto res = isl_ast_build_access_from_pw_multi_aff(build.get(), pma.release());
+   return manage(res);
+}
+
 AstExpr AstBuild::accessFrom(MultiPwAff mpa) const {
    auto res = isl_ast_build_access_from_multi_pw_aff(get(), mpa.release());
+   return manage(res);
+}
+
+inline AstExpr accessFrom(const AstBuild &build, MultiPwAff mpa) {
+   auto res = isl_ast_build_access_from_multi_pw_aff(build.get(), mpa.release());
    return manage(res);
 }
 
@@ -1227,8 +1255,18 @@ AstExpr AstBuild::callFrom(PwMultiAff pma) const {
    return manage(res);
 }
 
+inline AstExpr callFrom(const AstBuild &build, PwMultiAff pma) {
+   auto res = isl_ast_build_call_from_pw_multi_aff(build.get(), pma.release());
+   return manage(res);
+}
+
 AstExpr AstBuild::callFrom(MultiPwAff mpa) const {
    auto res = isl_ast_build_call_from_multi_pw_aff(get(), mpa.release());
+   return manage(res);
+}
+
+inline AstExpr callFrom(const AstBuild &build, MultiPwAff mpa) {
+   auto res = isl_ast_build_call_from_multi_pw_aff(build.get(), mpa.release());
    return manage(res);
 }
 
@@ -1237,8 +1275,18 @@ AstExpr AstBuild::exprFrom(Set set) const {
    return manage(res);
 }
 
+inline AstExpr exprFrom(const AstBuild &build, Set set) {
+   auto res = isl_ast_build_expr_from_set(build.get(), set.release());
+   return manage(res);
+}
+
 AstExpr AstBuild::exprFrom(PwAff pa) const {
    auto res = isl_ast_build_expr_from_pw_aff(get(), pa.release());
+   return manage(res);
+}
+
+inline AstExpr exprFrom(const AstBuild &build, PwAff pa) {
+   auto res = isl_ast_build_expr_from_pw_aff(build.get(), pa.release());
    return manage(res);
 }
 
@@ -1247,8 +1295,18 @@ AstBuild AstBuild::fromContext(Set set) {
    return manage(res);
 }
 
+inline AstBuild fromContext(Set set) {
+   auto res = isl_ast_build_from_context(set.release());
+   return manage(res);
+}
+
 AstNode AstBuild::nodeFromScheduleMap(UnionMap schedule) const {
    auto res = isl_ast_build_node_from_schedule_map(get(), schedule.release());
+   return manage(res);
+}
+
+inline AstNode nodeFromScheduleMap(const AstBuild &build, UnionMap schedule) {
+   auto res = isl_ast_build_node_from_schedule_map(build.get(), schedule.release());
    return manage(res);
 }
 
@@ -1313,6 +1371,11 @@ std::string AstExpr::toCStr() const {
    return res;
 }
 
+inline std::string toCStr(const AstExpr &expr) {
+   auto res = isl_ast_expr_to_C_str(expr.get());
+   return res;
+}
+
 // implementations for isl::AstNode
 AstNode manage(__isl_take isl_ast_node *ptr) {
   return AstNode(ptr);
@@ -1371,6 +1434,11 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 #endif
 std::string AstNode::toCStr() const {
    auto res = isl_ast_node_to_C_str(get());
+   return res;
+}
+
+inline std::string toCStr(const AstNode &node) {
+   auto res = isl_ast_node_to_C_str(node.get());
    return res;
 }
 
@@ -1435,25 +1503,37 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-BasicMap& BasicMap::affineHull() {
+void BasicMap::affineHull() {
    auto res = isl_basic_map_affine_hull(copy());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::applyDomain(BasicMap bmap2) {
+inline BasicMap affineHull(BasicMap bmap) {
+   auto res = isl_basic_map_affine_hull(bmap.release());
+   return manage(res);
+}
+
+void BasicMap::applyDomain(BasicMap bmap2) {
    auto res = isl_basic_map_apply_domain(copy(), bmap2.release());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::applyRange(BasicMap bmap2) {
+inline BasicMap applyDomain(BasicMap bmap1, BasicMap bmap2) {
+   auto res = isl_basic_map_apply_domain(bmap1.release(), bmap2.release());
+   return manage(res);
+}
+
+void BasicMap::applyRange(BasicMap bmap2) {
    auto res = isl_basic_map_apply_range(copy(), bmap2.release());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline BasicMap applyRange(BasicMap bmap1, BasicMap bmap2) {
+   auto res = isl_basic_map_apply_range(bmap1.release(), bmap2.release());
+   return manage(res);
 }
 
 BasicSet BasicMap::deltas() const {
@@ -1461,64 +1541,106 @@ BasicSet BasicMap::deltas() const {
    return manage(res);
 }
 
-BasicMap& BasicMap::detectEqualities() {
+inline BasicSet deltas(BasicMap bmap) {
+   auto res = isl_basic_map_deltas(bmap.release());
+   return manage(res);
+}
+
+void BasicMap::detectEqualities() {
    auto res = isl_basic_map_detect_equalities(copy());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::flatten() {
+inline BasicMap detectEqualities(BasicMap bmap) {
+   auto res = isl_basic_map_detect_equalities(bmap.release());
+   return manage(res);
+}
+
+void BasicMap::flatten() {
    auto res = isl_basic_map_flatten(copy());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::flattenDomain() {
+inline BasicMap flatten(BasicMap bmap) {
+   auto res = isl_basic_map_flatten(bmap.release());
+   return manage(res);
+}
+
+void BasicMap::flattenDomain() {
    auto res = isl_basic_map_flatten_domain(copy());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::flattenRange() {
+inline BasicMap flattenDomain(BasicMap bmap) {
+   auto res = isl_basic_map_flatten_domain(bmap.release());
+   return manage(res);
+}
+
+void BasicMap::flattenRange() {
    auto res = isl_basic_map_flatten_range(copy());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::gist(BasicMap context) {
+inline BasicMap flattenRange(BasicMap bmap) {
+   auto res = isl_basic_map_flatten_range(bmap.release());
+   return manage(res);
+}
+
+void BasicMap::gist(BasicMap context) {
    auto res = isl_basic_map_gist(copy(), context.release());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::intersect(BasicMap bmap2) {
+inline BasicMap gist(BasicMap bmap, BasicMap context) {
+   auto res = isl_basic_map_gist(bmap.release(), context.release());
+   return manage(res);
+}
+
+void BasicMap::intersect(BasicMap bmap2) {
    auto res = isl_basic_map_intersect(copy(), bmap2.release());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::intersectDomain(BasicSet bset) {
+inline BasicMap intersect(BasicMap bmap1, BasicMap bmap2) {
+   auto res = isl_basic_map_intersect(bmap1.release(), bmap2.release());
+   return manage(res);
+}
+
+void BasicMap::intersectDomain(BasicSet bset) {
    auto res = isl_basic_map_intersect_domain(copy(), bset.release());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::intersectRange(BasicSet bset) {
+inline BasicMap intersectDomain(BasicMap bmap, BasicSet bset) {
+   auto res = isl_basic_map_intersect_domain(bmap.release(), bset.release());
+   return manage(res);
+}
+
+void BasicMap::intersectRange(BasicSet bset) {
    auto res = isl_basic_map_intersect_range(copy(), bset.release());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline BasicMap intersectRange(BasicMap bmap, BasicSet bset) {
+   auto res = isl_basic_map_intersect_range(bmap.release(), bset.release());
+   return manage(res);
 }
 
 Bool BasicMap::isEmpty() const {
    auto res = isl_basic_map_is_empty(get());
+   return res;
+}
+
+inline Bool isEmpty(const BasicMap &bmap) {
+   auto res = isl_basic_map_is_empty(bmap.get());
    return res;
 }
 
@@ -1527,8 +1649,18 @@ Bool BasicMap::isEqual(const BasicMap &bmap2) const {
    return res;
 }
 
+inline Bool isEqual(const BasicMap &bmap1, const BasicMap &bmap2) {
+   auto res = isl_basic_map_is_equal(bmap1.get(), bmap2.get());
+   return res;
+}
+
 Bool BasicMap::isSubset(const BasicMap &bmap2) const {
    auto res = isl_basic_map_is_subset(get(), bmap2.get());
+   return res;
+}
+
+inline Bool isSubset(const BasicMap &bmap1, const BasicMap &bmap2) {
+   auto res = isl_basic_map_is_subset(bmap1.get(), bmap2.get());
    return res;
 }
 
@@ -1537,8 +1669,18 @@ Map BasicMap::lexmax() const {
    return manage(res);
 }
 
+inline Map lexmax(BasicMap bmap) {
+   auto res = isl_basic_map_lexmax(bmap.release());
+   return manage(res);
+}
+
 Map BasicMap::lexmin() const {
    auto res = isl_basic_map_lexmin(copy());
+   return manage(res);
+}
+
+inline Map lexmin(BasicMap bmap) {
+   auto res = isl_basic_map_lexmin(bmap.release());
    return manage(res);
 }
 
@@ -1547,29 +1689,51 @@ Val BasicMap::plainGetValIfFixed(enum DimType type, unsigned int pos) const {
    return manage(res);
 }
 
-BasicMap& BasicMap::projectOut(enum DimType type, unsigned int first, unsigned int n) {
+inline Val plainGetValIfFixed(const BasicMap &bmap, enum DimType type, unsigned int pos) {
+   auto res = isl_basic_map_plain_get_val_if_fixed(bmap.get(), static_cast<enum isl_dim_type>(type), pos);
+   return manage(res);
+}
+
+void BasicMap::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_basic_map_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::reverse() {
+inline BasicMap projectOut(BasicMap bmap, enum DimType type, unsigned int first, unsigned int n) {
+   auto res = isl_basic_map_project_out(bmap.release(), static_cast<enum isl_dim_type>(type), first, n);
+   return manage(res);
+}
+
+void BasicMap::reverse() {
    auto res = isl_basic_map_reverse(copy());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicMap& BasicMap::sample() {
+inline BasicMap reverse(BasicMap bmap) {
+   auto res = isl_basic_map_reverse(bmap.release());
+   return manage(res);
+}
+
+void BasicMap::sample() {
    auto res = isl_basic_map_sample(copy());
    isl_basic_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline BasicMap sample(BasicMap bmap) {
+   auto res = isl_basic_map_sample(bmap.release());
+   return manage(res);
 }
 
 Map BasicMap::unite(BasicMap bmap2) const {
    auto res = isl_basic_map_union(copy(), bmap2.release());
+   return manage(res);
+}
+
+inline Map unite(BasicMap bmap1, BasicMap bmap2) {
+   auto res = isl_basic_map_union(bmap1.release(), bmap2.release());
    return manage(res);
 }
 
@@ -1638,57 +1802,90 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-BasicSet& BasicSet::affineHull() {
+void BasicSet::affineHull() {
    auto res = isl_basic_set_affine_hull(copy());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicSet& BasicSet::apply(BasicMap bmap) {
+inline BasicSet affineHull(BasicSet bset) {
+   auto res = isl_basic_set_affine_hull(bset.release());
+   return manage(res);
+}
+
+void BasicSet::apply(BasicMap bmap) {
    auto res = isl_basic_set_apply(copy(), bmap.release());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicSet& BasicSet::detectEqualities() {
+inline BasicSet apply(BasicSet bset, BasicMap bmap) {
+   auto res = isl_basic_set_apply(bset.release(), bmap.release());
+   return manage(res);
+}
+
+void BasicSet::detectEqualities() {
    auto res = isl_basic_set_detect_equalities(copy());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicSet& BasicSet::flatten() {
+inline BasicSet detectEqualities(BasicSet bset) {
+   auto res = isl_basic_set_detect_equalities(bset.release());
+   return manage(res);
+}
+
+void BasicSet::flatten() {
    auto res = isl_basic_set_flatten(copy());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicSet& BasicSet::gist(BasicSet context) {
+inline BasicSet flatten(BasicSet bset) {
+   auto res = isl_basic_set_flatten(bset.release());
+   return manage(res);
+}
+
+void BasicSet::gist(BasicSet context) {
    auto res = isl_basic_set_gist(copy(), context.release());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicSet& BasicSet::intersect(BasicSet bset2) {
+inline BasicSet gist(BasicSet bset, BasicSet context) {
+   auto res = isl_basic_set_gist(bset.release(), context.release());
+   return manage(res);
+}
+
+void BasicSet::intersect(BasicSet bset2) {
    auto res = isl_basic_set_intersect(copy(), bset2.release());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicSet& BasicSet::intersectParams(BasicSet bset2) {
+inline BasicSet intersect(BasicSet bset1, BasicSet bset2) {
+   auto res = isl_basic_set_intersect(bset1.release(), bset2.release());
+   return manage(res);
+}
+
+void BasicSet::intersectParams(BasicSet bset2) {
    auto res = isl_basic_set_intersect_params(copy(), bset2.release());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline BasicSet intersectParams(BasicSet bset1, BasicSet bset2) {
+   auto res = isl_basic_set_intersect_params(bset1.release(), bset2.release());
+   return manage(res);
 }
 
 int BasicSet::isBounded() const {
    auto res = isl_basic_set_is_bounded(get());
+   return res;
+}
+
+inline int isBounded(const BasicSet &bset) {
+   auto res = isl_basic_set_is_bounded(bset.get());
    return res;
 }
 
@@ -1697,8 +1894,18 @@ Bool BasicSet::isEmpty() const {
    return res;
 }
 
+inline Bool isEmpty(const BasicSet &bset) {
+   auto res = isl_basic_set_is_empty(bset.get());
+   return res;
+}
+
 Bool BasicSet::isEqual(const BasicSet &bset2) const {
    auto res = isl_basic_set_is_equal(get(), bset2.get());
+   return res;
+}
+
+inline Bool isEqual(const BasicSet &bset1, const BasicSet &bset2) {
+   auto res = isl_basic_set_is_equal(bset1.get(), bset2.get());
    return res;
 }
 
@@ -1707,8 +1914,18 @@ Bool BasicSet::isSubset(const BasicSet &bset2) const {
    return res;
 }
 
+inline Bool isSubset(const BasicSet &bset1, const BasicSet &bset2) {
+   auto res = isl_basic_set_is_subset(bset1.get(), bset2.get());
+   return res;
+}
+
 Bool BasicSet::isWrapping() const {
    auto res = isl_basic_set_is_wrapping(get());
+   return res;
+}
+
+inline Bool isWrapping(const BasicSet &bset) {
+   auto res = isl_basic_set_is_wrapping(bset.get());
    return res;
 }
 
@@ -1717,23 +1934,41 @@ Set BasicSet::lexmax() const {
    return manage(res);
 }
 
+inline Set lexmax(BasicSet bset) {
+   auto res = isl_basic_set_lexmax(bset.release());
+   return manage(res);
+}
+
 Set BasicSet::lexmin() const {
    auto res = isl_basic_set_lexmin(copy());
    return manage(res);
 }
 
-BasicSet& BasicSet::projectOut(enum DimType type, unsigned int first, unsigned int n) {
+inline Set lexmin(BasicSet bset) {
+   auto res = isl_basic_set_lexmin(bset.release());
+   return manage(res);
+}
+
+void BasicSet::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_basic_set_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-BasicSet& BasicSet::sample() {
+inline BasicSet projectOut(BasicSet bset, enum DimType type, unsigned int first, unsigned int n) {
+   auto res = isl_basic_set_project_out(bset.release(), static_cast<enum isl_dim_type>(type), first, n);
+   return manage(res);
+}
+
+void BasicSet::sample() {
    auto res = isl_basic_set_sample(copy());
    isl_basic_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline BasicSet sample(BasicSet bset) {
+   auto res = isl_basic_set_sample(bset.release());
+   return manage(res);
 }
 
 Point BasicSet::samplePoint() const {
@@ -1741,8 +1976,18 @@ Point BasicSet::samplePoint() const {
    return manage(res);
 }
 
+inline Point samplePoint(BasicSet bset) {
+   auto res = isl_basic_set_sample_point(bset.release());
+   return manage(res);
+}
+
 Set BasicSet::unite(BasicSet bset2) const {
    auto res = isl_basic_set_union(copy(), bset2.release());
+   return manage(res);
+}
+
+inline Set unite(BasicSet bset1, BasicSet bset2) {
+   auto res = isl_basic_set_union(bset1.release(), bset2.release());
    return manage(res);
 }
 
@@ -1816,32 +2061,53 @@ BasicMap Map::affineHull() const {
    return manage(res);
 }
 
-Map& Map::applyDomain(Map map2) {
+inline BasicMap affineHull(Map map) {
+   auto res = isl_map_affine_hull(map.release());
+   return manage(res);
+}
+
+void Map::applyDomain(Map map2) {
    auto res = isl_map_apply_domain(copy(), map2.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::applyRange(Map map2) {
+inline Map applyDomain(Map map1, Map map2) {
+   auto res = isl_map_apply_domain(map1.release(), map2.release());
+   return manage(res);
+}
+
+void Map::applyRange(Map map2) {
    auto res = isl_map_apply_range(copy(), map2.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::coalesce() {
+inline Map applyRange(Map map1, Map map2) {
+   auto res = isl_map_apply_range(map1.release(), map2.release());
+   return manage(res);
+}
+
+void Map::coalesce() {
    auto res = isl_map_coalesce(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::complement() {
+inline Map coalesce(Map map) {
+   auto res = isl_map_coalesce(map.release());
+   return manage(res);
+}
+
+void Map::complement() {
    auto res = isl_map_complement(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Map complement(Map map) {
+   auto res = isl_map_complement(map.release());
+   return manage(res);
 }
 
 Set Map::deltas() const {
@@ -1849,15 +2115,29 @@ Set Map::deltas() const {
    return manage(res);
 }
 
-Map& Map::detectEqualities() {
+inline Set deltas(Map map) {
+   auto res = isl_map_deltas(map.release());
+   return manage(res);
+}
+
+void Map::detectEqualities() {
    auto res = isl_map_detect_equalities(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Map detectEqualities(Map map) {
+   auto res = isl_map_detect_equalities(map.release());
+   return manage(res);
 }
 
 unsigned int Map::dim(enum DimType type) const {
    auto res = isl_map_dim(get(), static_cast<enum isl_dim_type>(type));
+   return res;
+}
+
+inline unsigned int dim(const Map &map, enum DimType type) {
+   auto res = isl_map_dim(map.get(), static_cast<enum isl_dim_type>(type));
    return res;
 }
 
@@ -1866,76 +2146,127 @@ PwAff Map::dimMax(int pos) const {
    return manage(res);
 }
 
+inline PwAff dimMax(Map map, int pos) {
+   auto res = isl_map_dim_max(map.release(), pos);
+   return manage(res);
+}
+
 PwAff Map::dimMin(int pos) const {
    auto res = isl_map_dim_min(copy(), pos);
    return manage(res);
 }
 
-Map& Map::flatten() {
+inline PwAff dimMin(Map map, int pos) {
+   auto res = isl_map_dim_min(map.release(), pos);
+   return manage(res);
+}
+
+void Map::flatten() {
    auto res = isl_map_flatten(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::flattenDomain() {
+inline Map flatten(Map map) {
+   auto res = isl_map_flatten(map.release());
+   return manage(res);
+}
+
+void Map::flattenDomain() {
    auto res = isl_map_flatten_domain(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::flattenRange() {
+inline Map flattenDomain(Map map) {
+   auto res = isl_map_flatten_domain(map.release());
+   return manage(res);
+}
+
+void Map::flattenRange() {
    auto res = isl_map_flatten_range(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::gist(Map context) {
+inline Map flattenRange(Map map) {
+   auto res = isl_map_flatten_range(map.release());
+   return manage(res);
+}
+
+void Map::gist(Map context) {
    auto res = isl_map_gist(copy(), context.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::gistDomain(Set context) {
+inline Map gist(Map map, Map context) {
+   auto res = isl_map_gist(map.release(), context.release());
+   return manage(res);
+}
+
+void Map::gistDomain(Set context) {
    auto res = isl_map_gist_domain(copy(), context.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::intersect(Map map2) {
+inline Map gistDomain(Map map, Set context) {
+   auto res = isl_map_gist_domain(map.release(), context.release());
+   return manage(res);
+}
+
+void Map::intersect(Map map2) {
    auto res = isl_map_intersect(copy(), map2.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::intersectDomain(Set set) {
+inline Map intersect(Map map1, Map map2) {
+   auto res = isl_map_intersect(map1.release(), map2.release());
+   return manage(res);
+}
+
+void Map::intersectDomain(Set set) {
    auto res = isl_map_intersect_domain(copy(), set.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::intersectParams(Set params) {
+inline Map intersectDomain(Map map, Set set) {
+   auto res = isl_map_intersect_domain(map.release(), set.release());
+   return manage(res);
+}
+
+void Map::intersectParams(Set params) {
    auto res = isl_map_intersect_params(copy(), params.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::intersectRange(Set set) {
+inline Map intersectParams(Map map, Set params) {
+   auto res = isl_map_intersect_params(map.release(), params.release());
+   return manage(res);
+}
+
+void Map::intersectRange(Set set) {
    auto res = isl_map_intersect_range(copy(), set.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Map intersectRange(Map map, Set set) {
+   auto res = isl_map_intersect_range(map.release(), set.release());
+   return manage(res);
 }
 
 Bool Map::isBijective() const {
    auto res = isl_map_is_bijective(get());
+   return res;
+}
+
+inline Bool isBijective(const Map &map) {
+   auto res = isl_map_is_bijective(map.get());
    return res;
 }
 
@@ -1944,8 +2275,18 @@ Bool Map::isDisjoint(const Map &map2) const {
    return res;
 }
 
+inline Bool isDisjoint(const Map &map1, const Map &map2) {
+   auto res = isl_map_is_disjoint(map1.get(), map2.get());
+   return res;
+}
+
 Bool Map::isEmpty() const {
    auto res = isl_map_is_empty(get());
+   return res;
+}
+
+inline Bool isEmpty(const Map &map) {
+   auto res = isl_map_is_empty(map.get());
    return res;
 }
 
@@ -1954,8 +2295,18 @@ Bool Map::isEqual(const Map &map2) const {
    return res;
 }
 
+inline Bool isEqual(const Map &map1, const Map &map2) {
+   auto res = isl_map_is_equal(map1.get(), map2.get());
+   return res;
+}
+
 Bool Map::isInjective() const {
    auto res = isl_map_is_injective(get());
+   return res;
+}
+
+inline Bool isInjective(const Map &map) {
+   auto res = isl_map_is_injective(map.get());
    return res;
 }
 
@@ -1964,8 +2315,18 @@ Bool Map::isSingleValued() const {
    return res;
 }
 
+inline Bool isSingleValued(const Map &map) {
+   auto res = isl_map_is_single_valued(map.get());
+   return res;
+}
+
 Bool Map::isStrictSubset(const Map &map2) const {
    auto res = isl_map_is_strict_subset(get(), map2.get());
+   return res;
+}
+
+inline Bool isStrictSubset(const Map &map1, const Map &map2) {
+   auto res = isl_map_is_strict_subset(map1.get(), map2.get());
    return res;
 }
 
@@ -1974,18 +2335,31 @@ Bool Map::isSubset(const Map &map2) const {
    return res;
 }
 
-Map& Map::lexmax() {
+inline Bool isSubset(const Map &map1, const Map &map2) {
+   auto res = isl_map_is_subset(map1.get(), map2.get());
+   return res;
+}
+
+void Map::lexmax() {
    auto res = isl_map_lexmax(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::lexmin() {
+inline Map lexmax(Map map) {
+   auto res = isl_map_lexmax(map.release());
+   return manage(res);
+}
+
+void Map::lexmin() {
    auto res = isl_map_lexmin(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Map lexmin(Map map) {
+   auto res = isl_map_lexmin(map.release());
+   return manage(res);
 }
 
 BasicMap Map::polyhedralHull() const {
@@ -1993,18 +2367,31 @@ BasicMap Map::polyhedralHull() const {
    return manage(res);
 }
 
-Map& Map::projectOut(enum DimType type, unsigned int first, unsigned int n) {
+inline BasicMap polyhedralHull(Map map) {
+   auto res = isl_map_polyhedral_hull(map.release());
+   return manage(res);
+}
+
+void Map::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_map_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::reverse() {
+inline Map projectOut(Map map, enum DimType type, unsigned int first, unsigned int n) {
+   auto res = isl_map_project_out(map.release(), static_cast<enum isl_dim_type>(type), first, n);
+   return manage(res);
+}
+
+void Map::reverse() {
    auto res = isl_map_reverse(copy());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Map reverse(Map map) {
+   auto res = isl_map_reverse(map.release());
+   return manage(res);
 }
 
 BasicMap Map::sample() const {
@@ -2012,22 +2399,40 @@ BasicMap Map::sample() const {
    return manage(res);
 }
 
-Map& Map::subtract(Map map2) {
+inline BasicMap sample(Map map) {
+   auto res = isl_map_sample(map.release());
+   return manage(res);
+}
+
+void Map::subtract(Map map2) {
    auto res = isl_map_subtract(copy(), map2.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Map& Map::unite(Map map2) {
+inline Map subtract(Map map1, Map map2) {
+   auto res = isl_map_subtract(map1.release(), map2.release());
+   return manage(res);
+}
+
+void Map::unite(Map map2) {
    auto res = isl_map_union(copy(), map2.release());
    isl_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Map unite(Map map1, Map map2) {
+   auto res = isl_map_union(map1.release(), map2.release());
+   return manage(res);
 }
 
 BasicMap Map::unshiftedSimpleHull() const {
    auto res = isl_map_unshifted_simple_hull(copy());
+   return manage(res);
+}
+
+inline BasicMap unshiftedSimpleHull(Map map) {
+   auto res = isl_map_unshifted_simple_hull(map.release());
    return manage(res);
 }
 
@@ -2096,39 +2501,59 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiAff& MultiAff::add(MultiAff multi2) {
+void MultiAff::add(MultiAff multi2) {
    auto res = isl_multi_aff_add(copy(), multi2.release());
    isl_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiAff& MultiAff::flatRangeProduct(MultiAff multi2) {
+inline MultiAff add(MultiAff multi1, MultiAff multi2) {
+   auto res = isl_multi_aff_add(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiAff::flatRangeProduct(MultiAff multi2) {
    auto res = isl_multi_aff_flat_range_product(copy(), multi2.release());
    isl_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiAff& MultiAff::product(MultiAff multi2) {
+inline MultiAff flatRangeProduct(MultiAff multi1, MultiAff multi2) {
+   auto res = isl_multi_aff_flat_range_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiAff::product(MultiAff multi2) {
    auto res = isl_multi_aff_product(copy(), multi2.release());
    isl_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiAff& MultiAff::pullback(MultiAff ma2) {
+inline MultiAff product(MultiAff multi1, MultiAff multi2) {
+   auto res = isl_multi_aff_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiAff::pullback(MultiAff ma2) {
    auto res = isl_multi_aff_pullback_multi_aff(copy(), ma2.release());
    isl_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiAff& MultiAff::rangeProduct(MultiAff multi2) {
+inline MultiAff pullback(MultiAff ma1, MultiAff ma2) {
+   auto res = isl_multi_aff_pullback_multi_aff(ma1.release(), ma2.release());
+   return manage(res);
+}
+
+void MultiAff::rangeProduct(MultiAff multi2) {
    auto res = isl_multi_aff_range_product(copy(), multi2.release());
    isl_multi_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline MultiAff rangeProduct(MultiAff multi1, MultiAff multi2) {
+   auto res = isl_multi_aff_range_product(multi1.release(), multi2.release());
+   return manage(res);
 }
 
 // implementations for isl::MultiPwAff
@@ -2204,53 +2629,81 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiPwAff& MultiPwAff::add(MultiPwAff multi2) {
+void MultiPwAff::add(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_add(copy(), multi2.release());
    isl_multi_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiPwAff& MultiPwAff::flatRangeProduct(MultiPwAff multi2) {
+inline MultiPwAff add(MultiPwAff multi1, MultiPwAff multi2) {
+   auto res = isl_multi_pw_aff_add(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiPwAff::flatRangeProduct(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_flat_range_product(copy(), multi2.release());
    isl_multi_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiPwAff& MultiPwAff::product(MultiPwAff multi2) {
+inline MultiPwAff flatRangeProduct(MultiPwAff multi1, MultiPwAff multi2) {
+   auto res = isl_multi_pw_aff_flat_range_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiPwAff::product(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_product(copy(), multi2.release());
    isl_multi_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiPwAff& MultiPwAff::pullback(MultiAff ma) {
+inline MultiPwAff product(MultiPwAff multi1, MultiPwAff multi2) {
+   auto res = isl_multi_pw_aff_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiPwAff::pullback(MultiAff ma) {
    auto res = isl_multi_pw_aff_pullback_multi_aff(copy(), ma.release());
    isl_multi_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiPwAff& MultiPwAff::pullback(PwMultiAff pma) {
+inline MultiPwAff pullback(MultiPwAff mpa, MultiAff ma) {
+   auto res = isl_multi_pw_aff_pullback_multi_aff(mpa.release(), ma.release());
+   return manage(res);
+}
+
+void MultiPwAff::pullback(PwMultiAff pma) {
    auto res = isl_multi_pw_aff_pullback_pw_multi_aff(copy(), pma.release());
    isl_multi_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiPwAff& MultiPwAff::pullback(MultiPwAff mpa2) {
+inline MultiPwAff pullback(MultiPwAff mpa, PwMultiAff pma) {
+   auto res = isl_multi_pw_aff_pullback_pw_multi_aff(mpa.release(), pma.release());
+   return manage(res);
+}
+
+void MultiPwAff::pullback(MultiPwAff mpa2) {
    auto res = isl_multi_pw_aff_pullback_multi_pw_aff(copy(), mpa2.release());
    isl_multi_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiPwAff& MultiPwAff::rangeProduct(MultiPwAff multi2) {
+inline MultiPwAff pullback(MultiPwAff mpa1, MultiPwAff mpa2) {
+   auto res = isl_multi_pw_aff_pullback_multi_pw_aff(mpa1.release(), mpa2.release());
+   return manage(res);
+}
+
+void MultiPwAff::rangeProduct(MultiPwAff multi2) {
    auto res = isl_multi_pw_aff_range_product(copy(), multi2.release());
    isl_multi_pw_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline MultiPwAff rangeProduct(MultiPwAff multi1, MultiPwAff multi2) {
+   auto res = isl_multi_pw_aff_range_product(multi1.release(), multi2.release());
+   return manage(res);
 }
 
 // implementations for isl::MultiUnionPwAff
@@ -2326,39 +2779,59 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiUnionPwAff& MultiUnionPwAff::add(MultiUnionPwAff multi2) {
+void MultiUnionPwAff::add(MultiUnionPwAff multi2) {
    auto res = isl_multi_union_pw_aff_add(copy(), multi2.release());
    isl_multi_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiUnionPwAff& MultiUnionPwAff::flatRangeProduct(MultiUnionPwAff multi2) {
+inline MultiUnionPwAff add(MultiUnionPwAff multi1, MultiUnionPwAff multi2) {
+   auto res = isl_multi_union_pw_aff_add(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiUnionPwAff::flatRangeProduct(MultiUnionPwAff multi2) {
    auto res = isl_multi_union_pw_aff_flat_range_product(copy(), multi2.release());
    isl_multi_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiUnionPwAff& MultiUnionPwAff::pullback(UnionPwMultiAff upma) {
+inline MultiUnionPwAff flatRangeProduct(MultiUnionPwAff multi1, MultiUnionPwAff multi2) {
+   auto res = isl_multi_union_pw_aff_flat_range_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiUnionPwAff::pullback(UnionPwMultiAff upma) {
    auto res = isl_multi_union_pw_aff_pullback_union_pw_multi_aff(copy(), upma.release());
    isl_multi_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiUnionPwAff& MultiUnionPwAff::rangeProduct(MultiUnionPwAff multi2) {
+inline MultiUnionPwAff pullback(MultiUnionPwAff mupa, UnionPwMultiAff upma) {
+   auto res = isl_multi_union_pw_aff_pullback_union_pw_multi_aff(mupa.release(), upma.release());
+   return manage(res);
+}
+
+void MultiUnionPwAff::rangeProduct(MultiUnionPwAff multi2) {
    auto res = isl_multi_union_pw_aff_range_product(copy(), multi2.release());
    isl_multi_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiUnionPwAff& MultiUnionPwAff::unionAdd(MultiUnionPwAff mupa2) {
+inline MultiUnionPwAff rangeProduct(MultiUnionPwAff multi1, MultiUnionPwAff multi2) {
+   auto res = isl_multi_union_pw_aff_range_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiUnionPwAff::unionAdd(MultiUnionPwAff mupa2) {
    auto res = isl_multi_union_pw_aff_union_add(copy(), mupa2.release());
    isl_multi_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline MultiUnionPwAff unionAdd(MultiUnionPwAff mupa1, MultiUnionPwAff mupa2) {
+   auto res = isl_multi_union_pw_aff_union_add(mupa1.release(), mupa2.release());
+   return manage(res);
 }
 
 // implementations for isl::MultiVal
@@ -2417,32 +2890,48 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-MultiVal& MultiVal::add(MultiVal multi2) {
+void MultiVal::add(MultiVal multi2) {
    auto res = isl_multi_val_add(copy(), multi2.release());
    isl_multi_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiVal& MultiVal::flatRangeProduct(MultiVal multi2) {
+inline MultiVal add(MultiVal multi1, MultiVal multi2) {
+   auto res = isl_multi_val_add(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiVal::flatRangeProduct(MultiVal multi2) {
    auto res = isl_multi_val_flat_range_product(copy(), multi2.release());
    isl_multi_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiVal& MultiVal::product(MultiVal multi2) {
+inline MultiVal flatRangeProduct(MultiVal multi1, MultiVal multi2) {
+   auto res = isl_multi_val_flat_range_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiVal::product(MultiVal multi2) {
    auto res = isl_multi_val_product(copy(), multi2.release());
    isl_multi_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-MultiVal& MultiVal::rangeProduct(MultiVal multi2) {
+inline MultiVal product(MultiVal multi1, MultiVal multi2) {
+   auto res = isl_multi_val_product(multi1.release(), multi2.release());
+   return manage(res);
+}
+
+void MultiVal::rangeProduct(MultiVal multi2) {
    auto res = isl_multi_val_range_product(copy(), multi2.release());
    isl_multi_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline MultiVal rangeProduct(MultiVal multi1, MultiVal multi2) {
+   auto res = isl_multi_val_range_product(multi1.release(), multi2.release());
+   return manage(res);
 }
 
 // implementations for isl::Point
@@ -2566,60 +3055,92 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-PwAff& PwAff::add(PwAff pwaff2) {
+void PwAff::add(PwAff pwaff2) {
    auto res = isl_pw_aff_add(copy(), pwaff2.release());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwAff& PwAff::mul(PwAff pwaff2) {
+inline PwAff add(PwAff pwaff1, PwAff pwaff2) {
+   auto res = isl_pw_aff_add(pwaff1.release(), pwaff2.release());
+   return manage(res);
+}
+
+void PwAff::mul(PwAff pwaff2) {
    auto res = isl_pw_aff_mul(copy(), pwaff2.release());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwAff& PwAff::neg() {
+inline PwAff mul(PwAff pwaff1, PwAff pwaff2) {
+   auto res = isl_pw_aff_mul(pwaff1.release(), pwaff2.release());
+   return manage(res);
+}
+
+void PwAff::neg() {
    auto res = isl_pw_aff_neg(copy());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwAff& PwAff::pullback(MultiAff ma) {
+inline PwAff neg(PwAff pwaff) {
+   auto res = isl_pw_aff_neg(pwaff.release());
+   return manage(res);
+}
+
+void PwAff::pullback(MultiAff ma) {
    auto res = isl_pw_aff_pullback_multi_aff(copy(), ma.release());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwAff& PwAff::pullback(PwMultiAff pma) {
+inline PwAff pullback(PwAff pa, MultiAff ma) {
+   auto res = isl_pw_aff_pullback_multi_aff(pa.release(), ma.release());
+   return manage(res);
+}
+
+void PwAff::pullback(PwMultiAff pma) {
    auto res = isl_pw_aff_pullback_pw_multi_aff(copy(), pma.release());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwAff& PwAff::pullback(MultiPwAff mpa) {
+inline PwAff pullback(PwAff pa, PwMultiAff pma) {
+   auto res = isl_pw_aff_pullback_pw_multi_aff(pa.release(), pma.release());
+   return manage(res);
+}
+
+void PwAff::pullback(MultiPwAff mpa) {
    auto res = isl_pw_aff_pullback_multi_pw_aff(copy(), mpa.release());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwAff& PwAff::sub(PwAff pwaff2) {
+inline PwAff pullback(PwAff pa, MultiPwAff mpa) {
+   auto res = isl_pw_aff_pullback_multi_pw_aff(pa.release(), mpa.release());
+   return manage(res);
+}
+
+void PwAff::sub(PwAff pwaff2) {
    auto res = isl_pw_aff_sub(copy(), pwaff2.release());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwAff& PwAff::unionAdd(PwAff pwaff2) {
+inline PwAff sub(PwAff pwaff1, PwAff pwaff2) {
+   auto res = isl_pw_aff_sub(pwaff1.release(), pwaff2.release());
+   return manage(res);
+}
+
+void PwAff::unionAdd(PwAff pwaff2) {
    auto res = isl_pw_aff_union_add(copy(), pwaff2.release());
    isl_pw_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline PwAff unionAdd(PwAff pwaff1, PwAff pwaff2) {
+   auto res = isl_pw_aff_union_add(pwaff1.release(), pwaff2.release());
+   return manage(res);
 }
 
 // implementations for isl::PwMultiAff
@@ -2691,53 +3212,81 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-PwMultiAff& PwMultiAff::add(PwMultiAff pma2) {
+void PwMultiAff::add(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_add(copy(), pma2.release());
    isl_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwMultiAff& PwMultiAff::flatRangeProduct(PwMultiAff pma2) {
+inline PwMultiAff add(PwMultiAff pma1, PwMultiAff pma2) {
+   auto res = isl_pw_multi_aff_add(pma1.release(), pma2.release());
+   return manage(res);
+}
+
+void PwMultiAff::flatRangeProduct(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_flat_range_product(copy(), pma2.release());
    isl_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwMultiAff& PwMultiAff::product(PwMultiAff pma2) {
+inline PwMultiAff flatRangeProduct(PwMultiAff pma1, PwMultiAff pma2) {
+   auto res = isl_pw_multi_aff_flat_range_product(pma1.release(), pma2.release());
+   return manage(res);
+}
+
+void PwMultiAff::product(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_product(copy(), pma2.release());
    isl_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwMultiAff& PwMultiAff::pullback(MultiAff ma) {
+inline PwMultiAff product(PwMultiAff pma1, PwMultiAff pma2) {
+   auto res = isl_pw_multi_aff_product(pma1.release(), pma2.release());
+   return manage(res);
+}
+
+void PwMultiAff::pullback(MultiAff ma) {
    auto res = isl_pw_multi_aff_pullback_multi_aff(copy(), ma.release());
    isl_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwMultiAff& PwMultiAff::pullback(PwMultiAff pma2) {
+inline PwMultiAff pullback(PwMultiAff pma, MultiAff ma) {
+   auto res = isl_pw_multi_aff_pullback_multi_aff(pma.release(), ma.release());
+   return manage(res);
+}
+
+void PwMultiAff::pullback(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_pullback_pw_multi_aff(copy(), pma2.release());
    isl_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwMultiAff& PwMultiAff::rangeProduct(PwMultiAff pma2) {
+inline PwMultiAff pullback(PwMultiAff pma1, PwMultiAff pma2) {
+   auto res = isl_pw_multi_aff_pullback_pw_multi_aff(pma1.release(), pma2.release());
+   return manage(res);
+}
+
+void PwMultiAff::rangeProduct(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_range_product(copy(), pma2.release());
    isl_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-PwMultiAff& PwMultiAff::unionAdd(PwMultiAff pma2) {
+inline PwMultiAff rangeProduct(PwMultiAff pma1, PwMultiAff pma2) {
+   auto res = isl_pw_multi_aff_range_product(pma1.release(), pma2.release());
+   return manage(res);
+}
+
+void PwMultiAff::unionAdd(PwMultiAff pma2) {
    auto res = isl_pw_multi_aff_union_add(copy(), pma2.release());
    isl_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline PwMultiAff unionAdd(PwMultiAff pma1, PwMultiAff pma2) {
+   auto res = isl_pw_multi_aff_union_add(pma1.release(), pma2.release());
+   return manage(res);
 }
 
 // implementations for isl::Schedule
@@ -2806,16 +3355,30 @@ UnionMap Schedule::getMap() const {
    return manage(res);
 }
 
+inline UnionMap getMap(const Schedule &sched) {
+   auto res = isl_schedule_get_map(sched.get());
+   return manage(res);
+}
+
 ScheduleNode Schedule::getRoot() const {
    auto res = isl_schedule_get_root(get());
    return manage(res);
 }
 
-Schedule& Schedule::pullback(UnionPwMultiAff upma) {
+inline ScheduleNode getRoot(const Schedule &schedule) {
+   auto res = isl_schedule_get_root(schedule.get());
+   return manage(res);
+}
+
+void Schedule::pullback(UnionPwMultiAff upma) {
    auto res = isl_schedule_pullback_union_pw_multi_aff(copy(), upma.release());
    isl_schedule_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Schedule pullback(Schedule schedule, UnionPwMultiAff upma) {
+   auto res = isl_schedule_pullback_union_pw_multi_aff(schedule.release(), upma.release());
+   return manage(res);
 }
 
 // implementations for isl::ScheduleConstraints
@@ -2884,8 +3447,18 @@ UnionMap ScheduleConstraints::getCoincidence() const {
    return manage(res);
 }
 
+inline UnionMap getCoincidence(const ScheduleConstraints &sc) {
+   auto res = isl_schedule_constraints_get_coincidence(sc.get());
+   return manage(res);
+}
+
 UnionMap ScheduleConstraints::getConditionalValidity() const {
    auto res = isl_schedule_constraints_get_conditional_validity(get());
+   return manage(res);
+}
+
+inline UnionMap getConditionalValidity(const ScheduleConstraints &sc) {
+   auto res = isl_schedule_constraints_get_conditional_validity(sc.get());
    return manage(res);
 }
 
@@ -2894,8 +3467,18 @@ UnionMap ScheduleConstraints::getConditionalValidityCondition() const {
    return manage(res);
 }
 
+inline UnionMap getConditionalValidityCondition(const ScheduleConstraints &sc) {
+   auto res = isl_schedule_constraints_get_conditional_validity_condition(sc.get());
+   return manage(res);
+}
+
 Set ScheduleConstraints::getContext() const {
    auto res = isl_schedule_constraints_get_context(get());
+   return manage(res);
+}
+
+inline Set getContext(const ScheduleConstraints &sc) {
+   auto res = isl_schedule_constraints_get_context(sc.get());
    return manage(res);
 }
 
@@ -2904,13 +3487,28 @@ UnionSet ScheduleConstraints::getDomain() const {
    return manage(res);
 }
 
+inline UnionSet getDomain(const ScheduleConstraints &sc) {
+   auto res = isl_schedule_constraints_get_domain(sc.get());
+   return manage(res);
+}
+
 UnionMap ScheduleConstraints::getProximity() const {
    auto res = isl_schedule_constraints_get_proximity(get());
    return manage(res);
 }
 
+inline UnionMap getProximity(const ScheduleConstraints &sc) {
+   auto res = isl_schedule_constraints_get_proximity(sc.get());
+   return manage(res);
+}
+
 UnionMap ScheduleConstraints::getValidity() const {
    auto res = isl_schedule_constraints_get_validity(get());
+   return manage(res);
+}
+
+inline UnionMap getValidity(const ScheduleConstraints &sc) {
+   auto res = isl_schedule_constraints_get_validity(sc.get());
    return manage(res);
 }
 
@@ -2975,22 +3573,40 @@ Bool ScheduleNode::bandMemberGetCoincident(int pos) const {
    return res;
 }
 
-ScheduleNode& ScheduleNode::bandMemberSetCoincident(int pos, int coincident) {
+inline Bool bandMemberGetCoincident(const ScheduleNode &node, int pos) {
+   auto res = isl_schedule_node_band_member_get_coincident(node.get(), pos);
+   return res;
+}
+
+void ScheduleNode::bandMemberSetCoincident(int pos, int coincident) {
    auto res = isl_schedule_node_band_member_set_coincident(copy(), pos, coincident);
    isl_schedule_node_free(ptr);
    ptr = res;
-   return *this;
 }
 
-ScheduleNode& ScheduleNode::child(int pos) {
+inline ScheduleNode bandMemberSetCoincident(ScheduleNode node, int pos, int coincident) {
+   auto res = isl_schedule_node_band_member_set_coincident(node.release(), pos, coincident);
+   return manage(res);
+}
+
+void ScheduleNode::child(int pos) {
    auto res = isl_schedule_node_child(copy(), pos);
    isl_schedule_node_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline ScheduleNode child(ScheduleNode node, int pos) {
+   auto res = isl_schedule_node_child(node.release(), pos);
+   return manage(res);
 }
 
 MultiUnionPwAff ScheduleNode::getPrefixScheduleMultiUnionPwAff() const {
    auto res = isl_schedule_node_get_prefix_schedule_multi_union_pw_aff(get());
+   return manage(res);
+}
+
+inline MultiUnionPwAff getPrefixScheduleMultiUnionPwAff(const ScheduleNode &node) {
+   auto res = isl_schedule_node_get_prefix_schedule_multi_union_pw_aff(node.get());
    return manage(res);
 }
 
@@ -2999,8 +3615,18 @@ UnionMap ScheduleNode::getPrefixScheduleUnionMap() const {
    return manage(res);
 }
 
+inline UnionMap getPrefixScheduleUnionMap(const ScheduleNode &node) {
+   auto res = isl_schedule_node_get_prefix_schedule_union_map(node.get());
+   return manage(res);
+}
+
 UnionPwMultiAff ScheduleNode::getPrefixScheduleUnionPwMultiAff() const {
    auto res = isl_schedule_node_get_prefix_schedule_union_pw_multi_aff(get());
+   return manage(res);
+}
+
+inline UnionPwMultiAff getPrefixScheduleUnionPwMultiAff(const ScheduleNode &node) {
+   auto res = isl_schedule_node_get_prefix_schedule_union_pw_multi_aff(node.get());
    return manage(res);
 }
 
@@ -3009,11 +3635,20 @@ Schedule ScheduleNode::getSchedule() const {
    return manage(res);
 }
 
-ScheduleNode& ScheduleNode::parent() {
+inline Schedule getSchedule(const ScheduleNode &node) {
+   auto res = isl_schedule_node_get_schedule(node.get());
+   return manage(res);
+}
+
+void ScheduleNode::parent() {
    auto res = isl_schedule_node_parent(copy());
    isl_schedule_node_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline ScheduleNode parent(ScheduleNode node) {
+   auto res = isl_schedule_node_parent(node.release());
+   return manage(res);
 }
 
 // implementations for isl::Set
@@ -3089,11 +3724,15 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-Set& Set::addDims(enum DimType type, unsigned int n) {
+void Set::addDims(enum DimType type, unsigned int n) {
    auto res = isl_set_add_dims(copy(), static_cast<enum isl_dim_type>(type), n);
    isl_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Set addDims(Set set, enum DimType type, unsigned int n) {
+   auto res = isl_set_add_dims(set.release(), static_cast<enum isl_dim_type>(type), n);
+   return manage(res);
 }
 
 BasicSet Set::affineHull() const {
@@ -3101,36 +3740,62 @@ BasicSet Set::affineHull() const {
    return manage(res);
 }
 
-Set& Set::apply(Map map) {
+inline BasicSet affineHull(Set set) {
+   auto res = isl_set_affine_hull(set.release());
+   return manage(res);
+}
+
+void Set::apply(Map map) {
    auto res = isl_set_apply(copy(), map.release());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Set& Set::coalesce() {
+inline Set apply(Set set, Map map) {
+   auto res = isl_set_apply(set.release(), map.release());
+   return manage(res);
+}
+
+void Set::coalesce() {
    auto res = isl_set_coalesce(copy());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Set& Set::complement() {
+inline Set coalesce(Set set) {
+   auto res = isl_set_coalesce(set.release());
+   return manage(res);
+}
+
+void Set::complement() {
    auto res = isl_set_complement(copy());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Set& Set::detectEqualities() {
+inline Set complement(Set set) {
+   auto res = isl_set_complement(set.release());
+   return manage(res);
+}
+
+void Set::detectEqualities() {
    auto res = isl_set_detect_equalities(copy());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Set detectEqualities(Set set) {
+   auto res = isl_set_detect_equalities(set.release());
+   return manage(res);
 }
 
 unsigned int Set::dim(enum DimType type) const {
    auto res = isl_set_dim(get(), static_cast<enum isl_dim_type>(type));
+   return res;
+}
+
+inline unsigned int dim(const Set &set, enum DimType type) {
+   auto res = isl_set_dim(set.get(), static_cast<enum isl_dim_type>(type));
    return res;
 }
 
@@ -3139,23 +3804,41 @@ PwAff Set::dimMax(int pos) const {
    return manage(res);
 }
 
+inline PwAff dimMax(Set set, int pos) {
+   auto res = isl_set_dim_max(set.release(), pos);
+   return manage(res);
+}
+
 PwAff Set::dimMin(int pos) const {
    auto res = isl_set_dim_min(copy(), pos);
    return manage(res);
 }
 
-Set& Set::flatten() {
+inline PwAff dimMin(Set set, int pos) {
+   auto res = isl_set_dim_min(set.release(), pos);
+   return manage(res);
+}
+
+void Set::flatten() {
    auto res = isl_set_flatten(copy());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Set& Set::gist(Set context) {
+inline Set flatten(Set set) {
+   auto res = isl_set_flatten(set.release());
+   return manage(res);
+}
+
+void Set::gist(Set context) {
    auto res = isl_set_gist(copy(), context.release());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Set gist(Set set, Set context) {
+   auto res = isl_set_gist(set.release(), context.release());
+   return manage(res);
 }
 
 Map Set::identity() const {
@@ -3163,22 +3846,40 @@ Map Set::identity() const {
    return manage(res);
 }
 
-Set& Set::intersect(Set set2) {
+inline Map identity(Set set) {
+   auto res = isl_set_identity(set.release());
+   return manage(res);
+}
+
+void Set::intersect(Set set2) {
    auto res = isl_set_intersect(copy(), set2.release());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Set& Set::intersectParams(Set params) {
+inline Set intersect(Set set1, Set set2) {
+   auto res = isl_set_intersect(set1.release(), set2.release());
+   return manage(res);
+}
+
+void Set::intersectParams(Set params) {
    auto res = isl_set_intersect_params(copy(), params.release());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Set intersectParams(Set set, Set params) {
+   auto res = isl_set_intersect_params(set.release(), params.release());
+   return manage(res);
 }
 
 int Set::isBounded() const {
    auto res = isl_set_is_bounded(get());
+   return res;
+}
+
+inline int isBounded(const Set &set) {
+   auto res = isl_set_is_bounded(set.get());
    return res;
 }
 
@@ -3187,8 +3888,18 @@ Bool Set::isDisjoint(const Set &set2) const {
    return res;
 }
 
+inline Bool isDisjoint(const Set &set1, const Set &set2) {
+   auto res = isl_set_is_disjoint(set1.get(), set2.get());
+   return res;
+}
+
 Bool Set::isEmpty() const {
    auto res = isl_set_is_empty(get());
+   return res;
+}
+
+inline Bool isEmpty(const Set &set) {
+   auto res = isl_set_is_empty(set.get());
    return res;
 }
 
@@ -3197,8 +3908,18 @@ Bool Set::isEqual(const Set &set2) const {
    return res;
 }
 
+inline Bool isEqual(const Set &set1, const Set &set2) {
+   auto res = isl_set_is_equal(set1.get(), set2.get());
+   return res;
+}
+
 Bool Set::isStrictSubset(const Set &set2) const {
    auto res = isl_set_is_strict_subset(get(), set2.get());
+   return res;
+}
+
+inline Bool isStrictSubset(const Set &set1, const Set &set2) {
+   auto res = isl_set_is_strict_subset(set1.get(), set2.get());
    return res;
 }
 
@@ -3207,27 +3928,50 @@ Bool Set::isSubset(const Set &set2) const {
    return res;
 }
 
+inline Bool isSubset(const Set &set1, const Set &set2) {
+   auto res = isl_set_is_subset(set1.get(), set2.get());
+   return res;
+}
+
 Bool Set::isWrapping() const {
    auto res = isl_set_is_wrapping(get());
    return res;
 }
 
-Set& Set::lexmax() {
+inline Bool isWrapping(const Set &set) {
+   auto res = isl_set_is_wrapping(set.get());
+   return res;
+}
+
+void Set::lexmax() {
    auto res = isl_set_lexmax(copy());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Set& Set::lexmin() {
+inline Set lexmax(Set set) {
+   auto res = isl_set_lexmax(set.release());
+   return manage(res);
+}
+
+void Set::lexmin() {
    auto res = isl_set_lexmin(copy());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Set lexmin(Set set) {
+   auto res = isl_set_lexmin(set.release());
+   return manage(res);
 }
 
 Val Set::maxVal(const Aff &obj) const {
    auto res = isl_set_max_val(get(), obj.get());
+   return manage(res);
+}
+
+inline Val maxVal(const Set &set, const Aff &obj) {
+   auto res = isl_set_max_val(set.get(), obj.get());
    return manage(res);
 }
 
@@ -3236,20 +3980,39 @@ Val Set::minVal(const Aff &obj) const {
    return manage(res);
 }
 
+inline Val minVal(const Set &set, const Aff &obj) {
+   auto res = isl_set_min_val(set.get(), obj.get());
+   return manage(res);
+}
+
 BasicSet Set::polyhedralHull() const {
    auto res = isl_set_polyhedral_hull(copy());
    return manage(res);
 }
 
-Set& Set::projectOut(enum DimType type, unsigned int first, unsigned int n) {
+inline BasicSet polyhedralHull(Set set) {
+   auto res = isl_set_polyhedral_hull(set.release());
+   return manage(res);
+}
+
+void Set::projectOut(enum DimType type, unsigned int first, unsigned int n) {
    auto res = isl_set_project_out(copy(), static_cast<enum isl_dim_type>(type), first, n);
    isl_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Set projectOut(Set set, enum DimType type, unsigned int first, unsigned int n) {
+   auto res = isl_set_project_out(set.release(), static_cast<enum isl_dim_type>(type), first, n);
+   return manage(res);
 }
 
 BasicSet Set::sample() const {
    auto res = isl_set_sample(copy());
+   return manage(res);
+}
+
+inline BasicSet sample(Set set) {
+   auto res = isl_set_sample(set.release());
    return manage(res);
 }
 
@@ -3258,22 +4021,40 @@ Point Set::samplePoint() const {
    return manage(res);
 }
 
-Set& Set::subtract(Set set2) {
+inline Point samplePoint(Set set) {
+   auto res = isl_set_sample_point(set.release());
+   return manage(res);
+}
+
+void Set::subtract(Set set2) {
    auto res = isl_set_subtract(copy(), set2.release());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Set& Set::unite(Set set2) {
+inline Set subtract(Set set1, Set set2) {
+   auto res = isl_set_subtract(set1.release(), set2.release());
+   return manage(res);
+}
+
+void Set::unite(Set set2) {
    auto res = isl_set_union(copy(), set2.release());
    isl_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Set unite(Set set1, Set set2) {
+   auto res = isl_set_union(set1.release(), set2.release());
+   return manage(res);
 }
 
 BasicSet Set::unshiftedSimpleHull() const {
    auto res = isl_set_unshifted_simple_hull(copy());
+   return manage(res);
+}
+
+inline BasicSet unshiftedSimpleHull(Set set) {
+   auto res = isl_set_unshifted_simple_hull(set.release());
    return manage(res);
 }
 
@@ -3398,32 +4179,53 @@ UnionFlow UnionAccessInfo::computeFlow() const {
    return manage(res);
 }
 
-UnionAccessInfo& UnionAccessInfo::setMaySource(UnionMap may_source) {
+inline UnionFlow computeFlow(UnionAccessInfo access) {
+   auto res = isl_union_access_info_compute_flow(access.release());
+   return manage(res);
+}
+
+void UnionAccessInfo::setMaySource(UnionMap may_source) {
    auto res = isl_union_access_info_set_may_source(copy(), may_source.release());
    isl_union_access_info_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionAccessInfo& UnionAccessInfo::setMustSource(UnionMap must_source) {
+inline UnionAccessInfo setMaySource(UnionAccessInfo access, UnionMap may_source) {
+   auto res = isl_union_access_info_set_may_source(access.release(), may_source.release());
+   return manage(res);
+}
+
+void UnionAccessInfo::setMustSource(UnionMap must_source) {
    auto res = isl_union_access_info_set_must_source(copy(), must_source.release());
    isl_union_access_info_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionAccessInfo& UnionAccessInfo::setSchedule(Schedule schedule) {
+inline UnionAccessInfo setMustSource(UnionAccessInfo access, UnionMap must_source) {
+   auto res = isl_union_access_info_set_must_source(access.release(), must_source.release());
+   return manage(res);
+}
+
+void UnionAccessInfo::setSchedule(Schedule schedule) {
    auto res = isl_union_access_info_set_schedule(copy(), schedule.release());
    isl_union_access_info_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionAccessInfo& UnionAccessInfo::setScheduleMap(UnionMap schedule_map) {
+inline UnionAccessInfo setSchedule(UnionAccessInfo access, Schedule schedule) {
+   auto res = isl_union_access_info_set_schedule(access.release(), schedule.release());
+   return manage(res);
+}
+
+void UnionAccessInfo::setScheduleMap(UnionMap schedule_map) {
    auto res = isl_union_access_info_set_schedule_map(copy(), schedule_map.release());
    isl_union_access_info_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionAccessInfo setScheduleMap(UnionAccessInfo access, UnionMap schedule_map) {
+   auto res = isl_union_access_info_set_schedule_map(access.release(), schedule_map.release());
+   return manage(res);
 }
 
 // implementations for isl::UnionFlow
@@ -3487,8 +4289,18 @@ UnionMap UnionFlow::getFullMayDependence() const {
    return manage(res);
 }
 
+inline UnionMap getFullMayDependence(const UnionFlow &flow) {
+   auto res = isl_union_flow_get_full_may_dependence(flow.get());
+   return manage(res);
+}
+
 UnionMap UnionFlow::getFullMustDependence() const {
    auto res = isl_union_flow_get_full_must_dependence(get());
+   return manage(res);
+}
+
+inline UnionMap getFullMustDependence(const UnionFlow &flow) {
+   auto res = isl_union_flow_get_full_must_dependence(flow.get());
    return manage(res);
 }
 
@@ -3497,8 +4309,18 @@ UnionMap UnionFlow::getMayDependence() const {
    return manage(res);
 }
 
+inline UnionMap getMayDependence(const UnionFlow &flow) {
+   auto res = isl_union_flow_get_may_dependence(flow.get());
+   return manage(res);
+}
+
 UnionMap UnionFlow::getMayNoSource() const {
    auto res = isl_union_flow_get_may_no_source(get());
+   return manage(res);
+}
+
+inline UnionMap getMayNoSource(const UnionFlow &flow) {
+   auto res = isl_union_flow_get_may_no_source(flow.get());
    return manage(res);
 }
 
@@ -3507,8 +4329,18 @@ UnionMap UnionFlow::getMustDependence() const {
    return manage(res);
 }
 
+inline UnionMap getMustDependence(const UnionFlow &flow) {
+   auto res = isl_union_flow_get_must_dependence(flow.get());
+   return manage(res);
+}
+
 UnionMap UnionFlow::getMustNoSource() const {
    auto res = isl_union_flow_get_must_no_source(get());
+   return manage(res);
+}
+
+inline UnionMap getMustNoSource(const UnionFlow &flow) {
+   auto res = isl_union_flow_get_must_no_source(flow.get());
    return manage(res);
 }
 
@@ -3585,46 +4417,70 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionMap& UnionMap::addMap(Map map) {
+void UnionMap::addMap(Map map) {
    auto res = isl_union_map_add_map(copy(), map.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::affineHull() {
+inline UnionMap addMap(UnionMap umap, Map map) {
+   auto res = isl_union_map_add_map(umap.release(), map.release());
+   return manage(res);
+}
+
+void UnionMap::affineHull() {
    auto res = isl_union_map_affine_hull(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::applyDomain(UnionMap umap2) {
+inline UnionMap affineHull(UnionMap umap) {
+   auto res = isl_union_map_affine_hull(umap.release());
+   return manage(res);
+}
+
+void UnionMap::applyDomain(UnionMap umap2) {
    auto res = isl_union_map_apply_domain(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::applyRange(UnionMap umap2) {
+inline UnionMap applyDomain(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_apply_domain(umap1.release(), umap2.release());
+   return manage(res);
+}
+
+void UnionMap::applyRange(UnionMap umap2) {
    auto res = isl_union_map_apply_range(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::coalesce() {
+inline UnionMap applyRange(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_apply_range(umap1.release(), umap2.release());
+   return manage(res);
+}
+
+void UnionMap::coalesce() {
    auto res = isl_union_map_coalesce(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::computeDivs() {
+inline UnionMap coalesce(UnionMap umap) {
+   auto res = isl_union_map_coalesce(umap.release());
+   return manage(res);
+}
+
+void UnionMap::computeDivs() {
    auto res = isl_union_map_compute_divs(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap computeDivs(UnionMap umap) {
+   auto res = isl_union_map_compute_divs(umap.release());
+   return manage(res);
 }
 
 UnionSet UnionMap::deltas() const {
@@ -3632,11 +4488,20 @@ UnionSet UnionMap::deltas() const {
    return manage(res);
 }
 
-UnionMap& UnionMap::detectEqualities() {
+inline UnionSet deltas(UnionMap umap) {
+   auto res = isl_union_map_deltas(umap.release());
+   return manage(res);
+}
+
+void UnionMap::detectEqualities() {
    auto res = isl_union_map_detect_equalities(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap detectEqualities(UnionMap umap) {
+   auto res = isl_union_map_detect_equalities(umap.release());
+   return manage(res);
 }
 
 UnionSet UnionMap::domain() const {
@@ -3644,25 +4509,42 @@ UnionSet UnionMap::domain() const {
    return manage(res);
 }
 
-UnionMap& UnionMap::domainFactorDomain() {
+inline UnionSet domain(UnionMap umap) {
+   auto res = isl_union_map_domain(umap.release());
+   return manage(res);
+}
+
+void UnionMap::domainFactorDomain() {
    auto res = isl_union_map_domain_factor_domain(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::domainFactorRange() {
+inline UnionMap domainFactorDomain(UnionMap umap) {
+   auto res = isl_union_map_domain_factor_domain(umap.release());
+   return manage(res);
+}
+
+void UnionMap::domainFactorRange() {
    auto res = isl_union_map_domain_factor_range(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::domainMap() {
+inline UnionMap domainFactorRange(UnionMap umap) {
+   auto res = isl_union_map_domain_factor_range(umap.release());
+   return manage(res);
+}
+
+void UnionMap::domainMap() {
    auto res = isl_union_map_domain_map(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap domainMap(UnionMap umap) {
+   auto res = isl_union_map_domain_map(umap.release());
+   return manage(res);
 }
 
 UnionPwMultiAff UnionMap::domainMapUnionPwMultiAff() const {
@@ -3670,42 +4552,72 @@ UnionPwMultiAff UnionMap::domainMapUnionPwMultiAff() const {
    return manage(res);
 }
 
-UnionMap& UnionMap::domainProduct(UnionMap umap2) {
+inline UnionPwMultiAff domainMapUnionPwMultiAff(UnionMap umap) {
+   auto res = isl_union_map_domain_map_union_pw_multi_aff(umap.release());
+   return manage(res);
+}
+
+void UnionMap::domainProduct(UnionMap umap2) {
    auto res = isl_union_map_domain_product(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::factorDomain() {
+inline UnionMap domainProduct(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_domain_product(umap1.release(), umap2.release());
+   return manage(res);
+}
+
+void UnionMap::factorDomain() {
    auto res = isl_union_map_factor_domain(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::factorRange() {
+inline UnionMap factorDomain(UnionMap umap) {
+   auto res = isl_union_map_factor_domain(umap.release());
+   return manage(res);
+}
+
+void UnionMap::factorRange() {
    auto res = isl_union_map_factor_range(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::fixedPower(Val exp) {
+inline UnionMap factorRange(UnionMap umap) {
+   auto res = isl_union_map_factor_range(umap.release());
+   return manage(res);
+}
+
+void UnionMap::fixedPower(Val exp) {
    auto res = isl_union_map_fixed_power_val(copy(), exp.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::flatRangeProduct(UnionMap umap2) {
+inline UnionMap fixedPower(UnionMap umap, Val exp) {
+   auto res = isl_union_map_fixed_power_val(umap.release(), exp.release());
+   return manage(res);
+}
+
+void UnionMap::flatRangeProduct(UnionMap umap2) {
    auto res = isl_union_map_flat_range_product(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap flatRangeProduct(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_flat_range_product(umap1.release(), umap2.release());
+   return manage(res);
 }
 
 UnionMap UnionMap::from(UnionPwMultiAff upma) {
+   auto res = isl_union_map_from_union_pw_multi_aff(upma.release());
+   return manage(res);
+}
+
+inline UnionMap from(UnionPwMultiAff upma) {
    auto res = isl_union_map_from_union_pw_multi_aff(upma.release());
    return manage(res);
 }
@@ -3715,69 +4627,116 @@ UnionMap UnionMap::from(MultiUnionPwAff mupa) {
    return manage(res);
 }
 
+inline UnionMap from(MultiUnionPwAff mupa) {
+   auto res = isl_union_map_from_multi_union_pw_aff(mupa.release());
+   return manage(res);
+}
+
 UnionMap UnionMap::fromDomainAndRange(UnionSet domain, UnionSet range) {
    auto res = isl_union_map_from_domain_and_range(domain.release(), range.release());
    return manage(res);
 }
 
-UnionMap& UnionMap::gist(UnionMap context) {
+inline UnionMap fromDomainAndRange(UnionSet domain, UnionSet range) {
+   auto res = isl_union_map_from_domain_and_range(domain.release(), range.release());
+   return manage(res);
+}
+
+void UnionMap::gist(UnionMap context) {
    auto res = isl_union_map_gist(copy(), context.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::gistDomain(UnionSet uset) {
+inline UnionMap gist(UnionMap umap, UnionMap context) {
+   auto res = isl_union_map_gist(umap.release(), context.release());
+   return manage(res);
+}
+
+void UnionMap::gistDomain(UnionSet uset) {
    auto res = isl_union_map_gist_domain(copy(), uset.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::gistParams(Set set) {
+inline UnionMap gistDomain(UnionMap umap, UnionSet uset) {
+   auto res = isl_union_map_gist_domain(umap.release(), uset.release());
+   return manage(res);
+}
+
+void UnionMap::gistParams(Set set) {
    auto res = isl_union_map_gist_params(copy(), set.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::gistRange(UnionSet uset) {
+inline UnionMap gistParams(UnionMap umap, Set set) {
+   auto res = isl_union_map_gist_params(umap.release(), set.release());
+   return manage(res);
+}
+
+void UnionMap::gistRange(UnionSet uset) {
    auto res = isl_union_map_gist_range(copy(), uset.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::intersect(UnionMap umap2) {
+inline UnionMap gistRange(UnionMap umap, UnionSet uset) {
+   auto res = isl_union_map_gist_range(umap.release(), uset.release());
+   return manage(res);
+}
+
+void UnionMap::intersect(UnionMap umap2) {
    auto res = isl_union_map_intersect(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::intersectDomain(UnionSet uset) {
+inline UnionMap intersect(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_intersect(umap1.release(), umap2.release());
+   return manage(res);
+}
+
+void UnionMap::intersectDomain(UnionSet uset) {
    auto res = isl_union_map_intersect_domain(copy(), uset.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::intersectParams(Set set) {
+inline UnionMap intersectDomain(UnionMap umap, UnionSet uset) {
+   auto res = isl_union_map_intersect_domain(umap.release(), uset.release());
+   return manage(res);
+}
+
+void UnionMap::intersectParams(Set set) {
    auto res = isl_union_map_intersect_params(copy(), set.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::intersectRange(UnionSet uset) {
+inline UnionMap intersectParams(UnionMap umap, Set set) {
+   auto res = isl_union_map_intersect_params(umap.release(), set.release());
+   return manage(res);
+}
+
+void UnionMap::intersectRange(UnionSet uset) {
    auto res = isl_union_map_intersect_range(copy(), uset.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap intersectRange(UnionMap umap, UnionSet uset) {
+   auto res = isl_union_map_intersect_range(umap.release(), uset.release());
+   return manage(res);
 }
 
 Bool UnionMap::isBijective() const {
    auto res = isl_union_map_is_bijective(get());
+   return res;
+}
+
+inline Bool isBijective(const UnionMap &umap) {
+   auto res = isl_union_map_is_bijective(umap.get());
    return res;
 }
 
@@ -3786,8 +4745,18 @@ Bool UnionMap::isEmpty() const {
    return res;
 }
 
+inline Bool isEmpty(const UnionMap &umap) {
+   auto res = isl_union_map_is_empty(umap.get());
+   return res;
+}
+
 Bool UnionMap::isEqual(const UnionMap &umap2) const {
    auto res = isl_union_map_is_equal(get(), umap2.get());
+   return res;
+}
+
+inline Bool isEqual(const UnionMap &umap1, const UnionMap &umap2) {
+   auto res = isl_union_map_is_equal(umap1.get(), umap2.get());
    return res;
 }
 
@@ -3796,8 +4765,18 @@ Bool UnionMap::isInjective() const {
    return res;
 }
 
+inline Bool isInjective(const UnionMap &umap) {
+   auto res = isl_union_map_is_injective(umap.get());
+   return res;
+}
+
 Bool UnionMap::isSingleValued() const {
    auto res = isl_union_map_is_single_valued(get());
+   return res;
+}
+
+inline Bool isSingleValued(const UnionMap &umap) {
+   auto res = isl_union_map_is_single_valued(umap.get());
    return res;
 }
 
@@ -3806,37 +4785,63 @@ Bool UnionMap::isStrictSubset(const UnionMap &umap2) const {
    return res;
 }
 
+inline Bool isStrictSubset(const UnionMap &umap1, const UnionMap &umap2) {
+   auto res = isl_union_map_is_strict_subset(umap1.get(), umap2.get());
+   return res;
+}
+
 Bool UnionMap::isSubset(const UnionMap &umap2) const {
    auto res = isl_union_map_is_subset(get(), umap2.get());
    return res;
 }
 
-UnionMap& UnionMap::lexmax() {
+inline Bool isSubset(const UnionMap &umap1, const UnionMap &umap2) {
+   auto res = isl_union_map_is_subset(umap1.get(), umap2.get());
+   return res;
+}
+
+void UnionMap::lexmax() {
    auto res = isl_union_map_lexmax(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::lexmin() {
+inline UnionMap lexmax(UnionMap umap) {
+   auto res = isl_union_map_lexmax(umap.release());
+   return manage(res);
+}
+
+void UnionMap::lexmin() {
    auto res = isl_union_map_lexmin(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::polyhedralHull() {
+inline UnionMap lexmin(UnionMap umap) {
+   auto res = isl_union_map_lexmin(umap.release());
+   return manage(res);
+}
+
+void UnionMap::polyhedralHull() {
    auto res = isl_union_map_polyhedral_hull(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::product(UnionMap umap2) {
+inline UnionMap polyhedralHull(UnionMap umap) {
+   auto res = isl_union_map_polyhedral_hull(umap.release());
+   return manage(res);
+}
+
+void UnionMap::product(UnionMap umap2) {
    auto res = isl_union_map_product(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap product(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_product(umap1.release(), umap2.release());
+   return manage(res);
 }
 
 UnionSet UnionMap::range() const {
@@ -3844,67 +4849,108 @@ UnionSet UnionMap::range() const {
    return manage(res);
 }
 
-UnionMap& UnionMap::rangeFactorDomain() {
+inline UnionSet range(UnionMap umap) {
+   auto res = isl_union_map_range(umap.release());
+   return manage(res);
+}
+
+void UnionMap::rangeFactorDomain() {
    auto res = isl_union_map_range_factor_domain(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::rangeFactorRange() {
+inline UnionMap rangeFactorDomain(UnionMap umap) {
+   auto res = isl_union_map_range_factor_domain(umap.release());
+   return manage(res);
+}
+
+void UnionMap::rangeFactorRange() {
    auto res = isl_union_map_range_factor_range(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::rangeMap() {
+inline UnionMap rangeFactorRange(UnionMap umap) {
+   auto res = isl_union_map_range_factor_range(umap.release());
+   return manage(res);
+}
+
+void UnionMap::rangeMap() {
    auto res = isl_union_map_range_map(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::rangeProduct(UnionMap umap2) {
+inline UnionMap rangeMap(UnionMap umap) {
+   auto res = isl_union_map_range_map(umap.release());
+   return manage(res);
+}
+
+void UnionMap::rangeProduct(UnionMap umap2) {
    auto res = isl_union_map_range_product(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::reverse() {
+inline UnionMap rangeProduct(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_range_product(umap1.release(), umap2.release());
+   return manage(res);
+}
+
+void UnionMap::reverse() {
    auto res = isl_union_map_reverse(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::subtract(UnionMap umap2) {
+inline UnionMap reverse(UnionMap umap) {
+   auto res = isl_union_map_reverse(umap.release());
+   return manage(res);
+}
+
+void UnionMap::subtract(UnionMap umap2) {
    auto res = isl_union_map_subtract(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::subtractDomain(UnionSet dom) {
+inline UnionMap subtract(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_subtract(umap1.release(), umap2.release());
+   return manage(res);
+}
+
+void UnionMap::subtractDomain(UnionSet dom) {
    auto res = isl_union_map_subtract_domain(copy(), dom.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::subtractRange(UnionSet dom) {
+inline UnionMap subtractDomain(UnionMap umap, UnionSet dom) {
+   auto res = isl_union_map_subtract_domain(umap.release(), dom.release());
+   return manage(res);
+}
+
+void UnionMap::subtractRange(UnionSet dom) {
    auto res = isl_union_map_subtract_range(copy(), dom.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionMap& UnionMap::unite(UnionMap umap2) {
+inline UnionMap subtractRange(UnionMap umap, UnionSet dom) {
+   auto res = isl_union_map_subtract_range(umap.release(), dom.release());
+   return manage(res);
+}
+
+void UnionMap::unite(UnionMap umap2) {
    auto res = isl_union_map_union(copy(), umap2.release());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap unite(UnionMap umap1, UnionMap umap2) {
+   auto res = isl_union_map_union(umap1.release(), umap2.release());
+   return manage(res);
 }
 
 UnionSet UnionMap::wrap() const {
@@ -3912,11 +4958,20 @@ UnionSet UnionMap::wrap() const {
    return manage(res);
 }
 
-UnionMap& UnionMap::zip() {
+inline UnionSet wrap(UnionMap umap) {
+   auto res = isl_union_map_wrap(umap.release());
+   return manage(res);
+}
+
+void UnionMap::zip() {
    auto res = isl_union_map_zip(copy());
    isl_union_map_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionMap zip(UnionMap umap) {
+   auto res = isl_union_map_zip(umap.release());
+   return manage(res);
 }
 
 // implementations for isl::UnionPwAff
@@ -3984,32 +5039,48 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionPwAff& UnionPwAff::add(UnionPwAff upa2) {
+void UnionPwAff::add(UnionPwAff upa2) {
    auto res = isl_union_pw_aff_add(copy(), upa2.release());
    isl_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionPwAff& UnionPwAff::pullback(UnionPwMultiAff upma) {
+inline UnionPwAff add(UnionPwAff upa1, UnionPwAff upa2) {
+   auto res = isl_union_pw_aff_add(upa1.release(), upa2.release());
+   return manage(res);
+}
+
+void UnionPwAff::pullback(UnionPwMultiAff upma) {
    auto res = isl_union_pw_aff_pullback_union_pw_multi_aff(copy(), upma.release());
    isl_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionPwAff& UnionPwAff::sub(UnionPwAff upa2) {
+inline UnionPwAff pullback(UnionPwAff upa, UnionPwMultiAff upma) {
+   auto res = isl_union_pw_aff_pullback_union_pw_multi_aff(upa.release(), upma.release());
+   return manage(res);
+}
+
+void UnionPwAff::sub(UnionPwAff upa2) {
    auto res = isl_union_pw_aff_sub(copy(), upa2.release());
    isl_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionPwAff& UnionPwAff::unionAdd(UnionPwAff upa2) {
+inline UnionPwAff sub(UnionPwAff upa1, UnionPwAff upa2) {
+   auto res = isl_union_pw_aff_sub(upa1.release(), upa2.release());
+   return manage(res);
+}
+
+void UnionPwAff::unionAdd(UnionPwAff upa2) {
    auto res = isl_union_pw_aff_union_add(copy(), upa2.release());
    isl_union_pw_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionPwAff unionAdd(UnionPwAff upa1, UnionPwAff upa2) {
+   auto res = isl_union_pw_aff_union_add(upa1.release(), upa2.release());
+   return manage(res);
 }
 
 // implementations for isl::UnionPwMultiAff
@@ -4085,32 +5156,48 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionPwMultiAff& UnionPwMultiAff::add(UnionPwMultiAff upma2) {
+void UnionPwMultiAff::add(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_add(copy(), upma2.release());
    isl_union_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionPwMultiAff& UnionPwMultiAff::flatRangeProduct(UnionPwMultiAff upma2) {
+inline UnionPwMultiAff add(UnionPwMultiAff upma1, UnionPwMultiAff upma2) {
+   auto res = isl_union_pw_multi_aff_add(upma1.release(), upma2.release());
+   return manage(res);
+}
+
+void UnionPwMultiAff::flatRangeProduct(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_flat_range_product(copy(), upma2.release());
    isl_union_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionPwMultiAff& UnionPwMultiAff::pullback(UnionPwMultiAff upma2) {
+inline UnionPwMultiAff flatRangeProduct(UnionPwMultiAff upma1, UnionPwMultiAff upma2) {
+   auto res = isl_union_pw_multi_aff_flat_range_product(upma1.release(), upma2.release());
+   return manage(res);
+}
+
+void UnionPwMultiAff::pullback(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_pullback_union_pw_multi_aff(copy(), upma2.release());
    isl_union_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionPwMultiAff& UnionPwMultiAff::unionAdd(UnionPwMultiAff upma2) {
+inline UnionPwMultiAff pullback(UnionPwMultiAff upma1, UnionPwMultiAff upma2) {
+   auto res = isl_union_pw_multi_aff_pullback_union_pw_multi_aff(upma1.release(), upma2.release());
+   return manage(res);
+}
+
+void UnionPwMultiAff::unionAdd(UnionPwMultiAff upma2) {
    auto res = isl_union_pw_multi_aff_union_add(copy(), upma2.release());
    isl_union_pw_multi_aff_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionPwMultiAff unionAdd(UnionPwMultiAff upma1, UnionPwMultiAff upma2) {
+   auto res = isl_union_pw_multi_aff_union_add(upma1.release(), upma2.release());
+   return manage(res);
 }
 
 // implementations for isl::UnionSet
@@ -4186,53 +5273,81 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-UnionSet& UnionSet::affineHull() {
+void UnionSet::affineHull() {
    auto res = isl_union_set_affine_hull(copy());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::apply(UnionMap umap) {
+inline UnionSet affineHull(UnionSet uset) {
+   auto res = isl_union_set_affine_hull(uset.release());
+   return manage(res);
+}
+
+void UnionSet::apply(UnionMap umap) {
    auto res = isl_union_set_apply(copy(), umap.release());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::coalesce() {
+inline UnionSet apply(UnionSet uset, UnionMap umap) {
+   auto res = isl_union_set_apply(uset.release(), umap.release());
+   return manage(res);
+}
+
+void UnionSet::coalesce() {
    auto res = isl_union_set_coalesce(copy());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::computeDivs() {
+inline UnionSet coalesce(UnionSet uset) {
+   auto res = isl_union_set_coalesce(uset.release());
+   return manage(res);
+}
+
+void UnionSet::computeDivs() {
    auto res = isl_union_set_compute_divs(copy());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::detectEqualities() {
+inline UnionSet computeDivs(UnionSet uset) {
+   auto res = isl_union_set_compute_divs(uset.release());
+   return manage(res);
+}
+
+void UnionSet::detectEqualities() {
    auto res = isl_union_set_detect_equalities(copy());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::gist(UnionSet context) {
+inline UnionSet detectEqualities(UnionSet uset) {
+   auto res = isl_union_set_detect_equalities(uset.release());
+   return manage(res);
+}
+
+void UnionSet::gist(UnionSet context) {
    auto res = isl_union_set_gist(copy(), context.release());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::gistParams(Set set) {
+inline UnionSet gist(UnionSet uset, UnionSet context) {
+   auto res = isl_union_set_gist(uset.release(), context.release());
+   return manage(res);
+}
+
+void UnionSet::gistParams(Set set) {
    auto res = isl_union_set_gist_params(copy(), set.release());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionSet gistParams(UnionSet uset, Set set) {
+   auto res = isl_union_set_gist_params(uset.release(), set.release());
+   return manage(res);
 }
 
 UnionMap UnionSet::identity() const {
@@ -4240,22 +5355,40 @@ UnionMap UnionSet::identity() const {
    return manage(res);
 }
 
-UnionSet& UnionSet::intersect(UnionSet uset2) {
+inline UnionMap identity(UnionSet uset) {
+   auto res = isl_union_set_identity(uset.release());
+   return manage(res);
+}
+
+void UnionSet::intersect(UnionSet uset2) {
    auto res = isl_union_set_intersect(copy(), uset2.release());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::intersectParams(Set set) {
+inline UnionSet intersect(UnionSet uset1, UnionSet uset2) {
+   auto res = isl_union_set_intersect(uset1.release(), uset2.release());
+   return manage(res);
+}
+
+void UnionSet::intersectParams(Set set) {
    auto res = isl_union_set_intersect_params(copy(), set.release());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionSet intersectParams(UnionSet uset, Set set) {
+   auto res = isl_union_set_intersect_params(uset.release(), set.release());
+   return manage(res);
 }
 
 Bool UnionSet::isEmpty() const {
    auto res = isl_union_set_is_empty(get());
+   return res;
+}
+
+inline Bool isEmpty(const UnionSet &uset) {
+   auto res = isl_union_set_is_empty(uset.get());
    return res;
 }
 
@@ -4264,8 +5397,18 @@ Bool UnionSet::isEqual(const UnionSet &uset2) const {
    return res;
 }
 
+inline Bool isEqual(const UnionSet &uset1, const UnionSet &uset2) {
+   auto res = isl_union_set_is_equal(uset1.get(), uset2.get());
+   return res;
+}
+
 Bool UnionSet::isStrictSubset(const UnionSet &uset2) const {
    auto res = isl_union_set_is_strict_subset(get(), uset2.get());
+   return res;
+}
+
+inline Bool isStrictSubset(const UnionSet &uset1, const UnionSet &uset2) {
+   auto res = isl_union_set_is_strict_subset(uset1.get(), uset2.get());
    return res;
 }
 
@@ -4274,25 +5417,42 @@ Bool UnionSet::isSubset(const UnionSet &uset2) const {
    return res;
 }
 
-UnionSet& UnionSet::lexmax() {
+inline Bool isSubset(const UnionSet &uset1, const UnionSet &uset2) {
+   auto res = isl_union_set_is_subset(uset1.get(), uset2.get());
+   return res;
+}
+
+void UnionSet::lexmax() {
    auto res = isl_union_set_lexmax(copy());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::lexmin() {
+inline UnionSet lexmax(UnionSet uset) {
+   auto res = isl_union_set_lexmax(uset.release());
+   return manage(res);
+}
+
+void UnionSet::lexmin() {
    auto res = isl_union_set_lexmin(copy());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::polyhedralHull() {
+inline UnionSet lexmin(UnionSet uset) {
+   auto res = isl_union_set_lexmin(uset.release());
+   return manage(res);
+}
+
+void UnionSet::polyhedralHull() {
    auto res = isl_union_set_polyhedral_hull(copy());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionSet polyhedralHull(UnionSet uset) {
+   auto res = isl_union_set_polyhedral_hull(uset.release());
+   return manage(res);
 }
 
 Point UnionSet::samplePoint() const {
@@ -4300,22 +5460,40 @@ Point UnionSet::samplePoint() const {
    return manage(res);
 }
 
-UnionSet& UnionSet::subtract(UnionSet uset2) {
+inline Point samplePoint(UnionSet uset) {
+   auto res = isl_union_set_sample_point(uset.release());
+   return manage(res);
+}
+
+void UnionSet::subtract(UnionSet uset2) {
    auto res = isl_union_set_subtract(copy(), uset2.release());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
 }
 
-UnionSet& UnionSet::unite(UnionSet uset2) {
+inline UnionSet subtract(UnionSet uset1, UnionSet uset2) {
+   auto res = isl_union_set_subtract(uset1.release(), uset2.release());
+   return manage(res);
+}
+
+void UnionSet::unite(UnionSet uset2) {
    auto res = isl_union_set_union(copy(), uset2.release());
    isl_union_set_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline UnionSet unite(UnionSet uset1, UnionSet uset2) {
+   auto res = isl_union_set_union(uset1.release(), uset2.release());
+   return manage(res);
 }
 
 UnionMap UnionSet::unwrap() const {
    auto res = isl_union_set_unwrap(copy());
+   return manage(res);
+}
+
+inline UnionMap unwrap(UnionSet uset) {
+   auto res = isl_union_set_unwrap(uset.release());
    return manage(res);
 }
 
@@ -4385,11 +5563,15 @@ inline llvm::raw_ostream &operator<<(llvm::raw_ostream &OS,
 }
 
 #endif
-Val& Val::abs() {
+void Val::abs() {
    auto res = isl_val_abs(copy());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val abs(Val v) {
+   auto res = isl_val_abs(v.release());
+   return manage(res);
 }
 
 Bool Val::absEq(const Val &v2) const {
@@ -4397,25 +5579,42 @@ Bool Val::absEq(const Val &v2) const {
    return res;
 }
 
-Val& Val::add(Val v2) {
+inline Bool absEq(const Val &v1, const Val &v2) {
+   auto res = isl_val_abs_eq(v1.get(), v2.get());
+   return res;
+}
+
+void Val::add(Val v2) {
    auto res = isl_val_add(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Val& Val::addUi(unsigned long v2) {
+inline Val add(Val v1, Val v2) {
+   auto res = isl_val_add(v1.release(), v2.release());
+   return manage(res);
+}
+
+void Val::addUi(unsigned long v2) {
    auto res = isl_val_add_ui(copy(), v2);
    isl_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Val& Val::ceil() {
+inline Val addUi(Val v1, unsigned long v2) {
+   auto res = isl_val_add_ui(v1.release(), v2);
+   return manage(res);
+}
+
+void Val::ceil() {
    auto res = isl_val_ceil(copy());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val ceil(Val v) {
+   auto res = isl_val_ceil(v.release());
+   return manage(res);
 }
 
 int Val::cmpSi(long i) const {
@@ -4423,11 +5622,20 @@ int Val::cmpSi(long i) const {
    return res;
 }
 
-Val& Val::div(Val v2) {
+inline int cmpSi(const Val &v, long i) {
+   auto res = isl_val_cmp_si(v.get(), i);
+   return res;
+}
+
+void Val::div(Val v2) {
    auto res = isl_val_div(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val div(Val v1, Val v2) {
+   auto res = isl_val_div(v1.release(), v2.release());
+   return manage(res);
 }
 
 Bool Val::eq(const Val &v2) const {
@@ -4435,22 +5643,40 @@ Bool Val::eq(const Val &v2) const {
    return res;
 }
 
-Val& Val::floor() {
+inline Bool eq(const Val &v1, const Val &v2) {
+   auto res = isl_val_eq(v1.get(), v2.get());
+   return res;
+}
+
+void Val::floor() {
    auto res = isl_val_floor(copy());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Val& Val::gcd(Val v2) {
+inline Val floor(Val v) {
+   auto res = isl_val_floor(v.release());
+   return manage(res);
+}
+
+void Val::gcd(Val v2) {
    auto res = isl_val_gcd(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val gcd(Val v1, Val v2) {
+   auto res = isl_val_gcd(v1.release(), v2.release());
+   return manage(res);
 }
 
 Bool Val::ge(const Val &v2) const {
    auto res = isl_val_ge(get(), v2.get());
+   return res;
+}
+
+inline Bool ge(const Val &v1, const Val &v2) {
+   auto res = isl_val_ge(v1.get(), v2.get());
    return res;
 }
 
@@ -4459,20 +5685,39 @@ Bool Val::gt(const Val &v2) const {
    return res;
 }
 
+inline Bool gt(const Val &v1, const Val &v2) {
+   auto res = isl_val_gt(v1.get(), v2.get());
+   return res;
+}
+
 Val Val::infty(Ctx ctx) {
    auto res = isl_val_infty(ctx.release());
    return manage(res);
 }
 
-Val& Val::inv() {
+inline Val infty(Ctx ctx) {
+   auto res = isl_val_infty(ctx.release());
+   return manage(res);
+}
+
+void Val::inv() {
    auto res = isl_val_inv(copy());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val inv(Val v) {
+   auto res = isl_val_inv(v.release());
+   return manage(res);
 }
 
 Bool Val::isDivisibleBy(const Val &v2) const {
    auto res = isl_val_is_divisible_by(get(), v2.get());
+   return res;
+}
+
+inline Bool isDivisibleBy(const Val &v1, const Val &v2) {
+   auto res = isl_val_is_divisible_by(v1.get(), v2.get());
    return res;
 }
 
@@ -4481,8 +5726,18 @@ Bool Val::isInfty() const {
    return res;
 }
 
+inline Bool isInfty(const Val &v) {
+   auto res = isl_val_is_infty(v.get());
+   return res;
+}
+
 Bool Val::isInt() const {
    auto res = isl_val_is_int(get());
+   return res;
+}
+
+inline Bool isInt(const Val &v) {
+   auto res = isl_val_is_int(v.get());
    return res;
 }
 
@@ -4491,8 +5746,18 @@ Bool Val::isNan() const {
    return res;
 }
 
+inline Bool isNan(const Val &v) {
+   auto res = isl_val_is_nan(v.get());
+   return res;
+}
+
 Bool Val::isNeg() const {
    auto res = isl_val_is_neg(get());
+   return res;
+}
+
+inline Bool isNeg(const Val &v) {
+   auto res = isl_val_is_neg(v.get());
    return res;
 }
 
@@ -4501,8 +5766,18 @@ Bool Val::isNeginfty() const {
    return res;
 }
 
+inline Bool isNeginfty(const Val &v) {
+   auto res = isl_val_is_neginfty(v.get());
+   return res;
+}
+
 Bool Val::isNegone() const {
    auto res = isl_val_is_negone(get());
+   return res;
+}
+
+inline Bool isNegone(const Val &v) {
+   auto res = isl_val_is_negone(v.get());
    return res;
 }
 
@@ -4511,8 +5786,18 @@ Bool Val::isNonneg() const {
    return res;
 }
 
+inline Bool isNonneg(const Val &v) {
+   auto res = isl_val_is_nonneg(v.get());
+   return res;
+}
+
 Bool Val::isNonpos() const {
    auto res = isl_val_is_nonpos(get());
+   return res;
+}
+
+inline Bool isNonpos(const Val &v) {
+   auto res = isl_val_is_nonpos(v.get());
    return res;
 }
 
@@ -4521,8 +5806,18 @@ Bool Val::isOne() const {
    return res;
 }
 
+inline Bool isOne(const Val &v) {
+   auto res = isl_val_is_one(v.get());
+   return res;
+}
+
 Bool Val::isPos() const {
    auto res = isl_val_is_pos(get());
+   return res;
+}
+
+inline Bool isPos(const Val &v) {
+   auto res = isl_val_is_pos(v.get());
    return res;
 }
 
@@ -4531,8 +5826,18 @@ Bool Val::isRat() const {
    return res;
 }
 
+inline Bool isRat(const Val &v) {
+   auto res = isl_val_is_rat(v.get());
+   return res;
+}
+
 Bool Val::isZero() const {
    auto res = isl_val_is_zero(get());
+   return res;
+}
+
+inline Bool isZero(const Val &v) {
+   auto res = isl_val_is_zero(v.get());
    return res;
 }
 
@@ -4541,40 +5846,71 @@ Bool Val::le(const Val &v2) const {
    return res;
 }
 
+inline Bool le(const Val &v1, const Val &v2) {
+   auto res = isl_val_le(v1.get(), v2.get());
+   return res;
+}
+
 Bool Val::lt(const Val &v2) const {
    auto res = isl_val_lt(get(), v2.get());
    return res;
 }
 
-Val& Val::max(Val v2) {
+inline Bool lt(const Val &v1, const Val &v2) {
+   auto res = isl_val_lt(v1.get(), v2.get());
+   return res;
+}
+
+void Val::max(Val v2) {
    auto res = isl_val_max(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Val& Val::min(Val v2) {
+inline Val max(Val v1, Val v2) {
+   auto res = isl_val_max(v1.release(), v2.release());
+   return manage(res);
+}
+
+void Val::min(Val v2) {
    auto res = isl_val_min(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Val& Val::mod(Val v2) {
+inline Val min(Val v1, Val v2) {
+   auto res = isl_val_min(v1.release(), v2.release());
+   return manage(res);
+}
+
+void Val::mod(Val v2) {
    auto res = isl_val_mod(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Val& Val::mul(Val v2) {
+inline Val mod(Val v1, Val v2) {
+   auto res = isl_val_mod(v1.release(), v2.release());
+   return manage(res);
+}
+
+void Val::mul(Val v2) {
    auto res = isl_val_mul(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val mul(Val v1, Val v2) {
+   auto res = isl_val_mul(v1.release(), v2.release());
+   return manage(res);
 }
 
 Val Val::nan(Ctx ctx) {
+   auto res = isl_val_nan(ctx.release());
+   return manage(res);
+}
+
+inline Val nan(Ctx ctx) {
    auto res = isl_val_nan(ctx.release());
    return manage(res);
 }
@@ -4584,14 +5920,28 @@ Bool Val::ne(const Val &v2) const {
    return res;
 }
 
-Val& Val::neg() {
+inline Bool ne(const Val &v1, const Val &v2) {
+   auto res = isl_val_ne(v1.get(), v2.get());
+   return res;
+}
+
+void Val::neg() {
    auto res = isl_val_neg(copy());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val neg(Val v) {
+   auto res = isl_val_neg(v.release());
+   return manage(res);
 }
 
 Val Val::neginfty(Ctx ctx) {
+   auto res = isl_val_neginfty(ctx.release());
+   return manage(res);
+}
+
+inline Val neginfty(Ctx ctx) {
    auto res = isl_val_neginfty(ctx.release());
    return manage(res);
 }
@@ -4601,7 +5951,17 @@ Val Val::negone(Ctx ctx) {
    return manage(res);
 }
 
+inline Val negone(Ctx ctx) {
+   auto res = isl_val_negone(ctx.release());
+   return manage(res);
+}
+
 Val Val::one(Ctx ctx) {
+   auto res = isl_val_one(ctx.release());
+   return manage(res);
+}
+
+inline Val one(Ctx ctx) {
    auto res = isl_val_one(ctx.release());
    return manage(res);
 }
@@ -4611,21 +5971,39 @@ int Val::sgn() const {
    return res;
 }
 
-Val& Val::sub(Val v2) {
+inline int sgn(const Val &v) {
+   auto res = isl_val_sgn(v.get());
+   return res;
+}
+
+void Val::sub(Val v2) {
    auto res = isl_val_sub(copy(), v2.release());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
 }
 
-Val& Val::trunc() {
+inline Val sub(Val v1, Val v2) {
+   auto res = isl_val_sub(v1.release(), v2.release());
+   return manage(res);
+}
+
+void Val::trunc() {
    auto res = isl_val_trunc(copy());
    isl_val_free(ptr);
    ptr = res;
-   return *this;
+}
+
+inline Val trunc(Val v) {
+   auto res = isl_val_trunc(v.release());
+   return manage(res);
 }
 
 Val Val::zero(Ctx ctx) {
+   auto res = isl_val_zero(ctx.release());
+   return manage(res);
+}
+
+inline Val zero(Ctx ctx) {
    auto res = isl_val_zero(ctx.release());
    return manage(res);
 }

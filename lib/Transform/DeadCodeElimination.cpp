@@ -129,10 +129,10 @@ bool DeadCodeElim::eliminateDeadCode(Scop &S, int PreciseSteps) {
   UnionSet Live = manage(getLiveOut(S));
   UnionMap Dep =
       manage(D.getDependences(Dependences::TYPE_RAW | Dependences::TYPE_RED));
-  Dep = Dep.reverse();
+  Dep.reverse();
 
   if (PreciseSteps == -1)
-    Live = Live.affineHull();
+    Live.affineHull();
 
   UnionSet OriginalDomain = manage(S.getDomains());
   int Steps = 0;
@@ -140,7 +140,8 @@ bool DeadCodeElim::eliminateDeadCode(Scop &S, int PreciseSteps) {
     UnionSet Extra;
     Steps++;
 
-    Extra = Live.apply(Dep);
+    Extra = Live;
+    Extra.apply(Dep);
 
     if (Extra.isSubset(Live))
       break;
@@ -149,13 +150,14 @@ bool DeadCodeElim::eliminateDeadCode(Scop &S, int PreciseSteps) {
 
     if (Steps > PreciseSteps) {
       Steps = 0;
-      Live = Live.affineHull();
+      Live.affineHull();
     }
 
-    Live = Live.intersect(OriginalDomain);
+    Live.intersect(OriginalDomain);
   }
+  Live.coalesce();
 
-  bool Changed = S.restrictDomains(Live.coalesce().release());
+  bool Changed = S.restrictDomains(Live.release());
 
   // FIXME: We can probably avoid the recomputation of all dependences by
   // updating them explicitly.

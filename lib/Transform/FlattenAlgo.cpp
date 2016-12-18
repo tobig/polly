@@ -89,10 +89,10 @@ namespace {
 /// chosen dimensions is Min <= x <= Max.
 bool isDimBoundedByConstant(Set Set, unsigned dim) {
   auto ParamDims = Set.dim(DimType::Param);
-  Set = Set.projectOut(DimType::Param, 0, ParamDims);
-  Set = Set.projectOut(DimType::Set, 0, dim);
+  Set.projectOut(DimType::Param, 0, ParamDims);
+  Set.projectOut(DimType::Set, 0, dim);
   auto SetDims = Set.dim(DimType::Set);
-  Set = Set.projectOut(DimType::Set, 1, SetDims - 1);
+  Set.projectOut(DimType::Set, 1, SetDims - 1);
   return Set.isBounded();
 }
 
@@ -101,9 +101,9 @@ bool isDimBoundedByConstant(Set Set, unsigned dim) {
 /// p, such that every value x of the chosen dimensions is
 /// Min_p <= x <= Max_p.
 bool isDimBoundedByParameter(Set Set, unsigned dim) {
-  Set = Set.projectOut(DimType::Set, 0, dim);
+  Set.projectOut(DimType::Set, 0, dim);
   auto SetDims = Set.dim(DimType::Set);
-  Set = Set.projectOut(DimType::Set, 1, SetDims - 1);
+  Set.projectOut(DimType::Set, 1, SetDims - 1);
   return Set.isBounded();
 }
 
@@ -185,8 +185,9 @@ UnionPwAff subtract(UnionPwAff UPwAff, Val Val) {
     auto ValAff = manage(isl_pw_aff_val_on_domain(
         isl_set_universe(isl_space_domain(isl_pw_aff_get_space(PwAff.get()))),
         Val.copy()));
-    auto Subtracted = PwAff.sub(ValAff);
-    Result = Result.add(Subtracted);
+    auto Subtracted = PwAff;
+    Subtracted.sub(ValAff);
+    Result.add(Subtracted);
   });
   return Result;
 }
@@ -202,8 +203,9 @@ UnionPwAff multiply(UnionPwAff UPwAff, Val Val) {
     auto ValAff = manage(isl_pw_aff_val_on_domain(
         isl_set_universe(isl_space_domain(isl_pw_aff_get_space(PwAff.get()))),
         Val.copy()));
-    auto Multiplied = PwAff.mul(ValAff);
-    Result = Result.unionAdd(Multiplied);
+    auto Multiplied = PwAff;
+    Multiplied.mul(ValAff);
+    Result.unionAdd(Multiplied);
   });
   return Result;
 }
@@ -220,8 +222,9 @@ UnionMap scheduleProjectOut(const UnionMap &UMap, unsigned first, unsigned n) {
   auto Result =
       manage(isl_union_map_empty(isl_union_map_get_space(UMap.get())));
   foreachElt(UMap, [=, &Result](Map M) {
-    auto Outprojected = M.projectOut(DimType::Out, first, n);
-    Result = Result.addMap(Outprojected);
+    auto Outprojected = M;
+    Outprojected.projectOut(DimType::Out, first, n);
+    Result.addMap(Outprojected);
   });
   return Result;
 }
@@ -245,9 +248,10 @@ UnionPwAff scheduleExtractDimAff(UnionMap UMap, unsigned pos) {
       manage(isl_union_map_empty(isl_union_map_get_space(UMap.get())));
   foreachElt(UMap, [=, &SingleUMap](Map Map) {
     auto MapDims = Map.dim(DimType::Out);
-    auto SingleMap = Map.projectOut(DimType::Out, 0, pos);
-    SingleMap = SingleMap.projectOut(DimType::Out, 1, MapDims - pos - 1);
-    SingleUMap = SingleUMap.addMap(SingleMap);
+    auto SingleMap = Map;
+    SingleMap.projectOut(DimType::Out, 0, pos);
+    SingleMap.projectOut(DimType::Out, 1, MapDims - pos - 1);
+    SingleUMap.addMap(SingleMap);
   });
 
   UnionPwMultiAff UAff = UnionPwMultiAff(SingleUMap);
@@ -300,11 +304,15 @@ UnionMap tryFlattenSequence(UnionMap Schedule) {
   while (!ScatterSet.isEmpty()) {
     DEBUG(dbgs() << "Next counter:\n  " << Counter << "\n");
     DEBUG(dbgs() << "Remaining scatter set:\n  " << ScatterSet << "\n");
-    auto ThisSet = ScatterSet.projectOut(DimType::Set, 1, Dims - 1);
-    auto ThisFirst = ThisSet.lexmin();
-    auto ScatterFirst = ThisFirst.addDims(DimType::Set, Dims - 1);
+    auto ThisSet = ScatterSet;
+    ThisSet.projectOut(DimType::Set, 1, Dims - 1);
+    auto ThisFirst = ThisSet;
+    ThisFirst.lexmin();
+    auto ScatterFirst = ThisFirst;
+    ScatterFirst.addDims(DimType::Set, Dims - 1);
 
-    auto SubSchedule = Schedule.intersectRange(ScatterFirst);
+    auto SubSchedule = Schedule;
+    SubSchedule.intersectRange(ScatterFirst);
     SubSchedule = scheduleProjectOut(std::move(SubSchedule), 0, 1);
     SubSchedule = flattenScheduleIslCPP(std::move(SubSchedule));
 
@@ -335,16 +343,21 @@ UnionMap tryFlattenSequence(UnionMap Schedule) {
     auto One = manage(isl_pw_aff_val_on_domain(
         isl_set_universe(isl_space_set_from_params(ParamSpace.copy())),
         isl_val_one(IslCtx)));
-    auto PartLen = PartMax.add(PartMin.neg()).add(One);
+    auto PartLen = PartMax;
+    auto PartMinNegOne = PartMin;
+    PartMinNegOne.neg();
+    PartMinNegOne.add(One);
+    PartLen.add(PartMinNegOne);
 
     auto AllPartMin = manage(isl_union_pw_aff_pullback_union_pw_multi_aff(
         isl_union_pw_aff_from_pw_aff(PartMin.release()),
         AllDomainsToNull.copy()));
-    auto FirstScheduleAffNormalized = FirstScheduleAff.sub(AllPartMin);
+    auto FirstScheduleAffNormalized = FirstScheduleAff;
+    FirstScheduleAffNormalized.sub(AllPartMin);
     auto AllCounter = manage(isl_union_pw_aff_pullback_union_pw_multi_aff(
         isl_union_pw_aff_from_pw_aff(Counter.copy()), AllDomainsToNull.copy()));
-    auto FirstScheduleAffWithOffset =
-        FirstScheduleAffNormalized.add(AllCounter);
+    auto FirstScheduleAffWithOffset = FirstScheduleAffNormalized;
+    FirstScheduleAffWithOffset.add(AllCounter);
 
     auto ScheduleWithOffset = manage(isl_union_map_flat_range_product(
         isl_union_map_from_union_pw_aff(FirstScheduleAffWithOffset.release()),
@@ -352,8 +365,8 @@ UnionMap tryFlattenSequence(UnionMap Schedule) {
     NewSchedule = manage(isl_union_map_union(NewSchedule.release(),
                                              ScheduleWithOffset.release()));
 
-    ScatterSet = ScatterSet.subtract(ScatterFirst);
-    Counter = Counter.add(PartLen);
+    ScatterSet.subtract(ScatterFirst);
+    Counter.add(PartLen);
   }
 
   DEBUG(dbgs() << "Sequence-flatten result is:\n  " << NewSchedule << "\n");
@@ -379,8 +392,8 @@ UnionMap tryFlattenLoop(UnionMap Schedule) {
 
   Set SubExtent = Set(SubSchedule.range());
   auto SubExtentDims = SubExtent.dim(DimType::Param);
-  SubExtent = SubExtent.projectOut(DimType::Param, 0, SubExtentDims);
-  SubExtent = SubExtent.projectOut(DimType::Set, 1, SubDims - 1);
+  SubExtent.projectOut(DimType::Param, 0, SubExtentDims);
+  SubExtent.projectOut(DimType::Set, 1, SubDims - 1);
 
   if (!isDimBoundedByConstant(SubExtent, 0)) {
     DEBUG(dbgs() << "Abort; dimension not bounded by constant\n");
@@ -402,17 +415,21 @@ UnionMap tryFlattenLoop(UnionMap Schedule) {
   auto FirstSubScheduleAff = scheduleExtractDimAff(SubSchedule, 0);
   auto RemainingSubSchedule = scheduleProjectOut(std::move(SubSchedule), 0, 1);
 
-  auto LenVal = MaxVal.sub(MinVal).addUi(1);
+  auto LenVal = MaxVal;
+  LenVal.sub(MinVal);
+  LenVal.addUi(1);
   auto FirstSubScheduleNormalized = subtract(FirstSubScheduleAff, MinVal);
 
   // TODO: Normalize FirstAff to zero (convert to isl_map, determine minimum,
   // subtract it)
   auto FirstAff = scheduleExtractDimAff(Schedule, 0);
   auto Offset = multiply(FirstAff, LenVal);
-  auto Index = FirstSubScheduleNormalized.add(Offset);
+  auto Index = FirstSubScheduleNormalized;
+  Index.add(Offset);
   UnionMap IndexMap = UnionMap(Index);
 
-  auto Result = IndexMap.flatRangeProduct(RemainingSubSchedule);
+  auto Result = IndexMap;
+  Result.flatRangeProduct(RemainingSubSchedule);
   DEBUG(dbgs() << "Loop-flatten result is:\n  " << Result << "\n");
   return Result;
 }

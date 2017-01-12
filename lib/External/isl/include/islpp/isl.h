@@ -179,12 +179,12 @@ public:
   inline __isl_keep isl_ast_build *get() const;
   inline __isl_give isl_ast_build *release();
   inline bool isNull() const;
-  inline AstExpr accessFromMultiPwAff(MultiPwAff mpa) const;
-  inline AstExpr accessFromPwMultiAff(PwMultiAff pma) const;
-  inline AstExpr callFromMultiPwAff(MultiPwAff mpa) const;
-  inline AstExpr callFromPwMultiAff(PwMultiAff pma) const;
-  inline AstExpr exprFromPwAff(PwAff pa) const;
-  inline AstExpr exprFromSet(Set set) const;
+  inline AstExpr accessFrom(PwMultiAff pma) const;
+  inline AstExpr accessFrom(MultiPwAff mpa) const;
+  inline AstExpr callFrom(PwMultiAff pma) const;
+  inline AstExpr callFrom(MultiPwAff mpa) const;
+  inline AstExpr exprFrom(Set set) const;
+  inline AstExpr exprFrom(PwAff pa) const;
   static inline AstBuild fromContext(Set set);
   inline AstNode nodeFromScheduleMap(UnionMap schedule) const;
 };
@@ -679,7 +679,7 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline Bool bandMemberGetCoincident(int pos) const;
-  inline ScheduleNode bandMemberSetCoincident(int pos, int coincident) const;
+  inline void bandMemberSetCoincident(int pos, int coincident);
   inline ScheduleNode child(int pos) const;
   inline MultiUnionPwAff getPrefixScheduleMultiUnionPwAff() const;
   inline UnionMap getPrefixScheduleUnionMap() const;
@@ -793,10 +793,10 @@ public:
   inline bool isNull() const;
   inline std::string getStr() const;
   inline UnionFlow computeFlow() const;
-  inline UnionAccessInfo setMaySource(UnionMap may_source) const;
-  inline UnionAccessInfo setMustSource(UnionMap must_source) const;
-  inline UnionAccessInfo setSchedule(Schedule schedule) const;
-  inline UnionAccessInfo setScheduleMap(UnionMap schedule_map) const;
+  inline void setMaySource(UnionMap may_source);
+  inline void setMustSource(UnionMap must_source);
+  inline void setSchedule(Schedule schedule);
+  inline void setScheduleMap(UnionMap schedule_map);
 };
 
 // declarations for isl::UnionFlow
@@ -1208,33 +1208,33 @@ bool AstBuild::isNull() const {
   return ptr == nullptr;
 }
 
-AstExpr AstBuild::accessFromMultiPwAff(MultiPwAff mpa) const {
-   auto res = isl_ast_build_access_from_multi_pw_aff(get(), mpa.release());
-   return manage(res);
-}
-
-AstExpr AstBuild::accessFromPwMultiAff(PwMultiAff pma) const {
+AstExpr AstBuild::accessFrom(PwMultiAff pma) const {
    auto res = isl_ast_build_access_from_pw_multi_aff(get(), pma.release());
    return manage(res);
 }
 
-AstExpr AstBuild::callFromMultiPwAff(MultiPwAff mpa) const {
-   auto res = isl_ast_build_call_from_multi_pw_aff(get(), mpa.release());
+AstExpr AstBuild::accessFrom(MultiPwAff mpa) const {
+   auto res = isl_ast_build_access_from_multi_pw_aff(get(), mpa.release());
    return manage(res);
 }
 
-AstExpr AstBuild::callFromPwMultiAff(PwMultiAff pma) const {
+AstExpr AstBuild::callFrom(PwMultiAff pma) const {
    auto res = isl_ast_build_call_from_pw_multi_aff(get(), pma.release());
    return manage(res);
 }
 
-AstExpr AstBuild::exprFromPwAff(PwAff pa) const {
-   auto res = isl_ast_build_expr_from_pw_aff(get(), pa.release());
+AstExpr AstBuild::callFrom(MultiPwAff mpa) const {
+   auto res = isl_ast_build_call_from_multi_pw_aff(get(), mpa.release());
    return manage(res);
 }
 
-AstExpr AstBuild::exprFromSet(Set set) const {
+AstExpr AstBuild::exprFrom(Set set) const {
    auto res = isl_ast_build_expr_from_set(get(), set.release());
+   return manage(res);
+}
+
+AstExpr AstBuild::exprFrom(PwAff pa) const {
+   auto res = isl_ast_build_expr_from_pw_aff(get(), pa.release());
    return manage(res);
 }
 
@@ -2811,9 +2811,9 @@ Bool ScheduleNode::bandMemberGetCoincident(int pos) const {
    return res;
 }
 
-ScheduleNode ScheduleNode::bandMemberSetCoincident(int pos, int coincident) const {
-   auto res = isl_schedule_node_band_member_set_coincident(copy(), pos, coincident);
-   return manage(res);
+void ScheduleNode::bandMemberSetCoincident(int pos, int coincident) {
+   auto res = isl_schedule_node_band_member_set_coincident(release(), pos, coincident);
+   ptr = res;
 }
 
 ScheduleNode ScheduleNode::child(int pos) const {
@@ -3200,24 +3200,24 @@ UnionFlow UnionAccessInfo::computeFlow() const {
    return manage(res);
 }
 
-UnionAccessInfo UnionAccessInfo::setMaySource(UnionMap may_source) const {
-   auto res = isl_union_access_info_set_may_source(copy(), may_source.release());
-   return manage(res);
+void UnionAccessInfo::setMaySource(UnionMap may_source) {
+   auto res = isl_union_access_info_set_may_source(release(), may_source.release());
+   ptr = res;
 }
 
-UnionAccessInfo UnionAccessInfo::setMustSource(UnionMap must_source) const {
-   auto res = isl_union_access_info_set_must_source(copy(), must_source.release());
-   return manage(res);
+void UnionAccessInfo::setMustSource(UnionMap must_source) {
+   auto res = isl_union_access_info_set_must_source(release(), must_source.release());
+   ptr = res;
 }
 
-UnionAccessInfo UnionAccessInfo::setSchedule(Schedule schedule) const {
-   auto res = isl_union_access_info_set_schedule(copy(), schedule.release());
-   return manage(res);
+void UnionAccessInfo::setSchedule(Schedule schedule) {
+   auto res = isl_union_access_info_set_schedule(release(), schedule.release());
+   ptr = res;
 }
 
-UnionAccessInfo UnionAccessInfo::setScheduleMap(UnionMap schedule_map) const {
-   auto res = isl_union_access_info_set_schedule_map(copy(), schedule_map.release());
-   return manage(res);
+void UnionAccessInfo::setScheduleMap(UnionMap schedule_map) {
+   auto res = isl_union_access_info_set_schedule_map(release(), schedule_map.release());
+   ptr = res;
 }
 
 // implementations for isl::UnionFlow

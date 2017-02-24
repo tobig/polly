@@ -16,11 +16,11 @@
 using namespace llvm;
 using namespace polly;
 
-static IslPtr<isl_space> parseSpace(isl_ctx *Ctx, const char *Str) {
+static isl::Space parseSpace(isl_ctx *Ctx, const char *Str) {
   isl_stream *Stream = isl_stream_new_str(Ctx, Str);
   auto Obj = isl_stream_read_obj(Stream);
 
-  IslPtr<isl_space> Result;
+  isl::Space Result;
   if (Obj.type == isl_obj_set)
     Result = give(isl_set_get_space(static_cast<isl_set *>(Obj.v)));
   else if (Obj.type == isl_obj_map)
@@ -40,37 +40,39 @@ static IslPtr<isl_space> parseSpace(isl_ctx *Ctx, const char *Str) {
 #define USET(Str) give(isl_union_set_read_from_str(Ctx.get(), Str))
 #define UMAP(Str) give(isl_union_map_read_from_str(Ctx.get(), Str))
 
-static bool operator==(const IslPtr<isl_space> &LHS,
-                       const IslPtr<isl_space> &RHS) {
+namespace isl {
+inline namespace noexceptions {
+
+static bool operator==(const isl::Space &LHS, const isl::Space &RHS) {
   auto IsEqual = isl_space_is_equal(LHS.keep(), RHS.keep());
   EXPECT_NE(isl_bool_error, IsEqual);
   return IsEqual;
 }
 
-static bool operator==(const IslPtr<isl_set> &LHS, const IslPtr<isl_set> &RHS) {
+static bool operator==(const isl::Set &LHS, const isl::Set &RHS) {
   auto IsEqual = isl_set_is_equal(LHS.keep(), RHS.keep());
   EXPECT_NE(isl_bool_error, IsEqual);
   return IsEqual;
 }
 
-static bool operator==(const IslPtr<isl_map> &LHS, const IslPtr<isl_map> &RHS) {
+static bool operator==(const isl::Map &LHS, const isl::Map &RHS) {
   auto IsEqual = isl_map_is_equal(LHS.keep(), RHS.keep());
   EXPECT_NE(isl_bool_error, IsEqual);
   return IsEqual;
 }
 
-static bool operator==(const IslPtr<isl_union_set> &LHS,
-                       const IslPtr<isl_union_set> &RHS) {
+static bool operator==(const isl::UnionSet &LHS, const isl::UnionSet &RHS) {
   auto IsEqual = isl_union_set_is_equal(LHS.keep(), RHS.keep());
   EXPECT_NE(isl_bool_error, IsEqual);
   return IsEqual;
 }
 
-static bool operator==(const IslPtr<isl_union_map> &LHS,
-                       const IslPtr<isl_union_map> &RHS) {
+static bool operator==(const isl::UnionMap &LHS, const isl::UnionMap &RHS) {
   auto IsEqual = isl_union_map_is_equal(LHS.keep(), RHS.keep());
   EXPECT_NE(isl_bool_error, IsEqual);
   return IsEqual;
+}
+}
 }
 
 namespace {
@@ -310,7 +312,7 @@ TEST(Isl, Foreach) {
 
   {
     auto NumBMaps = 0;
-    foreachElt(TestMap, [&](IslPtr<isl_basic_map> BMap) {
+    foreachElt(TestMap, [&](isl::BasicMap BMap) {
       EXPECT_EQ(isl_bool_true,
                 isl_basic_map_is_equal(BMap.keep(), TestBMap.keep()));
       NumBMaps++;
@@ -320,7 +322,7 @@ TEST(Isl, Foreach) {
 
   {
     auto NumBSets = 0;
-    foreachElt(TestSet, [&](IslPtr<isl_basic_set> BSet) {
+    foreachElt(TestSet, [&](isl::BasicSet BSet) {
       EXPECT_EQ(isl_bool_true,
                 isl_basic_set_is_equal(BSet.keep(), TestBSet.keep()));
       NumBSets++;
@@ -330,7 +332,7 @@ TEST(Isl, Foreach) {
 
   {
     auto NumMaps = 0;
-    foreachElt(TestUMap, [&](IslPtr<isl_map> Map) {
+    foreachElt(TestUMap, [&](isl::Map Map) {
       EXPECT_EQ(isl_bool_true, isl_map_is_equal(Map.keep(), TestMap.keep()));
       NumMaps++;
     });
@@ -339,7 +341,7 @@ TEST(Isl, Foreach) {
 
   {
     auto NumSets = 0;
-    foreachElt(TestUSet, [&](IslPtr<isl_set> Set) {
+    foreachElt(TestUSet, [&](isl::Set Set) {
       EXPECT_EQ(isl_bool_true, isl_set_is_equal(Set.keep(), TestSet.keep()));
       NumSets++;
     });
@@ -350,7 +352,7 @@ TEST(Isl, Foreach) {
     auto UPwAff = give(isl_union_pw_aff_val_on_domain(TestUSet.copy(),
                                                       isl_val_zero(Ctx.get())));
     auto NumPwAffs = 0;
-    foreachElt(UPwAff, [&](IslPtr<isl_pw_aff> PwAff) {
+    foreachElt(UPwAff, [&](isl::PwAff PwAff) {
       EXPECT_EQ(isl_bool_true, isl_pw_aff_is_cst(PwAff.keep()));
       NumPwAffs++;
     });
@@ -360,26 +362,24 @@ TEST(Isl, Foreach) {
   {
     auto NumBMaps = 0;
     EXPECT_EQ(isl_stat_error,
-              foreachEltWithBreak(
-                  TestMap, [&](IslPtr<isl_basic_map> BMap) -> isl_stat {
-                    EXPECT_EQ(isl_bool_true, isl_basic_map_is_equal(
-                                                 BMap.keep(), TestBMap.keep()));
-                    NumBMaps++;
-                    return isl_stat_error;
-                  }));
+              foreachEltWithBreak(TestMap, [&](isl::BasicMap BMap) -> isl_stat {
+                EXPECT_EQ(isl_bool_true,
+                          isl_basic_map_is_equal(BMap.keep(), TestBMap.keep()));
+                NumBMaps++;
+                return isl_stat_error;
+              }));
     EXPECT_EQ(1, NumBMaps);
   }
 
   {
     auto NumMaps = 0;
-    EXPECT_EQ(
-        isl_stat_error,
-        foreachEltWithBreak(TestUMap, [&](IslPtr<isl_map> Map) -> isl_stat {
-          EXPECT_EQ(isl_bool_true,
-                    isl_map_is_equal(Map.keep(), TestMap.keep()));
-          NumMaps++;
-          return isl_stat_error;
-        }));
+    EXPECT_EQ(isl_stat_error,
+              foreachEltWithBreak(TestUMap, [&](isl::Map Map) -> isl_stat {
+                EXPECT_EQ(isl_bool_true,
+                          isl_map_is_equal(Map.keep(), TestMap.keep()));
+                NumMaps++;
+                return isl_stat_error;
+              }));
     EXPECT_EQ(1, NumMaps);
   }
 
@@ -388,8 +388,7 @@ TEST(Isl, Foreach) {
         give(isl_pw_aff_val_on_domain(TestSet.copy(), isl_val_zero(Ctx.get())));
     auto NumPieces = 0;
     foreachPieceWithBreak(
-        TestPwAff,
-        [&](IslPtr<isl_set> Domain, IslPtr<isl_aff> Aff) -> isl_stat {
+        TestPwAff, [&](isl::Set Domain, isl::Aff Aff) -> isl_stat {
           EXPECT_EQ(isl_bool_true,
                     isl_set_is_equal(Domain.keep(), TestSet.keep()));
           EXPECT_EQ(isl_bool_true, isl_aff_is_cst(Aff.keep()));

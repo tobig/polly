@@ -28,10 +28,10 @@ namespace polly {
 /// @return { Space[] -> Scatter[] }
 ///         A map to all timepoints that happen before the timepoints the input
 ///         mapped to.
-IslPtr<isl_map> beforeScatter(IslPtr<isl_map> Map, bool Strict);
+isl::Map beforeScatter(isl::Map Map, bool Strict);
 
-/// Piecewise beforeScatter(IslPtr<isl_map>,bool).
-IslPtr<isl_union_map> beforeScatter(IslPtr<isl_union_map> UMap, bool Strict);
+/// Piecewise beforeScatter(isl::Map,bool).
+isl::UnionMap beforeScatter(isl::UnionMap UMap, bool Strict);
 
 /// Return the range elements that are lexicographically larger.
 ///
@@ -42,11 +42,10 @@ IslPtr<isl_union_map> beforeScatter(IslPtr<isl_union_map> UMap, bool Strict);
 /// @return { Space[] -> Scatter[] }
 ///         A map to all timepoints that happen after the timepoints the input
 ///         map originally mapped to.
-IslPtr<isl_map> afterScatter(IslPtr<isl_map> Map, bool Strict);
+isl::Map afterScatter(isl::Map Map, bool Strict);
 
-/// Piecewise afterScatter(IslPtr<isl_map>,bool).
-IslPtr<isl_union_map> afterScatter(const IslPtr<isl_union_map> &UMap,
-                                   bool Strict);
+/// Piecewise afterScatter(isl::Map,bool).
+isl::UnionMap afterScatter(const isl::UnionMap &UMap, bool Strict);
 
 /// Construct a range of timepoints between two timepoints.
 ///
@@ -74,13 +73,11 @@ IslPtr<isl_union_map> afterScatter(const IslPtr<isl_union_map> &UMap,
 ///         A map for each domain element of timepoints between two extreme
 ///         points, or nullptr if @p From or @p To is nullptr, or the isl max
 ///         operations is exceeded.
-IslPtr<isl_map> betweenScatter(IslPtr<isl_map> From, IslPtr<isl_map> To,
-                               bool InclFrom, bool InclTo);
+isl::Map betweenScatter(isl::Map From, isl::Map To, bool InclFrom, bool InclTo);
 
-/// Piecewise betweenScatter(IslPtr<isl_map>,IslPtr<isl_map>,bool,bool).
-IslPtr<isl_union_map> betweenScatter(IslPtr<isl_union_map> From,
-                                     IslPtr<isl_union_map> To, bool InclFrom,
-                                     bool InclTo);
+/// Piecewise betweenScatter(isl::Map,isl::Map,bool,bool).
+isl::UnionMap betweenScatter(isl::UnionMap From, isl::UnionMap To,
+                             bool InclFrom, bool InclTo);
 
 /// If by construction a union map is known to contain only a single map, return
 /// it.
@@ -91,8 +88,7 @@ IslPtr<isl_union_map> betweenScatter(IslPtr<isl_union_map> From,
 /// isl_union_map_extract_map() on the other hand does not check whether there
 /// is (at most) one isl_map in the union, i.e. how it has been constructed is
 /// probably wrong.
-IslPtr<isl_map> singleton(IslPtr<isl_union_map> UMap,
-                          IslPtr<isl_space> ExpectedSpace);
+isl::Map singleton(isl::UnionMap UMap, isl::Space ExpectedSpace);
 
 /// If by construction an isl_union_set is known to contain only a single
 /// isl_set, return it.
@@ -103,8 +99,7 @@ IslPtr<isl_map> singleton(IslPtr<isl_union_map> UMap,
 /// isl_union_set_extract_set() on the other hand does not check whether there
 /// is (at most) one isl_set in the union, i.e. how it has been constructed is
 /// probably wrong.
-IslPtr<isl_set> singleton(IslPtr<isl_union_set> USet,
-                          IslPtr<isl_space> ExpectedSpace);
+isl::Set singleton(isl::UnionSet USet, isl::Space ExpectedSpace);
 
 /// Determine how many dimensions the scatter space of @p Schedule has.
 ///
@@ -114,13 +109,13 @@ IslPtr<isl_set> singleton(IslPtr<isl_union_set> USet,
 /// The implementation currently returns the maximum number of dimensions it
 /// encounters, if different, and 0 if none is encountered. However, most other
 /// code will most likely fail if one of these happen.
-unsigned getNumScatterDims(const IslPtr<isl_union_map> &Schedule);
+unsigned getNumScatterDims(const isl::UnionMap &Schedule);
 
 /// Return the scatter space of a @p Schedule.
 ///
 /// This is basically the range space of the schedule map, but harder to
 /// determine because it is an isl_union_map.
-IslPtr<isl_space> getScatterSpace(const IslPtr<isl_union_map> &Schedule);
+isl::Space getScatterSpace(const isl::UnionMap &Schedule);
 
 /// Construct an identity map for the given domain values.
 ///
@@ -136,18 +131,17 @@ IslPtr<isl_space> getScatterSpace(const IslPtr<isl_union_map> &Schedule);
 ///
 /// @return { Space[] -> Space[] }
 ///         A map that maps each value of @p USet to itself.
-IslPtr<isl_union_map> makeIdentityMap(const IslPtr<isl_union_set> &USet,
-                                      bool RestrictDomain);
+isl::UnionMap makeIdentityMap(const isl::UnionSet &USet, bool RestrictDomain);
 
 /// Reverse the nested map tuple in @p Map's domain.
 ///
 /// @param Map { [Space1[] -> Space2[]] -> Space3[] }
 ///
 /// @return { [Space2[] -> Space1[]] -> Space3[] }
-IslPtr<isl_map> reverseDomain(IslPtr<isl_map> Map);
+isl::Map reverseDomain(isl::Map Map);
 
-/// Piecewise reverseDomain(IslPtr<isl_map>).
-IslPtr<isl_union_map> reverseDomain(const IslPtr<isl_union_map> &UMap);
+/// Piecewise reverseDomain(isl::Map).
+isl::UnionMap reverseDomain(const isl::UnionMap &UMap);
 
 /// Add a constant to one dimension of a set.
 ///
@@ -158,22 +152,22 @@ IslPtr<isl_union_map> reverseDomain(const IslPtr<isl_union_map> &UMap);
 /// @param Amount The offset to add to the specified dimension.
 ///
 /// @return The modified set.
-IslPtr<isl_set> shiftDim(IslPtr<isl_set> Set, int Pos, int Amount);
+isl::Set shiftDim(isl::Set Set, int Pos, int Amount);
 
-/// Piecewise shiftDim(IslPtr<isl_set>,int,int).
-IslPtr<isl_union_set> shiftDim(IslPtr<isl_union_set> USet, int Pos, int Amount);
+/// Piecewise shiftDim(isl::Set,int,int).
+isl::UnionSet shiftDim(isl::UnionSet USet, int Pos, int Amount);
 
 /// Simplify a set inplace.
-void simplify(IslPtr<isl_set> &Set);
+void simplify(isl::Set &Set);
 
 /// Simplify a union set inplace.
-void simplify(IslPtr<isl_union_set> &USet);
+void simplify(isl::UnionSet &USet);
 
 /// Simplify a map inplace.
-void simplify(IslPtr<isl_map> &Map);
+void simplify(isl::Map &Map);
 
 /// Simplify a union map inplace.
-void simplify(IslPtr<isl_union_map> &UMap);
+void simplify(isl::UnionMap &UMap);
 
 /// Compute the reaching definition statement or the next overwrite for each
 /// definition of an array element.
@@ -228,10 +222,9 @@ void simplify(IslPtr<isl_union_map> &UMap);
 ///         The reaching definitions or future overwrite as described above, or
 ///         nullptr if either @p Schedule or @p Writes is nullptr, or the isl
 ///         max operations count has exceeded.
-IslPtr<isl_union_map> computeReachingWrite(IslPtr<isl_union_map> Schedule,
-                                           IslPtr<isl_union_map> Writes,
-                                           bool Reverse, bool InclPrevDef,
-                                           bool InclNextDef);
+isl::UnionMap computeReachingWrite(isl::UnionMap Schedule, isl::UnionMap Writes,
+                                   bool Reverse, bool InclPrevDef,
+                                   bool InclNextDef);
 
 /// Compute the timepoints where the contents of an array element are not used.
 ///
@@ -293,11 +286,9 @@ IslPtr<isl_union_map> computeReachingWrite(IslPtr<isl_union_map> Schedule,
 ///         The unused timepoints as defined above, or nullptr if either @p
 ///         Schedule, @p Writes are @p Reads is nullptr, or the ISL max
 ///         operations count is exceeded.
-IslPtr<isl_union_map> computeArrayUnused(IslPtr<isl_union_map> Schedule,
-                                         IslPtr<isl_union_map> Writes,
-                                         IslPtr<isl_union_map> Reads,
-                                         bool ReadEltInSameInst,
-                                         bool InclLastRead, bool InclWrite);
+isl::UnionMap computeArrayUnused(isl::UnionMap Schedule, isl::UnionMap Writes,
+                                 isl::UnionMap Reads, bool ReadEltInSameInst,
+                                 bool InclLastRead, bool InclWrite);
 
 /// Convert a zone (range between timepoints) to timepoints.
 ///
@@ -344,8 +335,8 @@ IslPtr<isl_union_map> computeArrayUnused(IslPtr<isl_union_map> Schedule,
 /// @param InclEnd   Include timepoints adjacent to the ending of a zone.
 ///
 /// @return { Scatter[] }
-IslPtr<isl_union_set> convertZoneToTimepoints(IslPtr<isl_union_set> Zone,
-                                              bool InclStart, bool InclEnd);
+isl::UnionSet convertZoneToTimepoints(isl::UnionSet Zone, bool InclStart,
+                                      bool InclEnd);
 } // namespace polly
 
 #endif /* POLLY_ISLTOOLS_H */

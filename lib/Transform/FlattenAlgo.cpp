@@ -24,7 +24,7 @@ namespace {
 /// Whether a dimension of a set is bounded (lower and upper) by a constant,
 /// i.e. there are two constants Min and Max, such that every value x of the
 /// chosen dimensions is Min <= x <= Max.
-bool isDimBoundedByConstant(IslPtr<isl_set> Set, unsigned dim) {
+bool isDimBoundedByConstant(isl::Set Set, unsigned dim) {
   auto ParamDims = isl_set_dim(Set.keep(), isl_dim_param);
   Set = give(isl_set_project_out(Set.take(), isl_dim_param, 0, ParamDims));
   Set = give(isl_set_project_out(Set.take(), isl_dim_set, 0, dim));
@@ -37,7 +37,7 @@ bool isDimBoundedByConstant(IslPtr<isl_set> Set, unsigned dim) {
 /// parameters, i.e. there are two expressions Min_p and Max_p of the parameters
 /// p, such that every value x of the chosen dimensions is
 /// Min_p <= x <= Max_p.
-bool isDimBoundedByParameter(IslPtr<isl_set> Set, unsigned dim) {
+bool isDimBoundedByParameter(isl::Set Set, unsigned dim) {
   Set = give(isl_set_project_out(Set.take(), isl_dim_set, 0, dim));
   auto SetDims = isl_set_dim(Set.keep(), isl_dim_set);
   Set = give(isl_set_project_out(Set.take(), isl_dim_set, 1, SetDims - 1));
@@ -45,15 +45,15 @@ bool isDimBoundedByParameter(IslPtr<isl_set> Set, unsigned dim) {
 }
 
 /// Whether BMap's first out-dimension is not a constant.
-bool isVariableDim(const IslPtr<isl_basic_map> &BMap) {
+bool isVariableDim(const isl::BasicMap &BMap) {
   auto FixedVal =
       give(isl_basic_map_plain_get_val_if_fixed(BMap.keep(), isl_dim_out, 0));
   return !FixedVal || isl_val_is_nan(FixedVal.keep());
 }
 
 /// Whether Map's first out dimension is no constant nor piecewise constant.
-bool isVariableDim(const IslPtr<isl_map> &Map) {
-  return foreachEltWithBreak(Map, [](IslPtr<isl_basic_map> BMap) -> isl_stat {
+bool isVariableDim(const isl::Map &Map) {
+  return foreachEltWithBreak(Map, [](isl::BasicMap BMap) -> isl_stat {
     if (isVariableDim(BMap))
       return isl_stat_error;
     return isl_stat_ok;
@@ -61,8 +61,8 @@ bool isVariableDim(const IslPtr<isl_map> &Map) {
 }
 
 /// Whether UMap's first out dimension is no (piecewise) constant.
-bool isVariableDim(const IslPtr<isl_union_map> &UMap) {
-  return foreachEltWithBreak(UMap, [](IslPtr<isl_map> Map) -> isl_stat {
+bool isVariableDim(const isl::UnionMap &UMap) {
+  return foreachEltWithBreak(UMap, [](isl::Map Map) -> isl_stat {
     if (isVariableDim(Map))
       return isl_stat_error;
     return isl_stat_ok;
@@ -72,56 +72,54 @@ bool isVariableDim(const IslPtr<isl_union_map> &UMap) {
 /// If @p PwAff maps to a constant, return said constant. If @p Max/@p Min, it
 /// can also be a piecewise constant and it would return the minimum/maximum
 /// value. Otherwise, return NaN.
-IslPtr<isl_val> getConstant(IslPtr<isl_pw_aff> PwAff, bool Max, bool Min) {
+isl::Val getConstant(isl::PwAff PwAff, bool Max, bool Min) {
   assert(!Max || !Min);
-  IslPtr<isl_val> Result;
-  foreachPieceWithBreak(
-      PwAff, [=, &Result](IslPtr<isl_set> Set, IslPtr<isl_aff> Aff) {
-        if (Result && isl_val_is_nan(Result.keep()))
-          return isl_stat_ok;
+  isl::Val Result;
+  foreachPieceWithBreak(PwAff, [=, &Result](isl::Set Set, isl::Aff Aff) {
+    if (Result && isl_val_is_nan(Result.keep()))
+      return isl_stat_ok;
 
-        // TODO: If Min/Max, we can also determine a minimum/maximum value if
-        // Set is constant-bounded.
-        if (!isl_aff_is_cst(Aff.keep())) {
-          Result = give(isl_val_nan(Aff.getCtx()));
-          return isl_stat_error;
-        }
+    // TODO: If Min/Max, we can also determine a minimum/maximum value if
+    // Set is constant-bounded.
+    if (!isl_aff_is_cst(Aff.keep())) {
+      Result = give(isl_val_nan(Aff.getCtx()));
+      return isl_stat_error;
+    }
 
-        auto ThisVal = give(isl_aff_get_constant_val(Aff.keep()));
-        if (!Result) {
-          Result = ThisVal;
-          return isl_stat_ok;
-        }
+    auto ThisVal = give(isl_aff_get_constant_val(Aff.keep()));
+    if (!Result) {
+      Result = ThisVal;
+      return isl_stat_ok;
+    }
 
-        if (isl_val_eq(Result.keep(), ThisVal.keep()))
-          return isl_stat_ok;
+    if (isl_val_eq(Result.keep(), ThisVal.keep()))
+      return isl_stat_ok;
 
-        if (Max && isl_val_gt(ThisVal.keep(), Result.keep())) {
-          Result = ThisVal;
-          return isl_stat_ok;
-        }
+    if (Max && isl_val_gt(ThisVal.keep(), Result.keep())) {
+      Result = ThisVal;
+      return isl_stat_ok;
+    }
 
-        if (Min && isl_val_lt(ThisVal.keep(), Result.keep())) {
-          Result = ThisVal;
-          return isl_stat_ok;
-        }
+    if (Min && isl_val_lt(ThisVal.keep(), Result.keep())) {
+      Result = ThisVal;
+      return isl_stat_ok;
+    }
 
-        // Not compatible
-        Result = give(isl_val_nan(Aff.getCtx()));
-        return isl_stat_error;
-      });
+    // Not compatible
+    Result = give(isl_val_nan(Aff.getCtx()));
+    return isl_stat_error;
+  });
   return Result;
 }
 
 /// Compute @p UPwAff - @p Val.
-IslPtr<isl_union_pw_aff> subtract(IslPtr<isl_union_pw_aff> UPwAff,
-                                  IslPtr<isl_val> Val) {
+isl::UnionPwAff subtract(isl::UnionPwAff UPwAff, isl::Val Val) {
   if (isl_val_is_zero(Val.keep()))
     return UPwAff;
 
   auto Result =
       give(isl_union_pw_aff_empty(isl_union_pw_aff_get_space(UPwAff.keep())));
-  foreachElt(UPwAff, [=, &Result](IslPtr<isl_pw_aff> PwAff) {
+  foreachElt(UPwAff, [=, &Result](isl::PwAff PwAff) {
     auto ValAff = give(isl_pw_aff_val_on_domain(
         isl_set_universe(isl_space_domain(isl_pw_aff_get_space(PwAff.keep()))),
         Val.copy()));
@@ -133,14 +131,13 @@ IslPtr<isl_union_pw_aff> subtract(IslPtr<isl_union_pw_aff> UPwAff,
 }
 
 /// Compute @UPwAff * @p Val.
-IslPtr<isl_union_pw_aff> multiply(IslPtr<isl_union_pw_aff> UPwAff,
-                                  IslPtr<isl_val> Val) {
+isl::UnionPwAff multiply(isl::UnionPwAff UPwAff, isl::Val Val) {
   if (isl_val_is_one(Val.keep()))
     return UPwAff;
 
   auto Result =
       give(isl_union_pw_aff_empty(isl_union_pw_aff_get_space(UPwAff.keep())));
-  foreachElt(UPwAff, [=, &Result](IslPtr<isl_pw_aff> PwAff) {
+  foreachElt(UPwAff, [=, &Result](isl::PwAff PwAff) {
     auto ValAff = give(isl_pw_aff_val_on_domain(
         isl_set_universe(isl_space_domain(isl_pw_aff_get_space(PwAff.keep()))),
         Val.copy()));
@@ -155,14 +152,14 @@ IslPtr<isl_union_pw_aff> multiply(IslPtr<isl_union_pw_aff> UPwAff,
 ///
 /// It is assumed that all maps in the maps have at least the necessary number
 /// of out dimensions.
-IslPtr<isl_union_map> scheduleProjectOut(const IslPtr<isl_union_map> &UMap,
-                                         unsigned first, unsigned n) {
+isl::UnionMap scheduleProjectOut(const isl::UnionMap &UMap, unsigned first,
+                                 unsigned n) {
   if (n == 0)
     return UMap; /* isl_map_project_out would also reset the tuple, which should
                     have no effect on schedule ranges */
 
   auto Result = give(isl_union_map_empty(isl_union_map_get_space(UMap.keep())));
-  foreachElt(UMap, [=, &Result](IslPtr<isl_map> Map) {
+  foreachElt(UMap, [=, &Result](isl::Map Map) {
     auto Outprojected =
         give(isl_map_project_out(Map.take(), isl_dim_out, first, n));
     Result = give(isl_union_map_add_map(Result.take(), Outprojected.take()));
@@ -175,20 +172,19 @@ IslPtr<isl_union_map> scheduleProjectOut(const IslPtr<isl_union_map> &UMap,
 /// Because this function takes an isl_union_map, the out dimensions could be
 /// different. We return the maximum number in this case. However, a different
 /// number of dimensions is not supported by the other code in this file.
-size_t scheduleScatterDims(const IslPtr<isl_union_map> &Schedule) {
+size_t scheduleScatterDims(const isl::UnionMap &Schedule) {
   unsigned Dims = 0;
-  foreachElt(Schedule, [&Dims](IslPtr<isl_map> Map) {
+  foreachElt(Schedule, [&Dims](isl::Map Map) {
     Dims = std::max(Dims, isl_map_dim(Map.keep(), isl_dim_out));
   });
   return Dims;
 }
 
 /// Return the @p pos' range dimension, converted to an isl_union_pw_aff.
-IslPtr<isl_union_pw_aff> scheduleExtractDimAff(IslPtr<isl_union_map> UMap,
-                                               unsigned pos) {
+isl::UnionPwAff scheduleExtractDimAff(isl::UnionMap UMap, unsigned pos) {
   auto SingleUMap =
       give(isl_union_map_empty(isl_union_map_get_space(UMap.keep())));
-  foreachElt(UMap, [=, &SingleUMap](IslPtr<isl_map> Map) {
+  foreachElt(UMap, [=, &SingleUMap](isl::Map Map) {
     auto MapDims = isl_map_dim(Map.keep(), isl_dim_out);
     auto SingleMap = give(isl_map_project_out(Map.take(), isl_dim_out, 0, pos));
     SingleMap = give(isl_map_project_out(SingleMap.take(), isl_dim_out, 1,
@@ -222,7 +218,7 @@ IslPtr<isl_union_pw_aff> scheduleExtractDimAff(IslPtr<isl_union_map> UMap,
 /// left.
 /// The example schedule would be transformed to:
 ///   { Stmt_X[] -> [X - l_X, ...]; Stmt_B -> [l_X - u_X + 1 + Y - l_Y, ...] }
-IslPtr<isl_union_map> tryFlattenSequence(IslPtr<isl_union_map> Schedule) {
+isl::UnionMap tryFlattenSequence(isl::UnionMap Schedule) {
   auto IslCtx = Schedule.getCtx();
   auto ScatterSet =
       give(isl_set_from_union_set(isl_union_map_range(Schedule.copy())));
@@ -324,7 +320,7 @@ IslPtr<isl_union_map> tryFlattenSequence(IslPtr<isl_union_map> Schedule) {
 /// actual value of i. Let l_X() the smallest possible value of X and u_X() its
 /// largest value. Then, construct a new schedule
 ///   { Stmt[i] -> [i * (u_X() - l_X() + 1), ...] }
-IslPtr<isl_union_map> tryFlattenLoop(IslPtr<isl_union_map> Schedule) {
+isl::UnionMap tryFlattenLoop(isl::UnionMap Schedule) {
   assert(scheduleScatterDims(Schedule) >= 2);
 
   auto Remaining = scheduleProjectOut(Schedule, 0, 1);
@@ -379,7 +375,7 @@ IslPtr<isl_union_map> tryFlattenLoop(IslPtr<isl_union_map> Schedule) {
 }
 } // anonymous namespace
 
-IslPtr<isl_union_map> polly::flattenSchedule(IslPtr<isl_union_map> Schedule) {
+isl::UnionMap polly::flattenSchedule(isl::UnionMap Schedule) {
   auto Dims = scheduleScatterDims(Schedule);
   DEBUG(dbgs() << "Recursive schedule to process:\n  " << Schedule << "\n");
 

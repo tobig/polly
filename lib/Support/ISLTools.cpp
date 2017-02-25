@@ -89,9 +89,10 @@ isl::Map polly::beforeScatter(isl::Map Map, bool Strict) {
 
 isl::UnionMap polly::beforeScatter(isl::UnionMap UMap, bool Strict) {
   auto Result = give(isl_union_map_empty(isl_union_map_get_space(UMap.keep())));
-  foreachElt(UMap, [=, &Result](isl::Map Map) {
+  UMap.foreachMap([=, &Result](isl::Map Map) -> isl::Stat {
     auto After = beforeScatter(Map, Strict);
     Result = give(isl_union_map_add_map(Result.take(), After.take()));
+    return isl::Stat::OK;
   });
   return Result;
 }
@@ -105,9 +106,10 @@ isl::Map polly::afterScatter(isl::Map Map, bool Strict) {
 
 isl::UnionMap polly::afterScatter(const isl::UnionMap &UMap, bool Strict) {
   auto Result = give(isl_union_map_empty(isl_union_map_get_space(UMap.keep())));
-  foreachElt(UMap, [=, &Result](isl::Map Map) {
+  UMap.foreachMap([=, &Result](isl::Map Map) -> isl::Stat {
     auto After = afterScatter(Map, Strict);
     Result = give(isl_union_map_add_map(Result.take(), After.take()));
+    return isl::Stat::OK;
   });
   return Result;
 }
@@ -158,8 +160,9 @@ isl::Set polly::singleton(isl::UnionSet USet, isl::Space ExpectedSpace) {
 
 unsigned polly::getNumScatterDims(const isl::UnionMap &Schedule) {
   unsigned Dims = 0;
-  foreachElt(Schedule, [&Dims](isl::Map Map) {
+  Schedule.foreachMap([&Dims](isl::Map Map) -> isl::Stat {
     Dims = std::max(Dims, isl_map_dim(Map.keep(), isl_dim_out));
+    return isl::Stat::OK;
   });
   return Dims;
 }
@@ -176,13 +179,14 @@ isl::Space polly::getScatterSpace(const isl::UnionMap &Schedule) {
 isl::UnionMap polly::makeIdentityMap(const isl::UnionSet &USet,
                                      bool RestrictDomain) {
   auto Result = give(isl_union_map_empty(isl_union_set_get_space(USet.keep())));
-  foreachElt(USet, [=, &Result](isl::Set Set) {
+  USet.foreachSet([=, &Result](isl::Set Set) -> isl::Stat {
     auto IdentityMap = give(isl_map_identity(
         isl_space_map_from_set(isl_set_get_space(Set.keep()))));
     if (RestrictDomain)
       IdentityMap =
           give(isl_map_intersect_domain(IdentityMap.take(), Set.take()));
     Result = give(isl_union_map_add_map(Result.take(), IdentityMap.take()));
+    return isl::Stat::OK;
   });
   return Result;
 }
@@ -198,9 +202,10 @@ isl::Map polly::reverseDomain(isl::Map Map) {
 
 isl::UnionMap polly::reverseDomain(const isl::UnionMap &UMap) {
   auto Result = give(isl_union_map_empty(isl_union_map_get_space(UMap.keep())));
-  foreachElt(UMap, [=, &Result](isl::Map Map) {
+  UMap.foreachMap([=, &Result](isl::Map Map) -> isl::Stat {
     auto Reversed = reverseDomain(std::move(Map));
     Result = give(isl_union_map_add_map(Result.take(), Reversed.take()));
+    return isl::Stat::OK;
   });
   return Result;
 }
@@ -219,9 +224,10 @@ isl::Set polly::shiftDim(isl::Set Set, int Pos, int Amount) {
 
 isl::UnionSet polly::shiftDim(isl::UnionSet USet, int Pos, int Amount) {
   auto Result = give(isl_union_set_empty(isl_union_set_get_space(USet.keep())));
-  foreachElt(USet, [=, &Result](isl::Set Set) {
+  USet.foreachSet([=, &Result](isl::Set Set) -> isl::Stat {
     auto Shifted = shiftDim(Set, Pos, Amount);
     Result = give(isl_union_set_add_set(Result.take(), Shifted.take()));
+    return isl::Stat::OK;
   });
   return Result;
 }

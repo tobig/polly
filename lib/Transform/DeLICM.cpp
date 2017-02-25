@@ -921,12 +921,13 @@ protected:
 
     // { Element[] }
     AllElements = makeEmptyUnionSet();
-    foreachElt(AllWrites, [this](isl::Map Write) {
+    AllWrites.foreachMap([this](isl::Map Write) -> isl::Stat {
       auto Space = give(isl_map_get_space(Write.keep()));
       auto EltSpace = give(isl_space_range(Space.take()));
       auto EltUniv = give(isl_set_universe(EltSpace.take()));
       AllElements =
           give(isl_union_set_add_set(AllElements.take(), EltUniv.take()));
+      return isl::Stat::OK;
     });
   }
 

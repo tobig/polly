@@ -24,10 +24,11 @@ namespace {
 /// Get the universes of all spaces in @p USet.
 isl::UnionSet unionSpace(const isl::UnionSet &USet) {
   auto Result = give(isl_union_set_empty(isl_union_set_get_space(USet.keep())));
-  foreachElt(USet, [=, &Result](isl::Set Set) {
+  USet.foreachSet([=, &Result](isl::Set Set) -> isl::Stat {
     auto Space = give(isl_set_get_space(Set.keep()));
     auto Universe = give(isl_set_universe(Space.take()));
     Result = give(isl_union_set_add_set(Result.take(), Universe.take()));
+    return isl::Stat::OK;
   });
   return Result;
 }

@@ -2616,6 +2616,7 @@ std::string GPUNodeBuilder::finalizeKernelFunction() {
     return "";
   }
 
+  if (0)
   { 
       Module *Host = S.getFunction().getParent();
       if (verifyModule(*Host) == 1) {

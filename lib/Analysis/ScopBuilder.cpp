@@ -708,8 +708,12 @@ bool ScopBuilder::buildAccessPollyAbstractMatrix(MemAccInst Inst,
       errs() << "GEP: " << *GEP << "\n";
   }
 
-  assert(Call->getNumArgOperands() % 2 == 1 &&
-         "expect offset, stride, index pairs\n");
+  if (!(Call->getNumArgOperands() % 2 == 1 &&
+         "expect offset, stride, index pairs\n")) {
+    scop->invalidate(PROFITABLE, DebugLoc());
+    return false;
+  }
+      
   const int NArrayDims = Call->getNumArgOperands() / 2;
   if (AbstractMatrixDebug)
     errs() << "Num array dims: " << NArrayDims << "\n";

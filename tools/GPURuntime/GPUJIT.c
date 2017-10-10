@@ -1371,6 +1371,7 @@ static PollyGPUFunction *getKernelCUDA(const char *BinaryBuffer,
 }
 
 static void synchronizeDeviceCUDA() {
+  return;
   dump_function();
   if (CuCtxSynchronizeFcnPtr() != CUDA_SUCCESS) {
     fprintf(stderr, "Synchronizing device and host memory failed.\n");
@@ -1441,7 +1442,7 @@ char *g_virtual_managedmem_sp = NULL;
 #define  KB 1024l
 #define  MB 1024l * KB
 #define  GB 1024l * MB
-#define  STACK_SIZE 5l * GB
+#define  STACK_SIZE 10l * GB
 
 
 __attribute__((constructor)) static void initVirtualManagedMemStack() {

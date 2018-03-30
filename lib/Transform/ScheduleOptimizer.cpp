@@ -1339,6 +1339,25 @@ __isl_give isl_schedule_node *ScheduleTreeOptimizer::
 
   N = tileNode(N, "Tapir", Sizes, 8);
 
+  // Move pointer to the outer band node, which is the node that enumerates
+  // the tiles.
+  N = N.parent().parent();
+
+  int FirstSeqDim = 0;
+  for (unsigned i = 0; i < isl_schedule_node_band_n_member(N.get()); i++) {
+    if (isl_schedule_node_band_member_get_coincident(N.get(), i) != isl_bool_true)
+      break;
+    FirstSeqDim = i+1;
+  }
+  N = isl::manage(isl_schedule_node_band_split(N.release(), FirstSeqDim));
+
+  N = N.child(0);
+
+  isl::id MarkID = isl::manage(isl_id_alloc(N.get_ctx().get(),
+                                            "Tapir Base Case",
+                                            nullptr));
+  N = N.insert_mark(MarkID);
+
   return N.copy();
 }
 

@@ -15,6 +15,7 @@
 ; CHECK-NEXT:     #pragma omp parallel for
 ; CHECK-NEXT:     for (int c0 = 0; c0 <= 63; c0 += 1)
 ; CHECK-NEXT:       for (int c1 = 0; c1 <= 127; c1 += 1)
+; CHECK-NEXT:         // Tapir Base Case
 ; CHECK-NEXT:         for (int c2 = 0; c2 <= 127; c2 += 1) {
 ; CHECK-NEXT:           // Tapir - Points
 ; CHECK-NEXT:           for (int c3 = 0; c3 <= 15; c3 += 1)

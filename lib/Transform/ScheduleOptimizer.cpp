@@ -134,6 +134,11 @@ static cl::opt<bool> TapirOpt("polly-tapiropt",
                               cl::init(false), cl::ZeroOrMore,
                               cl::cat(PollyCategory));
 
+static cl::opt<bool> TapirParametric("polly-tapiropt-parametric",
+                              cl::desc("Enable loop tiling"),
+                              cl::init(false), cl::ZeroOrMore,
+                              cl::cat(PollyCategory));
+
 static cl::opt<bool> FirstLevelTiling("polly-tiling",
                                       cl::desc("Enable loop tiling"),
                                       cl::init(true), cl::ZeroOrMore,
@@ -1333,8 +1338,65 @@ bool ScheduleTreeOptimizer::isMatrMultPattern(isl::schedule_node Node,
 
 __isl_give isl_schedule_node *ScheduleTreeOptimizer::
   tapirBand(__isl_take isl_schedule_node *Node) {
-
   auto N = isl::manage(Node);
+
+  if (TapirParametric) {
+    {
+      isl::set Context = isl::set::universe(isl::space::params_alloc(N.get_ctx(),
+                                                                     0));
+
+      for (unsigned i = 0; i < isl_schedule_node_band_n_member(N.get()); i++) {
+        auto Space = isl::space::params_alloc(N.get_ctx(), 1);
+        auto LS = isl::local_space(Space);
+
+        std::string StartName = "Start" + std::to_string(i);
+        std::string SizeName = "Size" + std::to_string(i);
+
+        isl::id Start = isl::manage(isl_id_alloc(N.get_ctx().get(),
+                                                StartName.c_str(), nullptr));
+        isl::id Size = isl::manage(isl_id_alloc(N.get_ctx().get(),
+                                                SizeName.c_str(), nullptr));
+
+        auto SpaceZ = isl::space::params_alloc(N.get_ctx(), 0);
+        auto LSZ = isl::local_space(SpaceZ);
+        auto Zero = isl::val::int_from_ui(N.get_ctx().get(), 0);
+        isl::aff ZeroAff = isl::aff(LSZ, Zero);
+
+        LS = LS.set_dim_id(isl::dim::param, 0, Start);
+        isl::aff StartAff = isl::aff::var_on_domain(LS, isl::dim::param, 0);
+
+        LS = LS.set_dim_id(isl::dim::param, 0, Size);
+        isl::aff SizeAff = isl::aff::var_on_domain(LS, isl::dim::param, 0);
+
+        ZeroAff = ZeroAff.align_params(StartAff.get_space());
+        Context = Context.intersect(StartAff.ge_set(ZeroAff));
+
+        SizeAff = SizeAff.align_params(ZeroAff.get_space());
+        ZeroAff = ZeroAff.align_params(SizeAff.get_space());
+        Context = Context.intersect(SizeAff.ge_set(ZeroAff));
+      }
+      N = N.insert_context(Context);
+    }
+
+    N.dump();
+    return N.copy();
+    /*
+    for (
+     
+     
+      TapirCtx = isl::set(N.get_ctx(),
+                                 "[Init0, Init1, Size0, Size1] -> {:}");
+    TapirCtx.dump();
+    // Filter:
+    //
+    // Stmt3[i0, i1] -> [(i0)] : Init0 <= i0 <= Init0 + Size0 and
+    //                           Init1 <= i0 <= Init1 + Size1.
+    N = N.insert_filter($`isl::union_set filter`)
+    N.dump();
+    return N.copy();
+    */
+  }
+
   int Sizes[] = {16};
 
   N = tileNode(N, "Tapir", Sizes, 8);

@@ -1335,17 +1335,24 @@ bool ScheduleTreeOptimizer::isMatrMultPattern(isl::schedule_node Node,
   return false;
 }
 
+struct ExtremeValues {
+  std::vector<isl::pw_aff> LB;
+  std::vector<isl::pw_aff> UB;
+
+  std::vector<isl::ast_expr> LBExpr;
+  std::vector<isl::ast_expr> UBExpr;
+};
+
 __isl_give isl_schedule_node *
 ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
   auto N = isl::manage(Node);
 
   if (TapirParametric) {
     {
-      isl::set Context =
-          isl::set::universe(isl::space::params_alloc(N.get_ctx(), 0));
+      isl::set Context = isl::set::universe(isl::space(N.get_ctx(), 0, 0));
 
       for (unsigned i = 0; i < isl_schedule_node_band_n_member(N.get()); i++) {
-        auto Space = isl::space::params_alloc(N.get_ctx(), 1);
+        auto Space = isl::space(N.get_ctx(), 1, 0);
         auto LS = isl::local_space(Space);
 
         std::string StartName = "Start" + std::to_string(i);
@@ -1356,7 +1363,7 @@ ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
         isl::id Size = isl::manage(
             isl_id_alloc(N.get_ctx().get(), SizeName.c_str(), nullptr));
 
-        auto SpaceZ = isl::space::params_alloc(N.get_ctx(), 0);
+        auto SpaceZ = isl::space(N.get_ctx(), 0, 0);
         auto LSZ = isl::local_space(SpaceZ);
         auto Zero = isl::val::int_from_ui(N.get_ctx().get(), 0);
         isl::aff ZeroAff = isl::aff(LSZ, Zero);
@@ -1377,23 +1384,79 @@ ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
       N = N.insert_context(Context);
     }
 
-    N.dump();
-    return N.copy();
-    /*
-    for (
+    N = N.child(0);
 
-
-      TapirCtx = isl::set(N.get_ctx(),
-                                 "[Init0, Init1, Size0, Size1] -> {:}");
-    TapirCtx.dump();
     // Filter:
     //
-    // Stmt3[i0, i1] -> [(i0)] : Init0 <= i0 <= Init0 + Size0 and
-    //                           Init1 <= i0 <= Init1 + Size1.
-    N = N.insert_filter($`isl::union_set filter`)
-    N.dump();
+    // Stmt3[i0, i1] : Start0 <= i0 <= Start0 + Size0 and
+    //                 Start1 <= i1 <= Start1 + Size1.
+    ExtremeValues &EV =
+        *((ExtremeValues *)malloc(sizeof(struct ExtremeValues)));
+    {
+      unsigned NumMembers = isl_schedule_node_band_n_member(N.get());
+      isl::set Context =
+          isl::set::universe(isl::space(N.get_ctx(), 0, NumMembers));
+
+      for (unsigned i = 0; i < NumMembers; i++) {
+        auto Space = isl::space(N.get_ctx(), 1, NumMembers);
+        auto LS = isl::local_space(Space);
+
+        std::string StartName = "Start" + std::to_string(i);
+        std::string SizeName = "Size" + std::to_string(i);
+
+        isl::id Start = isl::manage(
+            isl_id_alloc(N.get_ctx().get(), StartName.c_str(), nullptr));
+        isl::id Size = isl::manage(
+            isl_id_alloc(N.get_ctx().get(), SizeName.c_str(), nullptr));
+
+        auto SpaceZ = isl::space(N.get_ctx(), 0, NumMembers);
+        auto LSZ = isl::local_space(SpaceZ);
+        auto Zero = isl::val::int_from_ui(N.get_ctx().get(), 0);
+        isl::aff ZeroAff = isl::aff(LSZ, Zero);
+
+        LS = LS.set_dim_id(isl::dim::param, 0, Start);
+        isl::aff StartAff = isl::aff::var_on_domain(LS, isl::dim::param, 0);
+
+        LS = LS.set_dim_id(isl::dim::param, 0, Size);
+        isl::aff SizeAff = isl::aff::var_on_domain(LS, isl::dim::param, 0);
+
+        isl::aff VarAff = isl::aff::var_on_domain(LS, isl::dim::set, i);
+
+        // StartX <= VarX
+        VarAff = VarAff.align_params(StartAff.get_space());
+        StartAff = StartAff.align_params(VarAff.get_space());
+        Context = Context.intersect(StartAff.le_set(VarAff));
+
+        VarAff = VarAff.align_params(StartAff.get_space());
+        StartAff = StartAff.align_params(VarAff.get_space());
+        errs() << "A\n";
+
+        SizeAff = SizeAff.align_params(StartAff.get_space());
+        StartAff = StartAff.align_params(SizeAff.get_space());
+        auto UpperBoundAff = StartAff.add(SizeAff);
+        Context = Context.intersect(UpperBoundAff.ge_set(VarAff));
+
+        auto Dom = N.get_domain();
+        isl::union_map PartialSchedule = isl::manage(
+            isl_schedule_node_band_get_partial_schedule_union_map(N.get()));
+        PartialSchedule = PartialSchedule.intersect_domain(Dom);
+        auto ScheduleRange = isl::set(PartialSchedule.range());
+        EV.LB.push_back(ScheduleRange.dim_max(i));
+        EV.UB.push_back(ScheduleRange.dim_min(i));
+      }
+
+      isl::union_map PartialSchedule = isl::manage(
+          isl_schedule_node_band_get_partial_schedule_union_map(N.get()));
+      isl::union_set Filter = Context;
+      Filter = Filter.apply(PartialSchedule.reverse());
+      N = N.insert_filter(Filter);
+    }
+
+    isl::id MarkID =
+        isl::manage(isl_id_alloc(N.get_ctx().get(), "Tapir Base Case", &EV));
+    N = N.insert_mark(MarkID);
+
     return N.copy();
-    */
   }
 
   int Sizes[] = {16};

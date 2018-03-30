@@ -319,6 +319,14 @@ static isl_stat astBuildBeforeMark(__isl_keep isl_id *MarkId,
   return isl_stat_ok;
 }
 
+struct ExtremeValues {
+  std::vector<isl::pw_aff> LB;
+  std::vector<isl::pw_aff> UB;
+
+  std::vector<isl::ast_expr> LBExpr;
+  std::vector<isl::ast_expr> UBExpr;
+};
+
 static __isl_give isl_ast_node *
 astBuildAfterMark(__isl_take isl_ast_node *Node,
                   __isl_keep isl_ast_build *Build, void *User) {
@@ -327,6 +335,21 @@ astBuildAfterMark(__isl_take isl_ast_node *Node,
   auto *Id = isl_ast_node_mark_get_id(Node);
   if (strcmp(isl_id_get_name(Id), "SIMD") == 0)
     BuildInfo->InParallelFor = false;
+
+  if (strcmp(isl_id_get_name(Id), "Tapir Base Case") == 0) {
+    struct ExtremeValues *EV = (ExtremeValues *)isl_id_get_user(Id);
+
+    errs() << "Reaching a mark node\n";
+    assert(EV->LB.size() == EV->UB.size());
+    for (unsigned i = 0; i < EV->LB.size(); i++) {
+      EV->LBExpr.push_back(
+          isl::manage(isl_ast_build_expr_from_pw_aff(Build, EV->LB[i].copy())));
+      EV->UBExpr.push_back(
+          isl::manage(isl_ast_build_expr_from_pw_aff(Build, EV->UB[i].copy())));
+    }
+    EV->LB.clear();
+    EV->UB.clear();
+  }
   isl_id_free(Id);
   return Node;
 }

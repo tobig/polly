@@ -129,15 +129,14 @@ static cl::opt<int> PrevectorWidth(
         "The number of loop iterations to strip-mine for pre-vectorization"),
     cl::Hidden, cl::init(4), cl::ZeroOrMore, cl::cat(PollyCategory));
 
-static cl::opt<bool> TapirOpt("polly-tapiropt",
-                              cl::desc("Enable loop tiling"),
+static cl::opt<bool> TapirOpt("polly-tapiropt", cl::desc("Enable loop tiling"),
                               cl::init(false), cl::ZeroOrMore,
                               cl::cat(PollyCategory));
 
 static cl::opt<bool> TapirParametric("polly-tapiropt-parametric",
-                              cl::desc("Enable loop tiling"),
-                              cl::init(false), cl::ZeroOrMore,
-                              cl::cat(PollyCategory));
+                                     cl::desc("Enable loop tiling"),
+                                     cl::init(false), cl::ZeroOrMore,
+                                     cl::cat(PollyCategory));
 
 static cl::opt<bool> FirstLevelTiling("polly-tiling",
                                       cl::desc("Enable loop tiling"),
@@ -1336,14 +1335,14 @@ bool ScheduleTreeOptimizer::isMatrMultPattern(isl::schedule_node Node,
   return false;
 }
 
-__isl_give isl_schedule_node *ScheduleTreeOptimizer::
-  tapirBand(__isl_take isl_schedule_node *Node) {
+__isl_give isl_schedule_node *
+ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
   auto N = isl::manage(Node);
 
   if (TapirParametric) {
     {
-      isl::set Context = isl::set::universe(isl::space::params_alloc(N.get_ctx(),
-                                                                     0));
+      isl::set Context =
+          isl::set::universe(isl::space::params_alloc(N.get_ctx(), 0));
 
       for (unsigned i = 0; i < isl_schedule_node_band_n_member(N.get()); i++) {
         auto Space = isl::space::params_alloc(N.get_ctx(), 1);
@@ -1352,10 +1351,10 @@ __isl_give isl_schedule_node *ScheduleTreeOptimizer::
         std::string StartName = "Start" + std::to_string(i);
         std::string SizeName = "Size" + std::to_string(i);
 
-        isl::id Start = isl::manage(isl_id_alloc(N.get_ctx().get(),
-                                                StartName.c_str(), nullptr));
-        isl::id Size = isl::manage(isl_id_alloc(N.get_ctx().get(),
-                                                SizeName.c_str(), nullptr));
+        isl::id Start = isl::manage(
+            isl_id_alloc(N.get_ctx().get(), StartName.c_str(), nullptr));
+        isl::id Size = isl::manage(
+            isl_id_alloc(N.get_ctx().get(), SizeName.c_str(), nullptr));
 
         auto SpaceZ = isl::space::params_alloc(N.get_ctx(), 0);
         auto LSZ = isl::local_space(SpaceZ);
@@ -1382,8 +1381,8 @@ __isl_give isl_schedule_node *ScheduleTreeOptimizer::
     return N.copy();
     /*
     for (
-     
-     
+
+
       TapirCtx = isl::set(N.get_ctx(),
                                  "[Init0, Init1, Size0, Size1] -> {:}");
     TapirCtx.dump();
@@ -1407,17 +1406,17 @@ __isl_give isl_schedule_node *ScheduleTreeOptimizer::
 
   int FirstSeqDim = 0;
   for (unsigned i = 0; i < isl_schedule_node_band_n_member(N.get()); i++) {
-    if (isl_schedule_node_band_member_get_coincident(N.get(), i) != isl_bool_true)
+    if (isl_schedule_node_band_member_get_coincident(N.get(), i) !=
+        isl_bool_true)
       break;
-    FirstSeqDim = i+1;
+    FirstSeqDim = i + 1;
   }
   N = isl::manage(isl_schedule_node_band_split(N.release(), FirstSeqDim));
 
   N = N.child(0);
 
-  isl::id MarkID = isl::manage(isl_id_alloc(N.get_ctx().get(),
-                                            "Tapir Base Case",
-                                            nullptr));
+  isl::id MarkID =
+      isl::manage(isl_id_alloc(N.get_ctx().get(), "Tapir Base Case", nullptr));
   N = N.insert_mark(MarkID);
 
   return N.copy();

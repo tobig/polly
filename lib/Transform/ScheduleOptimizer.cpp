@@ -1390,7 +1390,7 @@ ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
     //
     // Stmt3[i0, i1] : Start0 <= i0 <= Start0 + Size0 and
     //                 Start1 <= i1 <= Start1 + Size1.
-    ExtremeValues &EV = * (new ExtremeValues());
+    ExtremeValues &EV = *(new ExtremeValues());
     {
       unsigned NumMembers = isl_schedule_node_band_n_member(N.get());
       isl::set Context =
@@ -1428,7 +1428,6 @@ ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
 
         VarAff = VarAff.align_params(StartAff.get_space());
         StartAff = StartAff.align_params(VarAff.get_space());
-        errs() << "A\n";
 
         SizeAff = SizeAff.align_params(StartAff.get_space());
         StartAff = StartAff.align_params(SizeAff.get_space());
@@ -1440,8 +1439,8 @@ ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
             isl_schedule_node_band_get_partial_schedule_union_map(N.get()));
         PartialSchedule = PartialSchedule.intersect_domain(Dom);
         auto ScheduleRange = isl::set(PartialSchedule.range());
-        EV.LB.push_back(ScheduleRange.dim_max(i));
-        EV.UB.push_back(ScheduleRange.dim_min(i));
+        EV.LB.push_back(ScheduleRange.dim_min(i));
+        EV.UB.push_back(ScheduleRange.dim_max(i));
       }
 
       isl::union_map PartialSchedule = isl::manage(

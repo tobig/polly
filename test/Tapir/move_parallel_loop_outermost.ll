@@ -1,5 +1,6 @@
 ; RUN: opt %loadPolly -polly-opt-isl -polly-ast -analyze \
-; RUN: -polly-tapiropt -polly-parallel < %s | FileCheck %s
+; RUN: -polly-tapiropt -polly-parallel \
+; RUN: -polly-on-isl-error-abort=false < %s | FileCheck %s
 ;
 ;    #define N 1024
 ;

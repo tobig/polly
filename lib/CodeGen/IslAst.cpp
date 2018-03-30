@@ -1,23 +1,4 @@
 //===- IslAst.cpp - isl code generator interface --------------------------===//
-  if (strcmp(isl_id_get_name(Id), "Tapir Base Case") == 0) {
-    struct ExtremeValues *EV = (ExtremeValues *)isl_id_get_user(Id);
-
-    errs() << "Reaching a mark node\n";
-    assert(EV->LB.size() == EV->UB.size());
-    for (unsigned i = 0; i < EV->LB.size(); i++) {
-      isl_ast_build_dump(Build);
-      auto LB = EV->LB[i];
-      auto UB = EV->UB[i];
-      LB = LB.insert_dims(isl::dim::in, 0, 0);
-      UB = UB.insert_dims(isl::dim::in, 0, 0);
-      EV->LBExpr.push_back(
-          isl::manage(isl_ast_build_expr_from_pw_aff(Build, LB.copy())));
-      EV->UBExpr.push_back(
-          isl::manage(isl_ast_build_expr_from_pw_aff(Build, UB.copy())));
-    }
-    EV->LB.clear();
-    EV->UB.clear();
-  }
 //
 //                     The LLVM Compiler Infrastructure
 //
@@ -83,6 +64,14 @@
 
 using namespace llvm;
 using namespace polly;
+
+struct ExtremeValues {
+  std::vector<isl::pw_aff> LB;
+  std::vector<isl::pw_aff> UB;
+
+  std::vector<isl::ast_expr> LBExpr;
+  std::vector<isl::ast_expr> UBExpr;
+};
 
 using IslAstUserPayload = IslAstInfo::IslAstUserPayload;
 
@@ -190,6 +179,39 @@ static const std::string getBrokenReductionsStr(__isl_keep isl_ast_node *Node) {
   }
 
   return str;
+}
+static isl_printer *cbPrintMark(__isl_take isl_printer *Printer,
+                                __isl_take isl_ast_print_options *Options,
+                                __isl_keep isl_ast_node *Node, void *) {
+
+  isl_id *Id = isl_ast_node_mark_get_id(Node);
+  struct ExtremeValues *EV = (ExtremeValues *)isl_id_get_user(Id);
+
+  if (EV) {
+    assert(EV->LBExpr.size() == EV->UBExpr.size());
+    for (unsigned i = 0; i < EV->LBExpr.size(); i++) {
+
+      std::string ToPrint;
+      ToPrint += "\n// Tapir Spawn: \n";
+      ToPrint += "\n// LB: dim " + std::to_string(i) + " : ";
+      ToPrint += EV->LBExpr[i].to_str() + "\n";
+      ToPrint += "\n// UB: dim " + std::to_string(i) + " : ";
+      ToPrint += EV->UBExpr[i].to_str() + "\n\n";
+      Printer = isl_printer_print_str(Printer, ToPrint.c_str());
+    }
+    EV->LBExpr.clear();
+    EV->UBExpr.clear();
+    EV->LB.clear();
+    EV->UB.clear();
+  } else {
+    Printer = isl_printer_start_line(Printer);
+    Printer = isl_printer_print_str(Printer, "// ");
+    Printer = isl_printer_print_str(Printer, isl_id_get_name(Id));
+    Printer = isl_printer_end_line(Printer);
+  }
+
+  isl_ast_node *N = isl_ast_node_mark_get_node(Node);
+  return isl_ast_node_print(N, Printer, Options);
 }
 
 /// Callback executed for each for node in the ast in order to print it.
@@ -338,16 +360,8 @@ static isl_stat astBuildBeforeMark(__isl_keep isl_id *MarkId,
   return isl_stat_ok;
 }
 
-struct ExtremeValues {
-  std::vector<isl::pw_aff> LB;
-  std::vector<isl::pw_aff> UB;
-
-  std::vector<isl::ast_expr> LBExpr;
-  std::vector<isl::ast_expr> UBExpr;
-};
-
 extern "C" {
-  void isl_ast_build_dump(void*);
+void isl_ast_build_dump(void *);
 }
 
 static __isl_give isl_ast_node *
@@ -361,21 +375,22 @@ astBuildAfterMark(__isl_take isl_ast_node *Node,
   if (strcmp(isl_id_get_name(Id), "Tapir Base Case") == 0) {
     struct ExtremeValues *EV = (ExtremeValues *)isl_id_get_user(Id);
 
-    errs() << "Reaching a mark node\n";
-    assert(EV->LB.size() == EV->UB.size());
-    for (unsigned i = 0; i < EV->LB.size(); i++) {
-      isl_ast_build_dump(Build);
-      auto LB = EV->LB[i];
-      auto UB = EV->UB[i];
-      LB = LB.insert_dims(isl::dim::in, 0, 0);
-      UB = UB.insert_dims(isl::dim::in, 0, 0);
-      EV->LBExpr.push_back(
-          isl::manage(isl_ast_build_expr_from_pw_aff(Build, LB.copy())));
-      EV->UBExpr.push_back(
-          isl::manage(isl_ast_build_expr_from_pw_aff(Build, UB.copy())));
+    if (EV) {
+      errs() << "Reaching a mark node\n";
+      assert(EV->LB.size() == EV->UB.size());
+      for (unsigned i = 0; i < EV->LB.size(); i++) {
+        auto LB = EV->LB[i];
+        auto UB = EV->UB[i];
+        LB = LB.insert_dims(isl::dim::in, 0, 0);
+        UB = UB.insert_dims(isl::dim::in, 0, 0);
+        EV->LBExpr.push_back(
+            isl::manage(isl_ast_build_expr_from_pw_aff(Build, LB.copy())));
+        EV->UBExpr.push_back(
+            isl::manage(isl_ast_build_expr_from_pw_aff(Build, UB.copy())));
+      }
+      EV->LB.clear();
+      EV->UB.clear();
     }
-    EV->LB.clear();
-    EV->UB.clear();
   }
 
   isl_id_free(Id);
@@ -801,7 +816,7 @@ void IslAstInfo::print(raw_ostream &OS) {
     Options =
         isl_ast_print_options_set_print_user(Options, cbPrintUser, nullptr);
   Options = isl_ast_print_options_set_print_for(Options, cbPrintFor, nullptr);
-  Options = isl_ast_print_options_set_print_
+  Options = isl_ast_print_options_set_print_mark(Options, cbPrintMark, nullptr);
 
   isl_printer *P = isl_printer_to_str(S.getIslCtx().get());
   P = isl_printer_set_output_format(P, ISL_FORMAT_C);

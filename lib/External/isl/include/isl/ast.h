@@ -156,6 +156,12 @@ __isl_give isl_ast_print_options *isl_ast_print_options_set_print_for(
 		__isl_take isl_ast_print_options *options,
 		__isl_keep isl_ast_node *node, void *user),
 	void *user);
+__isl_give isl_ast_print_options *isl_ast_print_options_set_print_mark(
+	__isl_take isl_ast_print_options *options,
+	__isl_give isl_printer *(*print_mark)(__isl_take isl_printer *p,
+		__isl_take isl_ast_print_options *options,
+		__isl_keep isl_ast_node *node, void *user),
+	void *user);
 
 isl_stat isl_options_set_ast_print_macro_once(isl_ctx *ctx, int val);
 int isl_options_get_ast_print_macro_once(isl_ctx *ctx);

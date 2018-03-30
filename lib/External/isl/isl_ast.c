@@ -38,6 +38,10 @@ __isl_give isl_ast_print_options *isl_ast_print_options_alloc(isl_ctx *ctx)
 
 	options->ctx = ctx;
 	isl_ctx_ref(ctx);
+        options->print_for_user = NULL;
+        options->print_for = NULL;
+        options->print_mark_user = NULL;
+        options->print_mark = NULL;
 	options->ref = 1;
 
 	return options;
@@ -58,7 +62,9 @@ __isl_give isl_ast_print_options *isl_ast_print_options_dup(
 		return NULL;
 
 	dup->print_for = options->print_for;
+	dup->print_mark = options->print_mark;
 	dup->print_for_user = options->print_for_user;
+	dup->print_mark_user = options->print_mark_user;
 	dup->print_user = options->print_user;
 	dup->print_user_user = options->print_user_user;
 
@@ -141,6 +147,27 @@ __isl_give isl_ast_print_options *isl_ast_print_options_set_print_for(
 
 	options->print_for = print_for;
 	options->print_for_user = user;
+
+	return options;
+}
+
+/* Set the print_for callback of "options" to "print_for".
+ *
+ * If this callback is set, then it used to print for nodes in the AST.
+ */
+__isl_give isl_ast_print_options *isl_ast_print_options_set_print_mark(
+	__isl_take isl_ast_print_options *options,
+	__isl_give isl_printer *(*print_mark)(__isl_take isl_printer *p,
+		__isl_take isl_ast_print_options *options,
+		__isl_keep isl_ast_node *node, void *user),
+	void *user)
+{
+	options = isl_ast_print_options_cow(options);
+	if (!options)
+		return NULL;
+
+	options->print_mark = print_mark;
+	options->print_mark_user = user;
 
 	return options;
 }
@@ -2367,6 +2394,10 @@ static __isl_give isl_printer *print_ast_node_c(__isl_take isl_printer *p,
 			p = end_block(p);
 		break;
 	case isl_ast_node_mark:
+		if (options->print_mark)
+			return options->print_mark(p,
+					isl_ast_print_options_copy(options),
+					node, options->print_mark_user);
 		p = isl_printer_start_line(p);
 		p = isl_printer_print_str(p, "// ");
 		p = isl_printer_print_str(p, isl_id_get_name(node->u.m.mark));

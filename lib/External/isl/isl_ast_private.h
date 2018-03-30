@@ -108,6 +108,10 @@ struct isl_ast_print_options {
 		__isl_take isl_ast_print_options *options,
 		__isl_keep isl_ast_node *node, void *user);
 	void *print_for_user;
+	__isl_give isl_printer *(*print_mark)(__isl_take isl_printer *p,
+		__isl_take isl_ast_print_options *options,
+		__isl_keep isl_ast_node *node, void *user);
+	void *print_mark_user;
 	__isl_give isl_printer *(*print_user)(__isl_take isl_printer *p,
 		__isl_take isl_ast_print_options *options,
 		__isl_keep isl_ast_node *node, void *user);

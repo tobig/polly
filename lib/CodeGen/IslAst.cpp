@@ -1,4 +1,23 @@
 //===- IslAst.cpp - isl code generator interface --------------------------===//
+  if (strcmp(isl_id_get_name(Id), "Tapir Base Case") == 0) {
+    struct ExtremeValues *EV = (ExtremeValues *)isl_id_get_user(Id);
+
+    errs() << "Reaching a mark node\n";
+    assert(EV->LB.size() == EV->UB.size());
+    for (unsigned i = 0; i < EV->LB.size(); i++) {
+      isl_ast_build_dump(Build);
+      auto LB = EV->LB[i];
+      auto UB = EV->UB[i];
+      LB = LB.insert_dims(isl::dim::in, 0, 0);
+      UB = UB.insert_dims(isl::dim::in, 0, 0);
+      EV->LBExpr.push_back(
+          isl::manage(isl_ast_build_expr_from_pw_aff(Build, LB.copy())));
+      EV->UBExpr.push_back(
+          isl::manage(isl_ast_build_expr_from_pw_aff(Build, UB.copy())));
+    }
+    EV->LB.clear();
+    EV->UB.clear();
+  }
 //
 //                     The LLVM Compiler Infrastructure
 //
@@ -327,6 +346,10 @@ struct ExtremeValues {
   std::vector<isl::ast_expr> UBExpr;
 };
 
+extern "C" {
+  void isl_ast_build_dump(void*);
+}
+
 static __isl_give isl_ast_node *
 astBuildAfterMark(__isl_take isl_ast_node *Node,
                   __isl_keep isl_ast_build *Build, void *User) {
@@ -335,21 +358,26 @@ astBuildAfterMark(__isl_take isl_ast_node *Node,
   auto *Id = isl_ast_node_mark_get_id(Node);
   if (strcmp(isl_id_get_name(Id), "SIMD") == 0)
     BuildInfo->InParallelFor = false;
-
   if (strcmp(isl_id_get_name(Id), "Tapir Base Case") == 0) {
     struct ExtremeValues *EV = (ExtremeValues *)isl_id_get_user(Id);
 
     errs() << "Reaching a mark node\n";
     assert(EV->LB.size() == EV->UB.size());
     for (unsigned i = 0; i < EV->LB.size(); i++) {
+      isl_ast_build_dump(Build);
+      auto LB = EV->LB[i];
+      auto UB = EV->UB[i];
+      LB = LB.insert_dims(isl::dim::in, 0, 0);
+      UB = UB.insert_dims(isl::dim::in, 0, 0);
       EV->LBExpr.push_back(
-          isl::manage(isl_ast_build_expr_from_pw_aff(Build, EV->LB[i].copy())));
+          isl::manage(isl_ast_build_expr_from_pw_aff(Build, LB.copy())));
       EV->UBExpr.push_back(
-          isl::manage(isl_ast_build_expr_from_pw_aff(Build, EV->UB[i].copy())));
+          isl::manage(isl_ast_build_expr_from_pw_aff(Build, UB.copy())));
     }
     EV->LB.clear();
     EV->UB.clear();
   }
+
   isl_id_free(Id);
   return Node;
 }
@@ -773,6 +801,7 @@ void IslAstInfo::print(raw_ostream &OS) {
     Options =
         isl_ast_print_options_set_print_user(Options, cbPrintUser, nullptr);
   Options = isl_ast_print_options_set_print_for(Options, cbPrintFor, nullptr);
+  Options = isl_ast_print_options_set_print_
 
   isl_printer *P = isl_printer_to_str(S.getIslCtx().get());
   P = isl_printer_set_output_format(P, ISL_FORMAT_C);

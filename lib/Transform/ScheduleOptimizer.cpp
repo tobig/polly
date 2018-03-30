@@ -1390,8 +1390,7 @@ ScheduleTreeOptimizer::tapirBand(__isl_take isl_schedule_node *Node) {
     //
     // Stmt3[i0, i1] : Start0 <= i0 <= Start0 + Size0 and
     //                 Start1 <= i1 <= Start1 + Size1.
-    ExtremeValues &EV =
-        *((ExtremeValues *)malloc(sizeof(struct ExtremeValues)));
+    ExtremeValues &EV = * (new ExtremeValues());
     {
       unsigned NumMembers = isl_schedule_node_band_n_member(N.get());
       isl::set Context =

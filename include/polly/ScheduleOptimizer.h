@@ -201,6 +201,8 @@ private:
                         const llvm::TargetTransformInfo *TTI,
                         polly::MatMulInfoTy &MMI);
 
+  static __isl_give isl_schedule_node *tapirBand(__isl_take isl_schedule_node *Node);
+
   /// Check if this node is a band node we want to tile.
   ///
   /// We look for innermost band nodes where individual dimensions are marked as

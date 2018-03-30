@@ -129,6 +129,11 @@ static cl::opt<int> PrevectorWidth(
         "The number of loop iterations to strip-mine for pre-vectorization"),
     cl::Hidden, cl::init(4), cl::ZeroOrMore, cl::cat(PollyCategory));
 
+static cl::opt<bool> TapirOpt("polly-tapiropt",
+                              cl::desc("Enable loop tiling"),
+                              cl::init(false), cl::ZeroOrMore,
+                              cl::cat(PollyCategory));
+
 static cl::opt<bool> FirstLevelTiling("polly-tiling",
                                       cl::desc("Enable loop tiling"),
                                       cl::init(true), cl::ZeroOrMore,
@@ -1326,11 +1331,25 @@ bool ScheduleTreeOptimizer::isMatrMultPattern(isl::schedule_node Node,
   return false;
 }
 
+__isl_give isl_schedule_node *ScheduleTreeOptimizer::
+  tapirBand(__isl_take isl_schedule_node *Node) {
+
+  auto N = isl::manage(Node);
+  int Sizes[] = {16};
+
+  N = tileNode(N, "Tapir", Sizes, 8);
+
+  return N.copy();
+}
+
 __isl_give isl_schedule_node *
 ScheduleTreeOptimizer::optimizeBand(__isl_take isl_schedule_node *Node,
                                     void *User) {
   if (!isTileableBandNode(isl::manage_copy(Node)))
     return Node;
+
+  if (TapirOpt)
+    return tapirBand(Node);
 
   const OptimizerAdditionalInfoTy *OAI =
       static_cast<const OptimizerAdditionalInfoTy *>(User);

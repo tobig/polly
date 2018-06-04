@@ -2881,7 +2881,7 @@ public:
     auto It = ScopArrayInfoMap.find(std::make_pair(BasePtr, Kind));
     if (It == ScopArrayInfoMap.end())
       return;
-    ScopArrayInfoSet.remove(It->second.get());
+    // ScopArrayInfoSet.remove(It->second.get());
     ScopArrayInfoMap.erase(It);
   }
 

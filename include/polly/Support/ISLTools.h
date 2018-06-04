@@ -17,6 +17,83 @@
 
 #include "polly/Support/GICHelper.h"
 
+namespace isl {
+inline namespace noexceptions {
+
+template <typename derived, typename list_type>
+struct list_iterator_base {
+protected:
+  typedef list_iterator_base base_type;
+  list_type &list;
+  int position;
+
+public:
+  list_iterator_base(list_type &list, int position)
+      : list(list), position(position) {}
+  list_iterator_base(list_type &list)
+      : list(list), position(static_cast<derived *>(this)->list_size()) {}
+
+  void operator++() { this->position++; }
+  bool operator!=(const list_iterator_base &that) {
+    return that.position != this->position;
+  }
+};
+
+/// An iterator for isl lists, which enables e.g. C++ foreach loops.
+template <typename list_type>
+struct list_iterator
+    : public list_iterator_base<list_iterator<list_type>, list_type, void> {};
+
+template <>
+struct list_iterator<isl::map_list>
+    : public list_iterator_base<list_iterator<isl::map_list>, isl::map_list> {
+  using base_type::list_iterator_base;
+
+  int list_size() { return this->list.n_map(); }
+  isl::map operator*(long idx) { return this->list.get_map(idx); }
+};
+
+template <>
+struct list_iterator<isl::basic_map_list>
+    : public list_iterator_base<list_iterator<isl::basic_map_list>,
+                                isl::basic_map_list> {
+  using base_type::list_iterator_base;
+
+  int list_size() { return this->list.n_basic_map(); }
+  isl::basic_map operator*(long idx) { return this->list.get_basic_map(idx); }
+};
+
+template <>
+struct list_iterator<isl::set_list>
+    : public list_iterator_base<list_iterator<isl::set_list>, isl::set_list> {
+  using base_type::list_iterator_base;
+
+  int list_size() { return this->list.n_set(); }
+  isl::set operator*(long idx) { return this->list.get_set(idx); }
+};
+
+template <>
+struct list_iterator<isl::basic_set_list>
+    : public list_iterator_base<list_iterator<isl::basic_set_list>,
+                                isl::basic_set_list> {
+  using base_type::list_iterator_base;
+ 
+  int list_size() { return this->list.n_basic_set(); }
+  isl::basic_set operator*(long idx) { return this->list.get_basic_set(idx); }
+};
+
+template <typename list_type>
+auto begin(list_type &list) -> list_iterator<list_type> {
+  return list_iterator<list_type>(list, 0);
+}
+
+template <typename list_type>
+auto end(list_type &list) -> list_iterator<list_type> {
+  return list_iterator<list_type>(list);
+}
+} // namespace noexceptions
+} // namespace isl
+
 namespace polly {
 
 /// Return the range elements that are lexicographically smaller.

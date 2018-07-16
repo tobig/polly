@@ -80,7 +80,7 @@ isl::union_pw_aff subtract(isl::union_pw_aff UPwAff, isl::val Val) {
         isl::pw_aff(isl::set::universe(PwAff.get_space().domain()), Val);
     auto Subtracted = PwAff.sub(ValAff);
     Result = Result.union_add(isl::union_pw_aff(Subtracted));
-    return isl::stat::ok;
+    return isl::stat::ok();
   });
   return Result;
 }
@@ -96,7 +96,7 @@ isl::union_pw_aff multiply(isl::union_pw_aff UPwAff, isl::val Val) {
         isl::pw_aff(isl::set::universe(PwAff.get_space().domain()), Val);
     auto Multiplied = PwAff.mul(ValAff);
     Result = Result.union_add(Multiplied);
-    return isl::stat::ok;
+    return isl::stat::ok();
   });
   return Result;
 }

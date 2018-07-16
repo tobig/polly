@@ -511,37 +511,37 @@ isl::val polly::getConstant(isl::pw_aff PwAff, bool Max, bool Min) {
   isl::val Result;
   PwAff.foreach_piece([=, &Result](isl::set Set, isl::aff Aff) -> isl::stat {
     if (Result && Result.is_nan())
-      return isl::stat::ok;
+      return isl::stat::ok();
 
     // TODO: If Min/Max, we can also determine a minimum/maximum value if
     // Set is constant-bounded.
     if (!Aff.is_cst()) {
       Result = isl::val::nan(Aff.get_ctx());
-      return isl::stat::error;
+      return isl::stat::error();
     }
 
     isl::val ThisVal = Aff.get_constant_val();
     if (!Result) {
       Result = ThisVal;
-      return isl::stat::ok;
+      return isl::stat::ok();
     }
 
     if (Result.eq(ThisVal))
-      return isl::stat::ok;
+      return isl::stat::ok();
 
     if (Max && ThisVal.gt(Result)) {
       Result = ThisVal;
-      return isl::stat::ok;
+      return isl::stat::ok();
     }
 
     if (Min && ThisVal.lt(Result)) {
       Result = ThisVal;
-      return isl::stat::ok;
+      return isl::stat::ok();
     }
 
     // Not compatible
     Result = isl::val::nan(Aff.get_ctx());
-    return isl::stat::error;
+    return isl::stat::error();
   });
   return Result;
 }
@@ -551,7 +551,7 @@ static void foreachPoint(const isl::set &Set,
                          const std::function<void(isl::point P)> &F) {
   Set.foreach_point([&](isl::point P) -> isl::stat {
     F(P);
-    return isl::stat::ok;
+    return isl::stat::ok();
   });
 }
 

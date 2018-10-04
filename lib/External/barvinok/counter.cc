@@ -24,7 +24,7 @@ void counter_base::handle(const mat_ZZ& rays, Value *V, const QQ& c,
     for (int k = 0; k < dim; ++k)
 	if (value_zero_p(den->p_Init[k])) {
 	    Matrix_Free(Rays);
-	    throw Orthogonal;
+	    ; // throw Orthogonal;
 	}
     Inner_Product(lambda->p, V, dim, &tmp);
     lattice_points_fixed(V, &tmp, Rays, den, num, det);

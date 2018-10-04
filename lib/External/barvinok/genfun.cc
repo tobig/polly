@@ -992,15 +992,18 @@ gen_fun *gen_fun::summate(int nvar, barvinok_options *options) const
     	red = new partial_reducer(Polyhedron_Project(context, nparam), dim, nparam);
     n_try = 0;
     for (;;) {
-	try {
+	//try {
 	    red->init(context, n_try);
 	    for (short_rat_list::iterator i = term.begin(); i != term.end(); ++i)
 		red->reduce((*i)->n.coeff, (*i)->n.power, (*i)->d.power);
 	    break;
+            /*
 	} catch (OrthogonalException &e) {
 	    red->reset();
 	    n_try++;
 	}
+
+        */
     }
     gf = red->get_gf();
     delete red;

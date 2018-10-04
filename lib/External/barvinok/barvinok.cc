@@ -589,7 +589,7 @@ void enumerator::handle(const signed_cone& sc, barvinok_options *options)
     assert(sc.rays.NumRows() == dim);
     for (int k = 0; k < dim; ++k) {
 	if (lambda * sc.rays[k] == 0)
-	    throw Orthogonal;
+	    ; // throw Orthogonal;
     }
 
     lattice_point(V, sc.rays, lambda, &num, sc.det, options);
@@ -1404,16 +1404,16 @@ try_again:
 
 	FORALL_PVertex_in_ParamPolyhedron(V,D,PP) // _i is internal counter
 	    if (!et->vE[_i])
-		try {
+		//try {
 		    et->decompose_at(V, _i, options);
-		} catch (OrthogonalException &e) {
+		/*} catch (OrthogonalException &e) {
 		    FORALL_REDUCED_DOMAIN_RESET;
 		    for (; i >= 0; --i) {
 			evalue_free(s[i].E);
 			Domain_Free(s[i].D);
 		    }
 		    goto try_again;
-		}
+		}*/
 	    eadd(et->vE[_i] , s[i].E);
 	END_FORALL_PVertex_in_ParamPolyhedron;
 	evalue_range_reduction_in_domain(s[i].E, rVD);

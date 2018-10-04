@@ -351,77 +351,83 @@ add_polly_library(PollyPPCG
 
 target_link_libraries(PollyPPCG PUBLIC ${ISL_TARGET})
 
+set(POLYLIB_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/polylib")
+set(POLYLIB_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/polylib")
+
+set (POLYLIB_FILES
+        polylib/source/arith/errors.c
+        polylib/source/kernel/errormsg.c
+        polylib/source/kernel/vector.c
+        polylib/source/kernel/matrix.c
+        polylib/source/kernel/polyhedron.c
+        polylib/source/kernel/polyparam.c
+        polylib/source/kernel/param.c
+        polylib/source/kernel/alpha.c
+        polylib/source/ehrhart/ehrhart.c
+        polylib/source/ehrhart/ext_ehrhart.c
+        polylib/source/ehrhart/eval_ehrhart.c
+        polylib/source/ehrhart/homogenization.c
+        polylib/source/ehrhart/ranking.c
+        polylib/source/kernel/matrix_addon.c
+        polylib/source/kernel/matrix_permutations.c
+        polylib/source/kernel/compress_parms.c
+        polylib/source/kernel/SolveDio.c
+        polylib/source/kernel/Lattice.c
+        polylib/source/kernel/Matop.c
+        polylib/source/kernel/NormalForms.c
+        polylib/source/kernel/Zpolyhedron.c
+        polylib/source/arith/arithmetique.h 
+     )
+
+include_directories(BEFORE
+  ${POLYLIB_BINARY_DIR}
+  ${POLYLIB_SOURCE_DIR}/include
+)
+
+
+add_polly_library(PollyPOLYLIB
+  ${POLYLIB_FILES}
+)
+target_link_libraries(PollyPOLYLIB ${GMP_LIBRARIES})
+
 set(BARVINOK_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/barvinok")
 set(BARVINOK_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/barvinok")
 
 set (BARVINOK_FILES
-barvinok/barvinok_count.c
-barvinok/count_domain.c
 barvinok/mpz_divisible_p.c
 barvinok/sample.c
-barvinok/barvinok_ehrhart_options.c
 barvinok/evalue.c
 barvinok/normalization.c
 barvinok/scale.c
-barvinok/barvinok_enumerate_e_options.c
-barvinok/evalue_convert_options.c
 barvinok/options.c
-barvinok/summate.c
-barvinok/barvinok_enumerate_options.c
 barvinok/evalue_isl.c
 barvinok/param_util.c
-barvinok/test_approx.c
-barvinok/barvinok_summate.c
 barvinok/evalue_read.c
-barvinok/polyhedron_integer_hull.c
-barvinok/test_bound.c
-barvinok/barvinok_union_options.c
-barvinok/ev_size.c
-barvinok/polyhedron_sample.c
-barvinok/test.c
 barvinok/basis_reduction.c
-barvinok/hilbert.c
 barvinok/polysign.c
-barvinok/topcom.c
-barvinok/basis_reduction_glpk.c
 barvinok/hull.c
-barvinok/polysign_glpk.c
 barvinok/util.c
-barvinok/basis_reduction_templ.c
 barvinok/ilp.c
 barvinok/polysign_isl.c
-barvinok/vector_partition_chambers.c
 barvinok/bernoulli.c
-barvinok/iscc.c
 barvinok/polysign_polylib.c
 barvinok/verif_ehrhart.c
 barvinok/binomial.c
 barvinok/isl_aff_polylib.c
-barvinok/polytope_lattice_width.c
 barvinok/verify.c
-barvinok/bound.c
 barvinok/isl_map_polylib.c
-barvinok/polytope_scan.c
-barvinok/verify_lexsmaller.c
 barvinok/collect_nonsimple.c
 barvinok/isl_obj_list.c
-barvinok/polytope_volume.c
 barvinok/version.c
-barvinok/collect_polytopes2.c
 barvinok/isl_obj_str.c
-barvinok/randomtest.c
 barvinok/volume.c
 barvinok/collect_polytopes.c
 barvinok/isl_param_util.c
 barvinok/reduce_domain.c
-barvinok/cone_hilbert_basis.c
 barvinok/lattice_width.c
 barvinok/remove_equalities.c
 barvinok/cone_integer_hull.c
 barvinok/lexmin_options.c
-barvinok/remove_redundant_equalities.c
-barvinok/4coins.cc
-barvinok/basis_reduction_cdd.cc
 barvinok/euler.cc
 barvinok/lattice_point.cc
 barvinok/param_polynomial.cc
@@ -430,36 +436,25 @@ barvinok/barvinok.cc
 barvinok/bfcounter.cc
 barvinok/evalue_convert.cc
 barvinok/laurent.cc
-barvinok/polysign_cdd.cc
 barvinok/skewed_genfun.cc
-barvinok/barvinok_e.cc
 barvinok/conversion.cc
 barvinok/evalue_util.cc
 barvinok/laurent_old.cc
-barvinok/polysign_cddf.cc
-barvinok/testlib.cc
-barvinok/barvinok_ehrhart.cc
 barvinok/counter.cc
 barvinok/fdstream.cc
-barvinok/lexmin.cc
-barvinok/polysign_cdd_template.cc
 barvinok/verify_series.cc
-barvinok/barvinok_enumerate.cc
 barvinok/decomposer.cc
 barvinok/genfun.cc
 barvinok/matrix_read.cc
 barvinok/reducer.cc
 barvinok/vertex_cone.cc
-barvinok/barvinok_enumerate_e.cc
 barvinok/dpoly.cc
 barvinok/genfun_constructor.cc
 barvinok/mat_util.cc
 barvinok/scarf.cc
-barvinok/barvinok_union.cc
 barvinok/edomain.cc
-barvinok/initcdd.cc
+barvinok/summate.c
 barvinok/NTL_QQ.cc
-barvinok/semigroup_holes.cc
      )
 
 include_directories(BEFORE
@@ -471,7 +466,15 @@ add_polly_library(PollyBARVINOK
   ${BARVINOK_FILES}
 )
 
+
+
+message(STATUS ${ISL_TARGET})
+message(STATUS ${POLYLIB_TARGET})
+target_link_libraries(PollyBARVINOK PUBLIC PollyPOLYLIB)
+target_link_libraries(PollyBARVINOK PUBLIC ntl)
+target_link_libraries(PollyBARVINOK PUBLIC dl)
 target_link_libraries(PollyBARVINOK PUBLIC ${ISL_TARGET})
+target_compile_definitions(PollyBARVINOK PRIVATE "-DNTL_GMP_LIB")
 
 # Disable warnings for upstream projects.
 if (MSVC)
@@ -488,6 +491,8 @@ if (MSVC)
     target_compile_options(polly-isl-test PRIVATE ${DISABLE_WARNING_FLAGS})
   endif (POLLY_BUNDLED_ISL)
   target_compile_options(PollyPPCG PRIVATE ${DISABLE_WARNING_FLAGS})
+  target_compile_options(PollyPOLLYLIB PRIVATE ${DISABLE_WARNING_FLAGS})
+  target_compile_options(PollyBARVINOK PRIVATE ${DISABLE_WARNING_FLAGS})
 else ()
   if (POLLY_BUNDLED_ISL)
     set_target_properties(PollyISL polly-isl-test PROPERTIES COMPILE_FLAGS "-w")

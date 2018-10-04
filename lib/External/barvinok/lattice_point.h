@@ -1,6 +1,7 @@
 #ifndef LATTICE_POINT_H
 #define LATTICE_POINT_H
 
+#define NTL_GMP_LIP 1
 #include <barvinok/evalue.h>
 
 #if defined(__cplusplus)

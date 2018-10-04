@@ -1,6 +1,6 @@
 #include <assert.h>
 #define GMPRATIONAL
-#include <setoper.h>
+// #include <setoper.h>
 #include <cdd.h>
 #include <barvinok/basis_reduction.h>
 #include "initcdd.h"

@@ -28,7 +28,7 @@ void np_base::start(Polyhedron *P, barvinok_options *options)
     int n_try = 0;
     QQ factor(1, 1);
     for (;;) {
-	try {
+	//try {
 	    init(P, n_try);
 	    for (int i = 0; i < P->NbRays; ++i) {
 		if (!value_pos_p(P->Ray[i][dim+1]))
@@ -38,10 +38,12 @@ void np_base::start(Polyhedron *P, barvinok_options *options)
 		do_vertex_cone(factor, C, P->Ray[i]+1, options);
 	    }
 	    break;
+            /*
 	} catch (OrthogonalException &e) {
 	    n_try++;
 	    reset();
 	}
+        */
     }
 }
 

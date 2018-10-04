@@ -76,6 +76,8 @@ set_target_properties(PollyCore PROPERTIES FOLDER "Polly")
 add_polly_library(Polly $<TARGET_OBJECTS:PollyCore>)
 target_link_libraries(Polly PUBLIC
   ${ISL_TARGET}
+  PollyBARVINOK
+  PollyPOLYLIB
 )
 
 # Additional dependencies for Polly-ACC.

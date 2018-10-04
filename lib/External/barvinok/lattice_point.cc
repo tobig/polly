@@ -195,10 +195,10 @@ evalue *fractional_part(Value *coef, Value denom, int nvar, Polyhedron *PD)
     if ((j < nvar && num[j] > g/2) || (j == nvar && num[j] >= (g+1)/2)) {
 	for (int k = j; k < nvar; ++k)
 	    if (num[k] != 0)
-		num[k] = g - num[k];
-	num[nvar] = g - 1 - num[nvar];
+		num[k] = -(-g + num[k]);
+	num[nvar] = -(-g + 1 + num[nvar]);
 	value_assign(tmp.d, m);
-	ZZ t = sign*(g-1);
+	ZZ t = sign*(-(-g+1));
 	zz2value(t, tmp.x.n);
 	eadd(&tmp, EP);
 	sign = -sign;

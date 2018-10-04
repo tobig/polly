@@ -45,7 +45,7 @@ void partial_reducer::split(const mat_ZZ& num, vec_ZZ& num_s, mat_ZZ& num_p,
 		all_zero = den_r[r][k-nvar] == 0;
 	}
 	if (all_zero)
-	    throw Orthogonal;
+	    ; // throw Orthogonal;
     }
 
     num_s.SetLength(num.NumRows());

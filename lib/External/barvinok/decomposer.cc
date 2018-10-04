@@ -152,15 +152,15 @@ static void decompose(const signed_cone& sc, signed_cone_consumer& scc,
     if (c->needs_split(options)) {
 	nonuni.push_back(c);
     } else {
-	try {
+	//try {
 	    options->stats->base_cones++;
 	    scc.handle(signed_cone(sc.C, sc.rays, sc.sign, to_ulong(c->index)),
 				   options);
-	    delete c;
-	} catch (...) {
-	    delete c;
-	    throw;
-	}
+	//    delete c;
+	//} catch (...) {
+	//    delete c;
+	//    throw;
+	//}
 	return;
     }
     vec_ZZ lambda;
@@ -186,12 +186,13 @@ static void decompose(const signed_cone& sc, signed_cone_consumer& scc,
 		assert(abs(pc->det) < abs(c->det));
 		nonuni.push_back(pc);
 	    } else {
-		try {
+		//try {
 		    options->stats->base_cones++;
 		    scc.handle(signed_cone(pc->rays, pc->sgn,
 					   to_ulong(pc->index)),
 					   options);
 		    delete pc;
+                    /*
 		} catch (...) {
 		    delete c;
 		    delete pc;
@@ -200,8 +201,8 @@ static void decompose(const signed_cone& sc, signed_cone_consumer& scc,
 			nonuni.pop_back();
 			delete c;
 		    }
-		    throw;
-		}
+		    //throw;
+		//}*/
 	    }
 	}
 	delete c;
@@ -228,13 +229,15 @@ struct polar_signed_cone_consumer : public signed_cone_consumer {
 	}
 	Polyhedron_Polarize(C);
 	rays(C, r);
-	try {
+	//try {
 	    scc.handle(signed_cone(C, r, sc.sign, sc.det), options);
+            /*
 	} catch (...) {
 	    if (!sc.C)
 		Polyhedron_Free(C);
-	    throw;
+	    //throw;
 	}
+        */
 	if (!sc.C)
 	    Polyhedron_Free(C);
     }
@@ -266,17 +269,19 @@ static void polar_decompose(Polyhedron *cone, signed_cone_consumer& scc,
     }
     polar_signed_cone_consumer pssc(scc);
     mat_ZZ r;
-    try {
+    //try {
 	for (Polyhedron *Polar = cone; Polar; Polar = Polar->next) {
 	    rays(Polar, r);
 	    normalize_rows(r);
 	    decompose(signed_cone(Polar, r, 1), pssc, false, options);
 	}
 	Domain_Free(cone);
+        /*
     } catch (...) {
 	Domain_Free(cone);
 	throw;
     }
+    */
 }
 
 static void primal_decompose(Polyhedron *cone, signed_cone_consumer& scc,
@@ -295,7 +300,7 @@ static void primal_decompose(Polyhedron *cone, signed_cone_consumer& scc,
 	average = inner_point(cone);
     }
     mat_ZZ ray;
-    try {
+    //try {
 	for (Polyhedron *simple = parts; simple; simple = simple->next) {
 	    int sign = 1;
 	    Matrix *Rays = rays2(simple);
@@ -327,7 +332,7 @@ static void primal_decompose(Polyhedron *cone, signed_cone_consumer& scc,
 	    value_clear(tmp);
 	    Vector_Free(average);
 	}
-    } catch (...) {
+    /*} catch (...) {
 	Domain_Free(parts);
 	if (parts != cone) {
 	    Domain_Free(cone);
@@ -335,7 +340,7 @@ static void primal_decompose(Polyhedron *cone, signed_cone_consumer& scc,
 	    Vector_Free(average);
 	}
 	throw;
-    }
+    }*/
 }
 
 void barvinok_decompose(Polyhedron *C, signed_cone_consumer& scc,

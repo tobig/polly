@@ -28,7 +28,7 @@ void run_points2triangs(pid_t *child, int *in, int *out)
 	close(in_fd[1]);
 	close(out_fd[0]);
 
-	rc = execl(POINTS2TRIANGS_PATH, "points2triangs", "--regular", NULL);
+	// rc = execl(POINTS2TRIANGS_PATH, "points2triangs", "--regular", NULL);
 	assert(0);
     }
     close(in_fd[0]);

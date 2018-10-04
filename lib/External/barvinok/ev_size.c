@@ -96,7 +96,7 @@ evalue* barvinok_enumerate_ev(Polyhedron *P, Polyhedron* C, unsigned MaxRays)
 
 #undef Enumeration
 
-Enumeration *Polyhedron_Enumerate(Polyhedron *P,Polyhedron *C,unsigned MAXRAYS,char **param_name)
+Enumeration *Polyhedron_Enumerate(Polyhedron *P,Polyhedron *C,unsigned MAXRAYS,const char **param_name)
 {
     static Enumeration *(*orig)(Polyhedron *, Polyhedron *c, unsigned, char **) = NULL;
     Enumeration *res;

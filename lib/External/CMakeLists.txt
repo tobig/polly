@@ -2,6 +2,8 @@
 if (POLLY_BUNDLED_ISL)
   set(ISL_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/isl")
   set(ISL_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/isl")
+  find_package(GMP REQUIRED)
+  include_directories(${GMP_INCLUDE_DIR})
 
   # Determine version of isl
   if (EXISTS "${ISL_SOURCE_DIR}/GIT_HEAD_ID")
@@ -21,9 +23,9 @@ if (POLLY_BUNDLED_ISL)
   message(STATUS "ISL version: ${ISL_GIT_HEAD_ID}")
 
   # Enable small integer optimization and imath
-  set(USE_GMP_FOR_MP OFF)
-  set(USE_IMATH_FOR_MP ON)
-  set(USE_SMALL_INT_OPT ON)
+  set(USE_GMP_FOR_MP ON)
+  set(USE_IMATH_FOR_MP OFF)
+  set(USE_SMALL_INT_OPT OFF)
 
   # Determine compiler characteristics
   include(CheckCSourceCompiles)
@@ -209,9 +211,8 @@ if (POLLY_BUNDLED_ISL)
     isl/isl_id_to_id.c
     isl/isl_id_to_pw_aff.c
     isl/isl_ilp.c
-    isl/isl_imath.c
+    isl/isl_gmp.c
     isl/isl_input.c
-    isl/isl_int_sioimath.c
     isl/isl_local.c
     isl/isl_local_space.c
     isl/isl_lp.c
@@ -251,7 +252,7 @@ if (POLLY_BUNDLED_ISL)
     isl/isl_transitive_closure.c
     isl/isl_union_map.c
     isl/isl_val.c
-    isl/isl_val_sioimath.c
+    isl/isl_val_gmp.c
     isl/isl_vec.c
     isl/isl_version.c
     isl/isl_vertices.c
@@ -268,7 +269,7 @@ if (POLLY_BUNDLED_ISL)
   add_polly_library(PollyISL
     ${ISL_FILES}
     )
-
+  target_link_libraries(PollyISL ${GMP_LIBRARIES})
 
   if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
     install(DIRECTORY
